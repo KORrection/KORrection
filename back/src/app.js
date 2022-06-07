@@ -1,6 +1,6 @@
 import cors from "cors";
 import express from "express";
-import { swaggerUi, specs } from "./modules/swagger.js";
+import { swaggerUi, specs } from "./swagger/swagger.js";
 
 const app = express();
 
