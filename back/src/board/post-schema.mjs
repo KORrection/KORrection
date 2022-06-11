@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 
 const PostSchema = new Schema(
   {
-    shortid: {
+    shortId: {
       type: String,
       default: () => {
         return nanoid();
@@ -27,6 +27,11 @@ const PostSchema = new Schema(
     content: {
       type: String,
       required: true,
+    },
+    likes: {
+      type: Number,
+      required: true,
+      default: 0,
     },
   },
   { timestamps: true }
