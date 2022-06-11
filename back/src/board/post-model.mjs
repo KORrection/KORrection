@@ -2,8 +2,8 @@
 import { PostModel } from './post-schema.mjs';
 
 class Post {
-  static async createPost({ shortId, category, author, title, content, likes }) {
-    const newPost = await PostModel.create({ shortId, category, author, title, content, likes });
+  static async createPost({ category, author, title, content }) {
+    const newPost = await PostModel.create({ category, author, title, content });
     return newPost;
   }
   static async findAll() {
@@ -11,7 +11,7 @@ class Post {
   }
 
   static async findById({ shortId }) {
-    return await PostModel.findOne({ shortid: shortId });
+    return await PostModel.findOne({ shortId });
   }
 }
 
