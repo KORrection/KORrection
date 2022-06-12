@@ -2,8 +2,8 @@ import cors from "cors";
 import express from "express";
 import session from "express-session";
 import mongoose from "mongoose";
-import passport from "passport";
 import * as dotenv from "dotenv";
+import passport from "passport";
 import passportConfig from "./passport/index.mjs";
 import cookieParser from "cookie-parser";
 import { swaggerUi, specs } from "./swagger.js";
@@ -29,6 +29,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+const DB_URL = process.env.MONGODB_URL;
+mongoose.connect(DB_URL, {
+  dbName: 'project3',
+});
+const db = mongoose.connection;
+
+db.on("connected", ()=> console.log("mongoose Connected"))
+db.on("error", (error) => console.error("mongoose not Connected"+error));
+
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 
@@ -38,13 +48,6 @@ app.get("/", (req, res) => {
 });
 
 app.use(userRouter);
-
-const DB_URL = process.env.MONGODB_URL;
-mongoose.connect(DB_URL);
-const db = mongoose.connection;
-
-db.on("connected", ()=> console.log("mongoose Connected"))
-db.on("error", (error) => console.error("mongoose not Connected"+error));
 
 
 export { app };

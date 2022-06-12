@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { UserService } from "./userService.mjs";
 import passport from "passport";
+import Login from "../middleware/Authenticate.mjs";
 
 const userRouter = Router();
 
@@ -22,20 +23,7 @@ userRouter.get(
    },
 );
 
-/**
- * @swagger
- * paths:
- *    /google:
- *       get:
- *          summary: "구글 로그인"
- *          tags: [Users]
- *          responses:
- *             "200":
- *                content:
- *                   application/json:
- *                      properties:
- */
-userRouter.post("/logout", (req, res, next)=> {
+userRouter.post("/logout", Login.isLoggedIn, (req, res, next) => {
    req.logout((err) => {
      if (err) { 
         return next(err); 
@@ -43,6 +31,6 @@ userRouter.post("/logout", (req, res, next)=> {
      res.redirect("/");
    });
  });
- 
+
 
 export { userRouter };
