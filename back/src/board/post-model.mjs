@@ -10,12 +10,16 @@ class Post {
     return await PostModel.find({});
   }
 
-  static async findById({ shortId }) {
+  static async findPost({ shortId }) {
     return await PostModel.findOne({ shortId });
   }
 
   static async updatePost({ shortId, category, title, content }) {
     return await PostModel.updateOne({ shortId }, { category, title, content });
+  }
+
+  static async deletePost({ shortId }) {
+    return await PostModel.deleteOne({ shortId });
   }
 }
 
