@@ -6,21 +6,20 @@ import { postService } from './post-service.mjs';
 
 const postRouter = Router();
 
-// TODO: Create
+// *  Create
 postRouter.post('/', async (req, res, next) => {
   try {
+    // ? const author = req.currentUser.name;
     const { category, author, title, content } = req.body;
     const post = await postService.createPost({ category, author, title, content });
     res.status(200).json(post);
-    //.redirect(`/posts/${post.shortId}`);
+    // ? .redirect(`/posts/${post.shortId}`);
   } catch (err) {
     next(err);
   }
 });
 
-// TODO: Read
-// access to board, get every posts.
-// if (board?write=true), edit창으로 연결 (해결 못함)
+// * Read
 postRouter.get('/', async (req, res, next) => {
   try {
     if (req.query.write) {
@@ -50,7 +49,7 @@ postRouter.get('/:shortId', async (req, res, next) => {
   }
 });
 
-// TODO: Update
+// * Update
 postRouter.post('/:shortId', async (req, res, next) => {
   try {
     const { shortId } = req.params;
@@ -64,7 +63,7 @@ postRouter.post('/:shortId', async (req, res, next) => {
 });
 export { postRouter };
 
-// TODO: Delete
+// * Delete
 postRouter.delete('/:shortId', async (req, res, next) => {
   try {
     const { shortId } = req.params;

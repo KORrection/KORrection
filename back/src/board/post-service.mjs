@@ -13,7 +13,7 @@ class postService {
     return posts;
   }
 
-  static async findById({ shortId }) {
+  static async findPost({ shortId }) {
     const post = await Post.findPost({ shortId });
     if (!post) {
       const errorMessage = '게시물이 없습니다';
@@ -27,7 +27,7 @@ class postService {
       throw new Error('제목과 내용을 입력해주세요');
     }
     await Post.updatePost({ shortId, category, title, content });
-    const post = await Post.findById({ shortId });
+    const post = await Post.findPost({ shortId });
     return post;
   }
 
