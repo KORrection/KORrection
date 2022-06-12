@@ -3,10 +3,30 @@
 @use '/src/styles/mixins/responsive';
 
 .container {
-  @include flexbox.flexbox(center, center);
   position: absolute;
   top: 0;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid colors.$GRAYE;
   width: 100%;
   height: 60px;
+
+  ul {
+    @include flexbox.flexbox(center, center);
+    width: 100%;
+    height: 60px;
+
+    li {
+      + li {
+        margin-left: 20px;
+      }
+    }
+
+    a {
+      padding: 4px 14px;
+      color: colors.$GRAY2;
+
+      &.isActive {
+        font-weight: 600;
+      }
+    }
+  }
 }

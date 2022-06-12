@@ -1,11 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
 
 import styles from './routes.module.scss';
-import IndexPage from './IndexPage';
+import Home from './Home';
 import GNB from './_shared/GNB';
-import KGrammarlyPage from './KGrammarlyPage';
-import QuizPage from './QuizPage';
-import BoardPage from './BoardPage';
+import KGrammarly from './KGrammarly';
+import Quiz from './Quiz';
+import Board from './Board';
+import SignIn from './SignIn';
+import SingUp from './SignUp';
 
 const App = () => {
   return (
@@ -13,10 +15,12 @@ const App = () => {
       <GNB />
       <main className={styles.app}>
         <Routes>
-          <Route path='/' element={<IndexPage />} />
-          <Route path='grammarly' element={<KGrammarlyPage />} />
-          <Route path='quiz' element={<QuizPage />} />
-          <Route path='board' element={<BoardPage />} />
+          <Route path='/' element={<Home />} />
+          <Route path='grammarly' element={<KGrammarly />} />
+          <Route path='quiz' element={<Quiz />} />
+          <Route path='board' element={<Board />} />
+          <Route path='signin' element={<SignIn />} />
+          <Route path='signup' element={<SingUp />} />
         </Routes>
       </main>
     </div>
