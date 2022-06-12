@@ -7,10 +7,10 @@ const options = {
       title: "Test API",
       version: "1.0.0",
     },
-    host: "localhost:5000",
+    host: "localhost:5001",
     basePath: "/",
   },
-  apis: ["./routes/*.js", "./swagger/*"],
+  apis: ["./src/user/userRouter.mjs"],
 };
 
 const specs = swaggereJsdoc(options);
