@@ -13,6 +13,10 @@ class Post {
   static async findById({ shortId }) {
     return await PostModel.findOne({ shortId });
   }
+
+  static async updatePost({ shortId, category, title, content }) {
+    return await PostModel.updateOne({ shortId }, { category, title, content });
+  }
 }
 
 export { Post };

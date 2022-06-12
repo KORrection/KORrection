@@ -21,6 +21,14 @@ class postService {
     }
     return post;
   }
+
+  static async updatePost({ shortId, category, title, content }) {
+    if (!title || !content) {
+      throw new Error('제목과 내용을 입력해주세요');
+    }
+    const post = await Post.updatePost({ shortId, category, title, content });
+    return post;
+  }
 }
 
 export { postService };
