@@ -37,6 +37,7 @@ section {
       width: 100%;
       height: 100px;
       padding: 20px;
+      margin-bottom: 10px;
       line-height: 25px;
       border: 1px solid colors.$MAIN_BORDER;
       border-radius: 10px;
@@ -54,5 +55,29 @@ section {
         background-color: inherit;
       }
     }
+  }
+}
+
+@include responsive.after(ML) {
+  section {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+
+    .container {
+      width: 50%;
+      height: 100%;
+
+      + .container {
+        padding-top: 0;
+      }
+    }
+  }
+}
+
+@include responsive.after(LD) {
+  section {
+    width: 1200px;
+    margin: auto;
   }
 }
