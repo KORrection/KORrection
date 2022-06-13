@@ -38,7 +38,7 @@ mongoose.connect(DB_URL, {
 const db = mongoose.connection;
 
 db.on('connected', () => console.log('mongoose Connected'));
-db.on('error', (error) => console.error('mongoose not Connected' + error));
+db.on('error', (error) => console.error(`mongoose not Connected: ${error}`));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
