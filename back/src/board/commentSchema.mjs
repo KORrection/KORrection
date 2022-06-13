@@ -1,75 +1,65 @@
 import pkg from 'mongoose';
 const { Schema, model } = pkg;
-import { nanoid } from 'nanoid';
 
 const CommentSchema = new Schema(
   {
-    shortId: {
+    // commentId는 mongoDB자체Id 사용?
+    postId: {
       type: String,
-      default: () => {
-        return nanoid();
-      },
-      require: true,
-      index: true,
-    },
-    cateory: {
-      type: String,
-      default: 'free',
+      required: true,
     },
     author: {
       type: String,
       required: true,
     },
-    title: {
+    comment: {
       type: String,
       required: true,
     },
-    content: {
-      type: String,
-      required: true,
-    },
-    likes: {
+    like: {
       type: Number,
       required: true,
       default: 0,
+    },
+    isDeleted: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
   { timestamps: true }
 );
 
-const PostModel = model('post', CommentSchema);
-export { PostModel };
+const CommentModel = model('comment', CommentSchema);
+export { CommentModel };
 
 /**
  * @swagger
  * definitions:
- *   Post:
+ *   Comment:
  *     type: object
  *     required:
  *       - _id
- *       - shortId
+ *       - postId
  *       - author
- *       - category
- *       - title
- *       - content
+ *       - comment
  *       - like
+ *       - isDeleted
  *       - createdAt
  *       - updatedAt
  *     properties:
  *       _id:
  *         type: string
- *       shortId:
+ *       postId:
  *         type: string
  *       author:
  *         type: string
- *       category:
- *         type: string
- *       title:
- *         type: string
- *       content:
+ *       comment:
  *         type: string
  *       like:
  *         type: number
+ *       isDeleted:
+ *         type: boolean
  *       createdAt:
  *         type: string
  *       updatedAt:
