@@ -1,7 +1,7 @@
 // * (1) http req, res handler layer
 
 import { Router } from 'express';
-import { postService } from './post-service.mjs';
+import { postService } from './postService.mjs';
 //import { loginRequired } from '../middlewares/loginRequired';
 
 const postRouter = Router();

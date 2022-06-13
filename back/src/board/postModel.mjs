@@ -1,5 +1,5 @@
 // * (3) database layer (model)
-import { PostModel } from './post-schema.mjs';
+import { PostModel } from './postSchema.mjs';
 
 class Post {
   static async createPost({ category, author, title, content }) {

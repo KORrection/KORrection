@@ -1,5 +1,5 @@
 // * (2)  service layer
-import { Post } from './post-model.mjs';
+import { Post } from './postModel.mjs';
 
 class postService {
   static async createPost({ category, author, title, content }) {

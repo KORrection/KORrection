@@ -8,7 +8,7 @@ import passportConfig from "./passport/index.mjs";
 import cookieParser from "cookie-parser";
 import { swaggerUi, specs } from "./swagger.js";
 import { userRouter } from "./user/userRouter.mjs";
-import { postRouter } from "./board/post-router.mjs";
+import { postRouter } from "./board/postRouter.mjs";
 
 dotenv.config();
 const app = express();
