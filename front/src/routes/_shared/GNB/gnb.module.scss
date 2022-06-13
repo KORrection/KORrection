@@ -1,13 +1,12 @@
 @use '/src/styles/constants/colors';
 @use '/src/styles/mixins/flexbox';
-@use '/src/styles/mixins/responsive';
 
 .container {
   position: absolute;
   top: 0;
-  border-bottom: 1px solid colors.$GRAYE;
   width: 100%;
   height: 60px;
+  border-bottom: 1px solid colors.$GRAYE;
 
   ul {
     @include flexbox.flexbox(center, center);
@@ -23,6 +22,7 @@
     a {
       padding: 4px 14px;
       color: colors.$GRAY2;
+      user-select: none;
 
       &.isActive {
         font-weight: 600;

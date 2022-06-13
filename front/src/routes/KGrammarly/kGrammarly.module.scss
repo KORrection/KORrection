@@ -1,0 +1,58 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
+
+section {
+  @include flexbox.flexbox(between, center);
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 100px);
+  user-select: none;
+
+  .container {
+    width: 100%;
+    height: 50%;
+
+    + .container {
+      padding-top: 30px;
+    }
+
+    .grammarlyText {
+      width: 100%;
+      height: 100%;
+      resize: none;
+      border: none;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+  }
+
+  ul {
+    height: calc(100% - 40px);
+
+    .suggestionCard {
+      width: 100%;
+      height: 100px;
+      padding: 20px;
+      line-height: 25px;
+      border: 1px solid colors.$MAIN_BORDER;
+      border-radius: 10px;
+
+      .wrong {
+        margin-right: 5px;
+        color: colors.$SYSTEM_RED;
+        text-decoration: line-through;
+        background-color: inherit;
+      }
+
+      .right {
+        margin-left: 5px;
+        color: colors.$SYSTEM_BLUE;
+        background-color: inherit;
+      }
+    }
+  }
+}
