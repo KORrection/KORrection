@@ -2,11 +2,18 @@
 @use '/src/styles/mixins/flexbox';
 
 .container {
+  @include flexbox.flexbox(between, center);
   position: absolute;
   top: 0;
   width: 100%;
   height: 60px;
+  padding: 0 20px;
   border-bottom: 1px solid colors.$GRAYE;
+
+  .logoImage {
+    width: 150px;
+    height: 34px;
+  }
 
   ul {
     @include flexbox.flexbox(center, center);
@@ -15,7 +22,7 @@
 
     li {
       + li {
-        margin-left: 20px;
+        margin-left: 24px;
       }
     }
 
@@ -26,6 +33,7 @@
 
       &.isActive {
         font-weight: 600;
+        color: colors.$SIGNATURE_GREEN;
       }
     }
   }

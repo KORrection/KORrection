@@ -2,7 +2,7 @@ import styles from './kGrammarly.module.scss';
 
 const KGrammarly = () => {
   return (
-    <section>
+    <section className={styles.pageContainer}>
       <div className={styles.container}>
         <textarea className={styles.grammarlyText} placeholder='내용을 입력해주세요' />
       </div>

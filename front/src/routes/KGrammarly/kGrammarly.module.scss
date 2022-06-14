@@ -2,7 +2,7 @@
 @use '/src/styles/mixins/flexbox';
 @use '/src/styles/mixins/responsive';
 
-section {
+.pageContainer {
   @include flexbox.flexbox(between, center);
   flex-direction: column;
   width: 100%;
@@ -59,7 +59,7 @@ section {
 }
 
 @include responsive.after(ML) {
-  section {
+  .pageContainer {
     display: flex;
     flex-wrap: wrap;
     padding: 10px;
@@ -76,7 +76,7 @@ section {
 }
 
 @include responsive.after(LD) {
-  section {
+  .pageContainer {
     width: 1200px;
     margin: auto;
   }
