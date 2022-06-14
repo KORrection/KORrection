@@ -16,7 +16,7 @@ const postRouter = Router();
 /**
  * @swagger
  * paths:
- *  /board/create:
+ *  /board/posts:
  *   post:
  *    tags: [Post]
  *    summary: Creates new post
@@ -54,7 +54,7 @@ const postRouter = Router();
  *                              shortId:
  *                                  type: string
  */
-postRouter.post('/create', async (req, res, next) => {
+postRouter.post('/posts', async (req, res, next) => {
   try {
     // ? const author = req.currentUser.name;
     const { category, author, title, content } = req.body;
@@ -73,7 +73,7 @@ postRouter.post('/create', async (req, res, next) => {
 /**
  * @swagger
  * paths:
- *  /board:
+ *  /board/posts:
  *   get:
  *    tags: [Post]
  *    summary: get all posts
@@ -94,7 +94,7 @@ postRouter.post('/create', async (req, res, next) => {
  *                          properties:
  *                              $ref: '#/definitions/Post'
  */
-postRouter.get('/', async (req, res, next) => {
+postRouter.get('/posts', async (req, res, next) => {
   try {
     if (req.query.write) {
       res.redirect('post/edit');
@@ -113,7 +113,7 @@ postRouter.get('/', async (req, res, next) => {
 /**
  * @swagger
  * paths:
- *  /board/{shortId}:
+ *  /board/posts/{shortId}:
  *   get:
  *    parameters:
  *      - in: path
@@ -138,7 +138,7 @@ postRouter.get('/', async (req, res, next) => {
  *                          properties:
  *                              $ref: '#/definitions/Post'
  */
-postRouter.get('/:shortId', async (req, res, next) => {
+postRouter.get('/posts/:shortId', async (req, res, next) => {
   try {
     const { shortId } = req.params;
     if (req.query.edit) {
@@ -161,7 +161,7 @@ postRouter.get('/:shortId', async (req, res, next) => {
 /**
  * @swagger
  * paths:
- *  /board/{shortId}:
+ *  /board/posts/{shortId}:
  *    put:
  *      tags: [Post]
  *      summary: update post info
@@ -199,7 +199,7 @@ postRouter.get('/:shortId', async (req, res, next) => {
  *                      payload:
  *                          $ref: '#/definitions/Post'
  */
-postRouter.post('/:shortId', async (req, res, next) => {
+postRouter.post('/posts/:shortId', async (req, res, next) => {
   try {
     const { shortId } = req.params;
     const { category, title, content } = req.body;
@@ -215,7 +215,7 @@ postRouter.post('/:shortId', async (req, res, next) => {
 /**
  * @swagger
  * paths:
- *  /board/{shortId}:
+ *  /board/posts/{shortId}:
  *    delete:
  *      tags: [Post]
  *      summary: delete post
@@ -231,7 +231,7 @@ postRouter.post('/:shortId', async (req, res, next) => {
  *        200:
  *          description: deletion completed
  */
-postRouter.delete('/:shortId', async (req, res, next) => {
+postRouter.delete('/posts/:shortId', async (req, res, next) => {
   try {
     const { shortId } = req.params;
     await postService.deletePost({ shortId });
