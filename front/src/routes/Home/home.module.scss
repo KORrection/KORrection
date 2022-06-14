@@ -1,5 +1,163 @@
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
+
+.pageContainer {
+  @include flexbox.flexbox(center, center);
+  flex-direction: column;
+  width: 100%;
+  user-select: none;
+
+  .indexBox {
+    @include flexbox.flexbox(center, center);
+    flex-direction: column;
+    width: calc(100% + 40px);
+    height: 600px;
+    margin-top: -20px;
+    background: #15c39a;
+    background: linear-gradient(90deg, rgba(#0b8bf3, 0.3), rgba(#15c39a, 0.3));
+    transition: 200ms;
+
+    h1 {
+      margin: 50px 0 20px;
+      font-size: 32px;
+      font-weight: 600;
+      word-break: keep-all;
+      transition: 200ms;
+    }
+
+    p {
+      margin-bottom: 60px;
+      font-size: 24px;
+      transition: 200ms;
+    }
+
+    button {
+      padding: 10px 30px;
+      font-size: 18px;
+      background-color: colors.$WHITE;
+      border-radius: 10px;
+      transition: 200ms;
+
+      &:hover {
+        background-color: #11a683;
+      }
+    }
+  }
+
+  .container {
+    @include flexbox.flexbox(center, center);
+    flex-wrap: wrap;
+    width: 100%;
+    height: 500px;
+    transition: 200ms;
+
+    .textContainer {
+      @include flexbox.flexbox(center, start);
+      flex-direction: column;
+
+      h2 {
+        margin-bottom: 10px;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 30px;
+        word-break: keep-all;
+        transition: 200ms;
+      }
+
+      p {
+        font-size: 18px;
+        line-height: 20px;
+        transition: 200ms;
+      }
+    }
+
+    .imgContainer {
+      border-radius: 60%;
+      box-shadow: 12px -35px 47px 21px #e0e3fe;
+      transition: 200ms;
+
+      img {
+        border-radius: 20px;
+      }
+    }
+  }
+}
+
+@include responsive.after(ML) {
+  .container {
+    flex-wrap: nowrap;
+    height: 600px;
+
+    .imgContainer {
+      margin-left: 30px;
+    }
+  }
+}
+
+@include responsive.after(SD) {
+  .pageContainer {
+    .indexBox {
+      height: 700px;
+
+      h1 {
+        margin: 50px 0 30px;
+        font-size: 40px;
+      }
+
+      p {
+        margin-bottom: 80px;
+        font-size: 32px;
+      }
+
+      button {
+        padding: 15px 35px;
+        font-size: 24px;
+      }
+    }
+
+    .container {
+      flex-wrap: nowrap;
+
+      .textContainer {
+        h2 {
+          margin-bottom: 20px;
+          font-size: 32px;
+          line-height: 40px;
+        }
+
+        p {
+          font-size: 24px;
+          line-height: 30px;
+        }
+      }
+
+      .imgContainer {
+        margin-left: 40px;
+        border-radius: 60%;
+        box-shadow: 24px -41px 47px 21px #e0e3fe;
+
+        img {
+          height: 210px;
+        }
+      }
+    }
+  }
+}
+
+@include responsive.after(MD) {
+  .pageContainer {
+    .container {
+      max-width: 1200px;
+      margin-top: 50px;
+
+      .imgContainer {
+        margin-left: 100px;
+
+        img {
+          height: 250px;
+        }
+      }
+    }
+  }
 }
