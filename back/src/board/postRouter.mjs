@@ -25,14 +25,12 @@ const postRouter = Router();
  *    parameters:
  *      - in: body
  *        name: post info
- *        description: The post to create
+ *        description: The post to create / userID는 req.locals에서 받아옴
  *        required: true
  *        schema:
  *          type: object
  *          properties:
  *            category:
- *              type: string
- *            author:
  *              type: string
  *            title:
  *              type: string
@@ -56,14 +54,13 @@ const postRouter = Router();
  */
 postRouter.post('/posts', async (req, res, next) => {
   try {
-    // ? const author = req.currentUser.name;
-    const { category, author, title, content } = req.body;
-    const post = await postService.createPost({ category, author, title, content });
+    const { userId } = req.locals; // TODO: check whether the userId is in email-format or not
+    const { category, title, content } = req.body;
+    const post = await postService.createPost({ userId, category, title, content });
     res.status(201).json({
       status: 'success',
       payload: { shortId: post.shortId },
     });
-    // ? .redirect(`/posts/${post.shortId}`);
   } catch (err) {
     next(err);
   }
@@ -199,13 +196,15 @@ postRouter.get('/posts/:shortId', async (req, res, next) => {
  *                      payload:
  *                          $ref: '#/definitions/Post'
  */
-postRouter.post('/posts/:shortId', async (req, res, next) => {
+postRouter.put('/posts/:shortId', async (req, res, next) => {
   try {
     const { shortId } = req.params;
     const { category, title, content } = req.body;
     const post = await postService.updatePost({ shortId, category, title, content });
-    res.status(200).json(post);
-    //.redirect(`posts/${shortid}) //
+    res.status(200).json({
+      status: 'success',
+      payload: post,
+    });
   } catch (err) {
     next(err);
   }
@@ -235,7 +234,10 @@ postRouter.delete('/posts/:shortId', async (req, res, next) => {
   try {
     const { shortId } = req.params;
     await postService.deletePost({ shortId });
-    res.send('deletion completed');
+    res.status(200).json({
+      status: 'success',
+      payload: null,
+    });
   } catch (err) {
     next(err);
   }

@@ -2,10 +2,11 @@
 import { Post } from './postModel.mjs';
 
 class postService {
-  static async createPost({ category, author, title, content }) {
-    if (!category || !author || !title || !content) {
+  static async createPost({ userId, category, title, content }) {
+    if (!category || !userId || !title || !content) {
       throw new Error('내용을 모두 입력해주세요');
     }
+    const author = userId.substring(0, userId.indexOf('@')); // ! assume that userId = email
     const post = await Post.createPost({ category, author, title, content });
     post.errorMessage = null;
     return post;
@@ -34,11 +35,11 @@ class postService {
   }
 
   static async deletePost({ shortId }) {
-    const post = await Post.findPost({ shortId });
-    if (!post) {
+    try {
+      await Post.deletePost({ shortId });
+    } catch (err) {
       throw new Error('게시물이 없습니다');
     }
-    await Post.deletePost({ shortId });
   }
 }
 
