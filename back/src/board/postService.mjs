@@ -41,6 +41,11 @@ class postService {
       throw new Error('게시물이 없습니다');
     }
   }
+
+  static async likePost({ shortId }) {
+    const post = await Post.likePost({ shortId });
+    return post;
+  }
 }
 
 export { postService };

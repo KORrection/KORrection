@@ -21,6 +21,10 @@ class Post {
   static async deletePost({ shortId }) {
     return await PostModel.deleteOne({ shortId });
   }
+
+  static async likePost({ shortId }) {
+    return await PostModel.findOneAndUpdate({ shortId }, { $inc: { likeCount: 1 } });
+  }
 }
 
 export { Post };

@@ -243,4 +243,18 @@ postRouter.delete('/posts/:shortId', async (req, res, next) => {
   }
 });
 
+// * 좋아요
+postRouter.post('/like/:shortId', async (req, res, next) => {
+  try {
+    const { shortId } = req.params;
+    const post = await postService.likePost({ shortId });
+    res.status(200).json({
+      status: 'success',
+      payload: { likeCount: post.likeCount },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export { postRouter };

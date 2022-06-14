@@ -28,7 +28,7 @@ const PostSchema = new Schema(
       type: String,
       required: true,
     },
-    likes: {
+    likeCount: {
       type: Number,
       required: true,
       default: 0,
@@ -68,7 +68,7 @@ export { PostModel };
  *         type: string
  *       content:
  *         type: string
- *       like:
+ *       likeCount:
  *         type: number
  *       createdAt:
  *         type: string
