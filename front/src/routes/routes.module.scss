@@ -2,39 +2,16 @@
 @use '/src/styles/mixins/flexbox';
 @use '/src/styles/mixins/responsive';
 
-body {
-  @include flexbox.flexbox(center, center);
-  width: 100vw;
-  height: 100vh;
-  background: colors.$BG_COLOR;
-}
-
-h1 {
-  font-weight: 600;
-  color: colors.$MAIN_TEXT_COLOR;
-}
-
 .container {
-  width: 375px;
-  height: 720px;
-  overflow-y: scroll;
-  background: colors.$APP_BG;
-  border-radius: 20px;
-  box-shadow: 0 1px 4px colors.$APP_BOX_SHADOW;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  @include flexbox.flexbox(center, center);
+}
 
-  header {
-    height: 80px;
-    padding: 20px;
-    background: colors.$MAIN_COLOR;
-    border-radius: 20px 20px 0 0;
-  }
-
-  main {
-    position: relative;
-    z-index: 20;
-    margin-top: -20px;
-    background: colors.$APP_BG;
-    border-radius: 20px;
-    box-shadow: 0 1px 4px rgba(colors.$BLACK, 0.5);
-  }
+.app {
+  width: 100%;
+  min-height: calc(100vh - 60px);
+  padding: 20px;
+  margin-top: 60px;
 }
