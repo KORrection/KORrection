@@ -1,0 +1,17 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
+
+.container {
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  @include flexbox.flexbox(center, center);
+}
+
+.app {
+  width: 100%;
+  min-height: calc(100vh - 60px);
+  padding: 20px;
+  margin-top: 60px;
+}
