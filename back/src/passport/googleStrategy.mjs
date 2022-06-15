@@ -1,6 +1,9 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { User } from '../user/userModel.mjs';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export default () => {
   passport.use(
@@ -11,28 +14,17 @@ export default () => {
         callbackURL: '/google/callback', // 구글 로그인 Redirect URI 경로
       },
       async (accessToken, refreshToken, profile, done) => {
-        try {
-          const exUser = await User.findById({
-            // 구글 플랫폼에서 로그인 했고 & snsId필드에 구글 아이디가 일치할경우
-            snsId: profile.id,
-          });
+        const email = profile.emails[0].value;
 
-          // 이미 가입된 구글 프로필이면 성공
-          if (exUser) {
-            done(null, exUser); // 로그인 인증 완료
-          } else {
-            // 가입되지 않는 유저면 회원가입 시키고 로그인을 시킨다
-            const newUser = await User.create({
-              // snsId: profile.id,
-              email: profile.id,
-              profile: 'Null',
-              provider: 'google',
-            });
-            done(null, newUser); // 회원가입하고 로그인 인증 완료
-          }
-        } catch (error) {
-          console.error(error);
-          done(error);
+        // check if user already exists
+        const currentUser = await User.findById({ snsId: profile.id });
+        if (currentUser) {
+          // already have the user -> return (login)
+          return done(null, currentUser);
+        } else {
+          // register user and return
+          const newUser = await new User({ email, snsId: profile.id }).save();
+          return done(null, newUser);
         }
       }
     )

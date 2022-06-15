@@ -1,5 +1,5 @@
 import { UserModel } from './userSchema.mjs';
-import { UserService } from './userService.mjs';
+// import { UserService } from './userService.mjs';
 
 class User {
   static async create(newUser) {
