@@ -1,16 +1,16 @@
-import swaggerUi from "swagger-ui-express";
-import swaggereJsdoc from "swagger-jsdoc";
+import swaggerUi from 'swagger-ui-express';
+import swaggereJsdoc from 'swagger-jsdoc';
 
 const options = {
   swaggerDefinition: {
     info: {
-      title: "Test API",
-      version: "1.0.0",
+      title: 'Test API',
+      version: '1.0.0',
     },
-    host: "localhost:5001",
-    basePath: "/",
+    host: 'localhost:5001',
+    basePath: '/',
   },
-  apis: ["./src/user/userRouter.mjs", "./src/borad/boardRouter.mjs"],
+  apis: ['./src/user/userRouter.mjs', './src/borad/boardRouter.mjs'],
 };
 
 const specs = swaggereJsdoc(options);
