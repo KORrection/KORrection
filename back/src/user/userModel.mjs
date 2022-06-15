@@ -1,9 +1,8 @@
 import { UserModel } from './userSchema.mjs';
-// import { UserService } from './userService.mjs';
 
 class User {
-  static async create(newUser) {
-    const createdNewUser = await UserModel.create(newUser);
+  static async create({ email, googleId, profilePicture, description }) {
+    const createdNewUser = await UserModel.create({ email, googleId, profilePicture, description });
     return createdNewUser;
   }
   static async findById({ snsId }) {
