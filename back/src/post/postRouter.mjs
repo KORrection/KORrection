@@ -84,7 +84,7 @@ postRouter.post('/posts', async (req, res, next) => {
 /**
  * @swagger
  * paths:
- *  /board/posts:
+ *  /board:
  *   get:
  *    tags: [Post]
  *    summary: get all posts
@@ -105,7 +105,7 @@ postRouter.post('/posts', async (req, res, next) => {
  *                          properties:
  *                              $ref: '#/definitions/Post'
  */
-postRouter.get('/posts', async (req, res, next) => {
+postRouter.get('/', async (req, res, next) => {
   try {
     if (req.query.write) {
       res.redirect('post/edit');
