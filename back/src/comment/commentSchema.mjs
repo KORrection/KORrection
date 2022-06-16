@@ -1,22 +1,30 @@
 import pkg from 'mongoose';
+import { nanoid } from 'nanoid';
 const { Schema, model } = pkg;
 
 const CommentSchema = new Schema(
   {
-    // commentId는 mongoDB자체Id 사용?
-    postId: {
+    parentPostId: {
       type: String,
       required: true,
+    },
+    commentId: {
+      type: String,
+      required: true,
+      default: () => {
+        const id = nanoid();
+        return `[c]${id}`;
+      },
     },
     author: {
       type: String,
       required: true,
     },
-    comment: {
+    commentBody: {
       type: String,
       required: true,
     },
-    like: {
+    likeCount: {
       type: Number,
       required: true,
       default: 0,
@@ -40,23 +48,26 @@ export { CommentModel };
  *     type: object
  *     required:
  *       - _id
- *       - postId
+ *       - parentPostId
+ *       - commentId
  *       - author
- *       - comment
- *       - like
+ *       - commentBody
+ *       - likeCount
  *       - isDeleted
  *       - createdAt
  *       - updatedAt
  *     properties:
  *       _id:
  *         type: string
- *       postId:
+ *       parentPostId:
+ *         type: string
+ *       commentId:
  *         type: string
  *       author:
  *         type: string
- *       comment:
+ *       commentBody:
  *         type: string
- *       like:
+ *       likeCount:
  *         type: number
  *       isDeleted:
  *         type: boolean

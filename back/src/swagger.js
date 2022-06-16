@@ -10,7 +10,7 @@ const options = {
     host: 'localhost:5001',
     basePath: '/',
   },
-  apis: ['./src/board/postRouter.mjs', './src/board/postSchema.mjs', './src/user/userRouter.mjs'],
+  apis: ['./src/post/*.mjs', './src/user/userRouter.mjs', './src/comment/*.mjs'],
 };
 
 const specs = swaggereJsdoc(options);

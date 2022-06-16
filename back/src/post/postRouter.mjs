@@ -258,6 +258,37 @@ postRouter.delete('/posts/:shortId', async (req, res, next) => {
 });
 
 // * 좋아요
+/**
+ * @swagger
+ * paths:
+ *  /board/likes/{shortId}:
+ *    put:
+ *      tags: [Post]
+ *      summary: like the Post(좋아요)
+ *      security:
+ *	      - jwt: []
+ *      parameters:
+ *        - name: id
+ *          in: path
+ *          type: string
+ *          description: post의 고유 id
+ *          required: true
+ *      responses:
+ *        200:
+ *          description: succ
+ *          content:
+ *            application/json:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      status:
+ *                          type: string
+ *                      payload:
+ *                          type: object
+ *                          properties:
+ *                              likeCount:
+ *                                  type: number
+ */
 postRouter.put('/likes/:shortId', async (req, res, next) => {
   try {
     const { shortId } = req.params;
@@ -272,6 +303,37 @@ postRouter.put('/likes/:shortId', async (req, res, next) => {
 });
 
 // * 좋아요 취소
+/**
+ * @swagger
+ * paths:
+ *  /board/de-likes/{shortId}:
+ *    put:
+ *      tags: [Post]
+ *      summary: like the Post(좋아요 취소)
+ *      security:
+ *	      - jwt: []
+ *      parameters:
+ *        - name: id
+ *          in: path
+ *          type: string
+ *          description: post의 고유 id
+ *          required: true
+ *      responses:
+ *        200:
+ *          description: succ
+ *          content:
+ *            application/json:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      status:
+ *                          type: string
+ *                      payload:
+ *                          type: object
+ *                          properties:
+ *                              likeCount:
+ *                                  type: number
+ */
 postRouter.put('/de-likes/:shortId', async (req, res, next) => {
   try {
     const { shortId } = req.params;
