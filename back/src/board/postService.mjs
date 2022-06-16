@@ -52,6 +52,9 @@ class postService {
 
   static async undoLikePost({ shortId }) {
     const post = await Post.undoLikePost({ shortId });
+    if (post.likeCount < 0) {
+      throw new Error('잘못된 요청입니다.');
+    }
     return post;
   }
 }

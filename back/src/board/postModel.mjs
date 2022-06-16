@@ -23,7 +23,11 @@ class Post {
   }
 
   static async likePost({ shortId }) {
-    return await PostModel.findOneAndUpdate({ shortId }, { $inc: { likeCount: 1 } });
+    return await PostModel.findOneAndUpdate({ shortId }, { $inc: { likeCount: 1 } }, { returnDocument: 'after' });
+  }
+
+  static async undoLikePost({ shortId }) {
+    return await PostModel.findOneAndUpdate({ shortId }, { $inc: { likeCount: -1 } }, { returnDocument: 'after' });
   }
 }
 
