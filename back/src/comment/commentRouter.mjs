@@ -37,4 +37,18 @@ commentRouter.post('/posts/:parentPostId/comments', async (req, res, next) => {
   }
 });
 
+// * Read
+commentRouter.get('/posts/:parentPostId/comments', async (req, res, next) => {
+  try {
+    const { parentPostId } = req.params;
+    const comments = await commentService.getComments({ parentPostId });
+    res.status(200).json({
+      status: 'success',
+      payload: { comments },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export { commentRouter };

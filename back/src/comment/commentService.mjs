@@ -14,6 +14,11 @@ class commentService {
     const comment = await Comment.createComment({ author, parentPostId, commentBody });
     return comment;
   }
+
+  static async getComments({ parentPostId }) {
+    const comments = await Comment.getComments({ parentPostId });
+    return comments;
+  }
 }
 
 export { commentService };

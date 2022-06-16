@@ -5,6 +5,10 @@ class Comment {
     const newComment = await CommentModel.create({ author, parentPostId, commentBody });
     return newComment;
   }
+
+  static async getComments({ parentPostId }) {
+    return await CommentModel.find({ parentPostId });
+  }
 }
 
 export { Comment };
