@@ -52,9 +52,23 @@ const postRouter = Router();
  *                              shortId:
  *                                  type: string
  */
+// postRouter.post('/posts', async (req, res, next) => {
+//   try {
+//     const { userId } = req.locals; // TODO: check whether the userId is in email-format or not
+//     const { category, title, content } = req.body;
+//     const post = await postService.createPost({ userId, category, title, content });
+//     res.status(201).json({
+//       status: 'success',
+//       payload: { shortId: post.shortId },
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// });
+
 postRouter.post('/posts', async (req, res, next) => {
   try {
-    const { userId } = req.locals; // TODO: check whether the userId is in email-format or not
+    const userId = 'test@gmail.com';
     const { category, title, content } = req.body;
     const post = await postService.createPost({ userId, category, title, content });
     res.status(201).json({
@@ -233,10 +247,10 @@ postRouter.put('/posts/:shortId', async (req, res, next) => {
 postRouter.delete('/posts/:shortId', async (req, res, next) => {
   try {
     const { shortId } = req.params;
-    await postService.deletePost({ shortId });
+    const isDeleted = await postService.deletePost({ shortId });
     res.status(200).json({
       status: 'success',
-      payload: null,
+      payload: { isDeleted },
     });
   } catch (err) {
     next(err);
@@ -244,13 +258,27 @@ postRouter.delete('/posts/:shortId', async (req, res, next) => {
 });
 
 // * 좋아요
-postRouter.post('/like/:shortId', async (req, res, next) => {
+postRouter.put('/likes/:shortId', async (req, res, next) => {
   try {
     const { shortId } = req.params;
     const post = await postService.likePost({ shortId });
     res.status(200).json({
       status: 'success',
       payload: { likeCount: post.likeCount },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// * 좋아요 취소
+postRouter.put('/de-likes/:shortId', async (req, res, next) => {
+  try {
+    const { shortId } = req.params;
+    const post = await postService.undoLikePost({ shortId });
+    res.status(200).json({
+      status: 'success',
+      payload: { likecount: post.likeCount },
     });
   } catch (err) {
     next(err);

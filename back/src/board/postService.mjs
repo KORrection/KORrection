@@ -35,15 +35,23 @@ class postService {
   }
 
   static async deletePost({ shortId }) {
-    try {
-      await Post.deletePost({ shortId });
-    } catch (err) {
-      throw new Error('게시물이 없습니다');
+    const doc = await Post.deletePost({ shortId });
+    if (doc.acknowledged && doc.deletedCount == 1) {
+      console.log('Delete successfully');
+      return { isDeleted: true, message: '게시물이 삭제되었습니다.' };
+    } else {
+      console.log("Post doesn't exist or already deleted");
+      throw new Error('없는 게시물입니다.');
     }
   }
 
   static async likePost({ shortId }) {
     const post = await Post.likePost({ shortId });
+    return post;
+  }
+
+  static async undoLikePost({ shortId }) {
+    const post = await Post.undoLikePost({ shortId });
     return post;
   }
 }

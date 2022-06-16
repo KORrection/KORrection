@@ -48,6 +48,6 @@ app.get('/', (req, res) => {
 });
 
 app.use(userRouter);
-app.use(postRouter);
+app.use('/board', postRouter);
 
 export { app };
