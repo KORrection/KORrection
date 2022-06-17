@@ -1,13 +1,16 @@
 // * (2)  service layer
-import { Post } from './post-model.mjs';
-// import { nanoid } from 'nanoid';
+import { Post } from './postModel.mjs';
 
 class postService {
   static async createPost({ category, author, title, content }) {
+    if (!category || !author || !title || !content) {
+      throw new Error('내용을 모두 입력해주세요');
+    }
     const post = await Post.createPost({ category, author, title, content });
     post.errorMessage = null;
     return post;
   }
+
   static async findAll() {
     const posts = await Post.findAll();
     return posts;
@@ -16,8 +19,7 @@ class postService {
   static async findPost({ shortId }) {
     const post = await Post.findPost({ shortId });
     if (!post) {
-      const errorMessage = '게시물이 없습니다';
-      return { errorMessage };
+      throw new Error('게시물이 없습니다');
     }
     return post;
   }
@@ -32,6 +34,10 @@ class postService {
   }
 
   static async deletePost({ shortId }) {
+    const post = await Post.findPost({ shortId });
+    if (!post) {
+      throw new Error('게시물이 없습니다');
+    }
     await Post.deletePost({ shortId });
   }
 }

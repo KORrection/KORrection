@@ -1,30 +1,44 @@
 import cors from 'cors';
 import express from 'express';
-import { postRouter } from './board/post-router.mjs';
-import { swaggerUi, specs } from './swagger.js';
+import session from 'express-session';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
+import passport from 'passport';
+import passportConfig from './passport/index.mjs';
+import cookieParser from 'cookie-parser';
+import { swaggerUi, specs } from './swagger.js';
+import { userRouter } from './user/userRouter.mjs';
+import { postRouter } from './board/postRouter.mjs';
+
 dotenv.config();
-console.log(process.env.MONGODB_URL);
-
-const DB_URL =
-  process.env.MONGODB_URL || 'MongoDB 서버 주소가 설정되지 않았습니다.\n./db/index.ts 파일을 확인해 주세요.';
-mongoose.connect(DB_URL, {
-  // useNewUrlParser: true,
-  // useUnifiedTopology: true,
-  dbName: 'project3',
-});
-const db = mongoose.connection;
-
-db.on('connected', () => console.log('정상적으로 MongoDB 서버에 연결되었습니다.  '));
-db.on('error', (err) => console.error(err));
-
 const app = express();
+passportConfig();
 
 // CORS 에러 방지
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(
+  session({
+    secret: 'This is a secret',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+app.use(cookieParser());
+app.use(passport.initialize());
+app.use(passport.session());
+
+const DB_URL = process.env.MONGODB_URL;
+mongoose.connect(DB_URL, {
+  dbName: 'project3',
+});
+const db = mongoose.connection;
+
+db.on('connected', () => console.log('mongoose Connected'));
+db.on('error', (error) => console.error(`mongoose not Connected: ${error}`));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
@@ -32,6 +46,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.get('/', (req, res) => {
   res.send('안녕하세요, 16팀 레이서 프로젝트 API 입니다.');
 });
-app.use('/board', postRouter);
+
+app.use(userRouter);
+app.use(postRouter);
 
 export { app };
