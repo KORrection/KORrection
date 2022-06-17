@@ -34,4 +34,4 @@
       "new-cap": ["warn", { "capIsNew": false }]
     }
   }
-  
+}
