@@ -1,36 +1,37 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true,
-    "node": true
-  },
-  "extends": ["eslint:recommended", "plugin:prettier/recommended", "prettier"],
-  "plugins": ["prettier"],
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
-  "rules": {
-    "prettier/prettier": ["error", { "endOfLine": "auto"}],
-    "no-unused-vars": ["warn"],
-    "prefer-const": [
-      "warn",
-      {
-        "destructuring": "any",
-        "ignoreReadBeforeAssign": false
-      }
-    ],
-    "no-var": ["warn"],
-    "one-var": ["error", "never"],
-    "no-new-object": ["warn"],
-    "object-shorthand": ["warn"],
-    "no-multi-assign": ["warn"],
-    "no-array-constructor": ["warn"],
-    "prefer-template": ["warn"],
-    "no-duplicate-imports": ["error"],
-    "no-case-declarations": ["warn"],
-    "id-length": ["error"],
-    "camelcase": ["warn", { "ignoreImports": true, "ignoreGlobals": true }],
-    "new-cap": ["warn", { "capIsNew": false }]
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "node": true
+    },
+    "extends": ["eslint:recommended", "plugin:prettier/recommended", "prettier"],
+    "plugins": ["prettier"],
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "rules": {
+      "prettier/prettier": ["error", { "endOfLine": "auto"}],
+      "no-unused-vars": ["warn"],
+      "prefer-const": [
+        "warn",
+        {
+          "destructuring": "any",
+          "ignoreReadBeforeAssign": false
+        }
+      ],
+      "no-var": ["warn"],
+      "one-var": ["error", "never"],
+      "no-new-object": ["warn"],
+      "object-shorthand": ["warn"],
+      "no-multi-assign": ["warn"],
+      "no-array-constructor": ["warn"],
+      "prefer-template": ["warn"],
+      "no-duplicate-imports": ["error"],
+      "no-case-declarations": ["warn"],
+      "id-length": ["error"],
+      "camelcase": ["warn", { "ignoreImports": true, "ignoreGlobals": true }],
+      "new-cap": ["warn", { "capIsNew": false }]
+    }
   }
 }
