@@ -8,7 +8,8 @@ import passportConfig from './passport/index.mjs';
 import cookieParser from 'cookie-parser';
 import { swaggerUi, specs } from './swagger.js';
 import { userRouter } from './user/userRouter.mjs';
-import { postRouter } from './board/postRouter.mjs';
+import { postRouter } from './post/postRouter.mjs';
+import { commentRouter } from './comment/commentRouter.mjs';
 
 dotenv.config();
 const app = express();
@@ -48,6 +49,6 @@ app.get('/', (req, res) => {
 });
 
 app.use(userRouter);
-app.use(postRouter);
-
+app.use('/board', postRouter);
+app.use('/board/comments', commentRouter);
 export { app };

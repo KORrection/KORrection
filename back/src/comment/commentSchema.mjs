@@ -1,75 +1,76 @@
 import pkg from 'mongoose';
-const { Schema, model } = pkg;
 import { nanoid } from 'nanoid';
+const { Schema, model } = pkg;
 
 const CommentSchema = new Schema(
   {
-    shortId: {
+    parentPostId: {
       type: String,
-      default: () => {
-        return nanoid();
-      },
-      require: true,
-      index: true,
+      required: true,
     },
-    cateory: {
+    commentId: {
       type: String,
-      default: 'free',
+      required: true,
+      default: () => {
+        const id = nanoid();
+        return `[c]${id}`;
+      },
     },
     author: {
       type: String,
       required: true,
     },
-    title: {
+    commentBody: {
       type: String,
       required: true,
     },
-    content: {
-      type: String,
-      required: true,
-    },
-    likes: {
+    likeCount: {
       type: Number,
       required: true,
       default: 0,
+    },
+    isDeleted: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
   { timestamps: true }
 );
 
-const PostModel = model('post', CommentSchema);
-export { PostModel };
+const CommentModel = model('comment', CommentSchema);
+export { CommentModel };
 
 /**
  * @swagger
  * definitions:
- *   Post:
+ *   Comment:
  *     type: object
  *     required:
  *       - _id
- *       - shortId
+ *       - parentPostId
+ *       - commentId
  *       - author
- *       - category
- *       - title
- *       - content
- *       - like
+ *       - commentBody
+ *       - likeCount
+ *       - isDeleted
  *       - createdAt
  *       - updatedAt
  *     properties:
  *       _id:
  *         type: string
- *       shortId:
+ *       parentPostId:
+ *         type: string
+ *       commentId:
  *         type: string
  *       author:
  *         type: string
- *       category:
+ *       commentBody:
  *         type: string
- *       title:
- *         type: string
- *       content:
- *         type: string
- *       like:
+ *       likeCount:
  *         type: number
+ *       isDeleted:
+ *         type: boolean
  *       createdAt:
  *         type: string
  *       updatedAt:
