@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import passport from 'passport';
-import Auth from './userService.mjs';
+import Auth from '../middleware/utils.mjs';
 import { login_required } from '../middleware/login_required.mjs';
+import { userService } from './userService.mjs';
 
 const userRouter = Router();
 
@@ -30,6 +31,35 @@ userRouter.post('/logout', (req, res, next) => {
       return next(err);
     }
   });
+});
+
+userRouter.get('/userlist', login_required, async (req, res, next) => {
+  try {
+    const users = await userService.getUsers();
+    res.status(200).send(users);
+  } catch (err) {
+    next(err);
+  }
+});
+
+userRouter.put('/users/:id', async function (req, res, next) {
+  try {
+    const user_id = req.params.id;
+
+    const nickname = req.body.nickname ?? null;
+    const description = req.body.description ?? null;
+
+    const toUpdate = { nickname, description };
+
+    const updatedUser = await userService.setUser({ user_id, toUpdate });
+
+    if (updatedUser.errorMessage) {
+      throw new Error(updatedUser.errorMessage);
+    }
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    next(error);
+  }
 });
 
 export { userRouter };

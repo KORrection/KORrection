@@ -10,6 +10,9 @@ const UserSchema = new Schema(
     googleId: {
       type: String,
     },
+    nickname: {
+      type: String,
+    },
     profilePicture: {
       type: String,
       default: null,

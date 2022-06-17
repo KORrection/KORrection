@@ -2,15 +2,48 @@ import { User } from './userModel.mjs';
 import jwt from 'jsonwebtoken';
 
 //Token 생성
-const signToken = (req, res) => {
-  jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET_KEY, { expiresIn: '5 min' }, (err, token) => {
-    if (err) {
-      res.sendStatus(500);
-    } else {
-      res.cookie('token', token);
-      res.redirect('/'); // 나중에 프론트에서 호출하게되면 뺄예정
-    }
-  });
-};
 
-export default { signToken };
+class userService {
+  static async getUser({ email }) {
+    const user = await User.findByEmail({ email });
+    if (!user) {
+      console.log('존재하지 않는 이메일입니다');
+    }
+    const id = user.id;
+    const nickname = user.nickname;
+    const description = user.description;
+
+    const loginUser = {
+      email,
+      nickname,
+      description,
+    };
+    return loginUser;
+  }
+  static async setUser({ user_id, toUpdate }) {
+    // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
+    let user = await User.findById({ user_id });
+
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!user) {
+      console.log('존재하지 않는 회원입니다.');
+      return;
+    }
+
+    if (toUpdate.nickname) {
+      const fieldToUpdate = 'nickname';
+      const newValue = toUpdate.nickname;
+      user = await User.update({ user_id, fieldToUpdate, newValue });
+    }
+
+    if (toUpdate.description) {
+      const fieldToUpdate = 'description';
+      const newValue = toUpdate.description;
+      user = await User.update({ user_id, fieldToUpdate, newValue });
+    }
+
+    return user;
+  }
+}
+
+export { userService };
