@@ -3,10 +3,6 @@ import { Comment } from './commentModel.mjs';
 
 class commentService {
   static async createComment({ userId, parentPostId, commentBody }) {
-    // const post = await Post.findPost({ parentPostId });
-    // if (!post) {
-    //   throw new Error('잘못된 요청입니다.');
-    // }
     if (!commentBody) {
       throw new Error('댓글 내용을 입력하세요.');
     }
@@ -18,6 +14,14 @@ class commentService {
   static async getComments({ parentPostId }) {
     const comments = await Comment.getComments({ parentPostId });
     return comments;
+  }
+
+  static async updateComment({ commentId, commentBody }) {
+    if (!commentBody) {
+      throw new Error('댓글을 입력해주세요');
+    }
+    const comment = await Comment.updateComment({ commentId, commentBody });
+    return comment;
   }
 }
 

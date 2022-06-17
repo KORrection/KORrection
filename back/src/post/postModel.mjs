@@ -10,24 +10,24 @@ class Post {
     return await PostModel.find({});
   }
 
-  static async findPost({ shortId }) {
-    return await PostModel.findOne({ shortId });
+  static async findPost({ postId }) {
+    return await PostModel.findOne({ postId });
   }
 
-  static async updatePost({ shortId, category, title, content }) {
-    return await PostModel.updateOne({ shortId }, { category, title, content });
+  static async updatePost({ postId, category, title, content }) {
+    return await PostModel.findOneAndUpdate({ postId }, { category, title, content }, { returnDocument: 'after' });
   }
 
-  static async deletePost({ shortId }) {
-    return await PostModel.deleteOne({ shortId });
+  static async deletePost({ postId }) {
+    return await PostModel.deleteOne({ postId });
   }
 
-  static async likePost({ shortId }) {
-    return await PostModel.findOneAndUpdate({ shortId }, { $inc: { likeCount: 1 } }, { returnDocument: 'after' });
+  static async likePost({ postId }) {
+    return await PostModel.findOneAndUpdate({ postId }, { $inc: { likeCount: 1 } }, { returnDocument: 'after' });
   }
 
-  static async undoLikePost({ shortId }) {
-    return await PostModel.findOneAndUpdate({ shortId }, { $inc: { likeCount: -1 } }, { returnDocument: 'after' });
+  static async undoLikePost({ postId }) {
+    return await PostModel.findOneAndUpdate({ postId }, { $inc: { likeCount: -1 } }, { returnDocument: 'after' });
   }
 }
 

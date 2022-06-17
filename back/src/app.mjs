@@ -50,5 +50,5 @@ app.get('/', (req, res) => {
 
 app.use(userRouter);
 app.use('/board', postRouter);
-app.use('/board', commentRouter);
+app.use('/board/comments', commentRouter);
 export { app };

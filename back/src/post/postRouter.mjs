@@ -49,17 +49,17 @@ const postRouter = Router();
  *                      payload:
  *                          type: object
  *                          properties:
- *                              shortId:
+ *                              postId:
  *                                  type: string
  */
 // postRouter.post('/posts', async (req, res, next) => {
 //   try {
-//     const { userId } = req.locals; // TODO: check whether the userId is in email-format or not
+//     const { userId } = res.locals; // TODO: check whether the userId is in email-format or not
 //     const { category, title, content } = req.body;
 //     const post = await postService.createPost({ userId, category, title, content });
 //     res.status(201).json({
 //       status: 'success',
-//       payload: { shortId: post.shortId },
+//       payload: { postId: post.postId },
 //     });
 //   } catch (err) {
 //     next(err);
@@ -73,7 +73,7 @@ postRouter.post('/posts', async (req, res, next) => {
     const post = await postService.createPost({ userId, category, title, content });
     res.status(201).json({
       status: 'success',
-      payload: { shortId: post.shortId },
+      payload: { postId: post.postId },
     });
   } catch (err) {
     next(err);
@@ -124,11 +124,11 @@ postRouter.get('/', async (req, res, next) => {
 /**
  * @swagger
  * paths:
- *  /board/posts/{shortId}:
+ *  /board/posts/{postId}:
  *   get:
  *    parameters:
  *      - in: path
- *        name: shortId
+ *        name: postId
  *        required: true
  *    tags: [Post]
  *    summary: get specific post
@@ -149,20 +149,20 @@ postRouter.get('/', async (req, res, next) => {
  *                          properties:
  *                              $ref: '#/definitions/Post'
  */
-postRouter.get('/posts/:shortId', async (req, res, next) => {
+postRouter.get('/posts/:postId', async (req, res, next) => {
   try {
-    const { shortId } = req.params;
+    const { postId } = req.params;
     if (req.query.edit) {
-      res.redirect(`post/edit/${shortId}`);
+      res.redirect(`post/edit/${postId}`);
       return;
     }
 
-    const post = await postService.findPost({ shortId });
+    const post = await postService.findPost({ postId });
     res.status(200).json({
       status: 'success',
       payload: post,
     });
-    //? res.redirect(`view/${shortId}`)}
+    //? res.redirect(`view/${postId}`)}
   } catch (err) {
     next(err);
   }
@@ -172,7 +172,7 @@ postRouter.get('/posts/:shortId', async (req, res, next) => {
 /**
  * @swagger
  * paths:
- *  /board/posts/{shortId}:
+ *  /board/posts/{postId}:
  *    put:
  *      tags: [Post]
  *      summary: update post info
@@ -210,11 +210,11 @@ postRouter.get('/posts/:shortId', async (req, res, next) => {
  *                      payload:
  *                          $ref: '#/definitions/Post'
  */
-postRouter.put('/posts/:shortId', async (req, res, next) => {
+postRouter.put('/posts/:postId', async (req, res, next) => {
   try {
-    const { shortId } = req.params;
+    const { postId } = req.params;
     const { category, title, content } = req.body;
-    const post = await postService.updatePost({ shortId, category, title, content });
+    const post = await postService.updatePost({ postId, category, title, content });
     res.status(200).json({
       status: 'success',
       payload: post,
@@ -228,7 +228,7 @@ postRouter.put('/posts/:shortId', async (req, res, next) => {
 /**
  * @swagger
  * paths:
- *  /board/posts/{shortId}:
+ *  /board/posts/{postId}:
  *    delete:
  *      tags: [Post]
  *      summary: delete post
@@ -244,10 +244,10 @@ postRouter.put('/posts/:shortId', async (req, res, next) => {
  *        200:
  *          description: deletion completed
  */
-postRouter.delete('/posts/:shortId', async (req, res, next) => {
+postRouter.delete('/posts/:postId', async (req, res, next) => {
   try {
-    const { shortId } = req.params;
-    const isDeleted = await postService.deletePost({ shortId });
+    const { postId } = req.params;
+    const isDeleted = await postService.deletePost({ postId });
     res.status(200).json({
       status: 'success',
       payload: { isDeleted },
@@ -261,7 +261,7 @@ postRouter.delete('/posts/:shortId', async (req, res, next) => {
 /**
  * @swagger
  * paths:
- *  /board/likes/{shortId}:
+ *  /board/likes/{postId}:
  *    put:
  *      tags: [Post]
  *      summary: like the Post(좋아요)
@@ -289,10 +289,10 @@ postRouter.delete('/posts/:shortId', async (req, res, next) => {
  *                              likeCount:
  *                                  type: number
  */
-postRouter.put('/likes/:shortId', async (req, res, next) => {
+postRouter.put('/likes/:postId', async (req, res, next) => {
   try {
-    const { shortId } = req.params;
-    const post = await postService.likePost({ shortId });
+    const { postId } = req.params;
+    const post = await postService.likePost({ postId });
     res.status(200).json({
       status: 'success',
       payload: { likeCount: post.likeCount },
@@ -306,7 +306,7 @@ postRouter.put('/likes/:shortId', async (req, res, next) => {
 /**
  * @swagger
  * paths:
- *  /board/de-likes/{shortId}:
+ *  /board/de-likes/{postId}:
  *    put:
  *      tags: [Post]
  *      summary: like the Post(좋아요 취소)
@@ -334,10 +334,10 @@ postRouter.put('/likes/:shortId', async (req, res, next) => {
  *                              likeCount:
  *                                  type: number
  */
-postRouter.put('/de-likes/:shortId', async (req, res, next) => {
+postRouter.put('/de-likes/:postId', async (req, res, next) => {
   try {
-    const { shortId } = req.params;
-    const post = await postService.undoLikePost({ shortId });
+    const { postId } = req.params;
+    const post = await postService.undoLikePost({ postId });
     res.status(200).json({
       status: 'success',
       payload: { likecount: post.likeCount },

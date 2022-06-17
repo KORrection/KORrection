@@ -17,25 +17,24 @@ class postService {
     return posts;
   }
 
-  static async findPost({ shortId }) {
-    const post = await Post.findPost({ shortId });
+  static async findPost({ postId }) {
+    const post = await Post.findPost({ postId });
     if (!post) {
       throw new Error('게시물이 없습니다');
     }
     return post;
   }
 
-  static async updatePost({ shortId, category, title, content }) {
+  static async updatePost({ postId, category, title, content }) {
     if (!title || !content) {
       throw new Error('제목과 내용을 입력해주세요');
     }
-    await Post.updatePost({ shortId, category, title, content });
-    const post = await Post.findPost({ shortId });
+    const post = await Post.updatePost({ postId, category, title, content });
     return post;
   }
 
-  static async deletePost({ shortId }) {
-    const doc = await Post.deletePost({ shortId });
+  static async deletePost({ postId }) {
+    const doc = await Post.deletePost({ postId });
     if (doc.acknowledged && doc.deletedCount == 1) {
       console.log('Delete successfully');
       return { isDeleted: true, message: '게시물이 삭제되었습니다.' };
@@ -45,13 +44,13 @@ class postService {
     }
   }
 
-  static async likePost({ shortId }) {
-    const post = await Post.likePost({ shortId });
+  static async likePost({ postId }) {
+    const post = await Post.likePost({ postId });
     return post;
   }
 
-  static async undoLikePost({ shortId }) {
-    const post = await Post.undoLikePost({ shortId });
+  static async undoLikePost({ postId }) {
+    const post = await Post.undoLikePost({ postId });
     if (post.likeCount < 0) {
       throw new Error('잘못된 요청입니다.');
     }
