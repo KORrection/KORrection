@@ -1,6 +1,8 @@
-import { Default } from 'assets/images';
 import { Link } from 'react-router-dom';
+
+import { Default } from 'assets/images';
 import styles from './home.module.scss';
+import { cx } from 'styles';
 
 const Home = () => {
   return (
@@ -26,7 +28,7 @@ const Home = () => {
           <img src={Default} alt='defaultImg' />
         </div>
       </div>
-      <div className={styles.container}>
+      <div className={cx(styles.container, styles.secondMobileContainer)}>
         <div className={styles.textContainer}>
           <h2>한국어 질문을 해결해 보세요!</h2>
           <p>Feel free to ask Korean phrases!</p>
@@ -34,6 +36,16 @@ const Home = () => {
         </div>
         <div className={styles.imgContainer}>
           <img src={Default} alt='defaultImg' />
+        </div>
+      </div>
+      <div className={cx(styles.container, styles.secondDesktopContainer)}>
+        <div className={styles.imgContainer}>
+          <img src={Default} alt='defaultImg' />
+        </div>
+        <div className={styles.textContainer}>
+          <h2>한국어 질문을 해결해 보세요!</h2>
+          <p>Feel free to ask Korean phrases!</p>
+          <p>Fluent friends will answer your questions.</p>
         </div>
       </div>
       <div className={styles.container}>
