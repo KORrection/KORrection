@@ -54,9 +54,9 @@ commentRouter.get('/', checkPostId, async (req, res, next) => {
 });
 
 // * Update one comment
-commentRouter.put('/', valParentPost, async (req, res, next) => {
+commentRouter.put('/:commentId', valParentPost, async (req, res, next) => {
   try {
-    const { commentId } = res.locals;
+    const { commentId } = req.params;
     const { commentBody } = req.body;
     const comment = await commentService.updateComment({ commentId, commentBody });
     res.status(200).json({
@@ -67,5 +67,39 @@ commentRouter.put('/', valParentPost, async (req, res, next) => {
     next(err);
   }
 });
+
+// * Delete
+// ** (1) Delete one comment (delete DB docs for real)
+commentRouter.delete('/:commentId', valParentPost, async (req, res, next) => {
+  try {
+    const { commentId } = req.params;
+    const isDeleted = await commentService.deleteComment({ commentId });
+    res.status(200).json({
+      status: 'success',
+      payload: { isDeleted },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// ** (2) Pretend To Delete one comment (just change 'isDeleted' value from false to ) - 대댓글 시 필요..
+// commentRouter.delete('/:commentId', valParentPost, async (req, res, next) => {
+//   try {
+//     const { commentId } = req.params;
+//     const comment = await commentService.pretendToDelCom({ commentId });
+//     res.status(200).json({
+//       status: 'success',
+//       payload: {
+//         parentPostId: comment.parentPostId,
+//         commentId: comment.commentId,
+//         isDeleted: comment.isDeleted,
+//         commentBody: '삭제된 댓글입니다',
+//       },
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 export { commentRouter };

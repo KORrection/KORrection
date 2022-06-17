@@ -36,10 +36,10 @@ class postService {
   static async deletePost({ postId }) {
     const doc = await Post.deletePost({ postId });
     if (doc.acknowledged && doc.deletedCount == 1) {
-      console.log('Delete successfully');
+      // console.log('Delete successfully');
       return { isDeleted: true, message: '게시물이 삭제되었습니다.' };
     } else {
-      console.log("Post doesn't exist or already deleted");
+      // console.log("Post doesn't exist or already deleted");
       throw new Error('없는 게시물입니다.');
     }
   }

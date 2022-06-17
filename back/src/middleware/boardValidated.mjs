@@ -1,8 +1,8 @@
-// comments?postId=postId 같은 쿼리를 res.locals.post에 넣는다
-// upvotes?postId=postId
 import { Post } from '../post/postModel.mjs';
 import { Comment } from '../comment/commentModel.mjs';
 
+// comments?postId=postId 에서 postId가 유효한지 검사
+// upvotes?postId=postId
 const checkPostId = async (req, res, next) => {
   try {
     const post = await Post.findPost({ postId: req.query.pId });
@@ -13,13 +13,11 @@ const checkPostId = async (req, res, next) => {
   }
 };
 
+// comments/:cId?pId=pId 에서 cId와 pId 관계가 올바른지 검사
 const valParentPost = async (req, res, next) => {
   try {
-    const comment = await Comment.findCommentById({ commentId: req.query.cId });
-    console.log(comment);
-    console.log(comment.parentPostId);
+    const comment = await Comment.findCommentById({ commentId: req.params.commentId });
     if (comment.parentPostId === req.query.pId) {
-      res.locals.commentId = comment.commentId;
       next();
     }
   } catch (err) {

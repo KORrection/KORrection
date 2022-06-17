@@ -15,7 +15,7 @@ class Post {
   }
 
   static async updatePost({ postId, category, title, content }) {
-    return await PostModel.findOneAndUpdate({ postId }, { category, title, content }, { returnDocument: 'after' });
+    return await PostModel.findOneAndUpdate({ postId }, { $set: { category, title, content } }, { new: true });
   }
 
   static async deletePost({ postId }) {
@@ -23,11 +23,11 @@ class Post {
   }
 
   static async likePost({ postId }) {
-    return await PostModel.findOneAndUpdate({ postId }, { $inc: { likeCount: 1 } }, { returnDocument: 'after' });
+    return await PostModel.findOneAndUpdate({ postId }, { $set: { $inc: { likeCount: 1 } } }, { new: true });
   }
 
   static async undoLikePost({ postId }) {
-    return await PostModel.findOneAndUpdate({ postId }, { $inc: { likeCount: -1 } }, { returnDocument: 'after' });
+    return await PostModel.findOneAndUpdate({ postId }, { $set: { $inc: { likeCount: -1 } } }, { new: true });
   }
 }
 
