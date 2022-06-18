@@ -1,0 +1,117 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
+
+.pageContainer {
+  @include flexbox.flexbox(center, center);
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 100px);
+  user-select: none;
+
+  .container {
+    width: 100%;
+    height: 100%;
+
+    + .container {
+      margin-top: 30px;
+    }
+
+    .title {
+      @include flexbox.flexbox(start, center);
+      margin-bottom: 15px;
+
+      svg {
+        height: 60px;
+      }
+
+      h2 {
+        font-weight: 600;
+      }
+    }
+
+    .textContainer {
+      position: relative;
+      width: 100%;
+      height: calc(100% - 75px);
+
+      .grammarlyText {
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+        resize: none;
+        border: 1px solid colors.$GRAYE;
+        border-radius: 10px;
+      }
+
+      .textLength {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+      }
+    }
+  }
+
+  ul {
+    .suggestionCard {
+      @include flexbox.flexbox(start, center);
+      width: 100%;
+      height: 100px;
+      padding: 20px;
+      word-break: keep-all;
+      border: 1px solid colors.$MAIN_BORDER;
+      border-radius: 10px;
+
+      .wrong {
+        margin-right: 5px;
+        color: colors.$SYSTEM_RED;
+        text-decoration: line-through;
+        background-color: inherit;
+      }
+
+      .right {
+        margin-left: 5px;
+        color: colors.$SYSTEM_BLUE;
+        background-color: inherit;
+      }
+    }
+  }
+}
+
+@include responsive.after(ML) {
+  .pageContainer {
+    @include flexbox.flexbox(start, center);
+    flex-wrap: wrap;
+    padding: 10px;
+
+    .container {
+      width: 50%;
+      height: 100%;
+      padding-right: 3%;
+
+      + .container {
+        padding-right: 0;
+        margin-top: 0;
+      }
+
+      .textLength {
+        right: 40px;
+        bottom: 20px;
+      }
+    }
+  }
+}
+
+@include responsive.after(LD) {
+  .pageContainer {
+    width: 1200px;
+    margin: auto;
+
+    .container {
+      .textLength {
+        right: 60px;
+        bottom: 20px;
+      }
+    }
+  }
+}

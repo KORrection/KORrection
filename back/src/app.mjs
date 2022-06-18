@@ -7,7 +7,8 @@ import passportConfig from './passport/index.mjs';
 import cookieParser from 'cookie-parser';
 import { swaggerUi, specs } from './swagger.js';
 import { userRouter } from './user/userRouter.mjs';
-import { postRouter } from './board/post-router.mjs';
+import { postRouter } from './post/postRouter.mjs';
+import { commentRouter } from './comment/commentRouter.mjs';
 
 dotenv.config();
 const app = express();
@@ -28,7 +29,7 @@ mongoose.connect(DB_URL, {
 const db = mongoose.connection;
 
 db.on('connected', () => console.log('mongoose Connected'));
-db.on('error', (error) => console.error(`mongoose not Connected${error}`));
+db.on('error', (error) => console.error(`mongoose not Connected: ${error}`));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
@@ -38,6 +39,6 @@ app.get('/', (req, res) => {
 });
 
 app.use(userRouter);
-app.use(postRouter);
-
+app.use('/board', postRouter);
+app.use('/board/comments', commentRouter);
 export { app };
