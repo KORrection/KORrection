@@ -9,10 +9,17 @@ const UserSchema = new Schema(
     },
     googleId: {
       type: String,
+    },
+    nickname: {
+      type: String,
+    },
+    profilePicture: {
+      type: String,
       default: null,
     },
-    profile: {
+    description: {
       type: String,
+      default: null,
     },
     provider: {
       type: String,

@@ -1,40 +1,49 @@
 import { User } from './userModel.mjs';
 import jwt from 'jsonwebtoken';
 
-// check if Token exists on request Header and attach token to request as attribute
-const checkTokenMW = (req, res, next) => {
-  // Get auth header value
-  const userToken = req.headers['authorization'];
+//Token 생성
 
-  if (typeof userToken !== 'undefined') {
-    req.token = userToken.split(' ')[1];
-    next();
-  } else {
-    res.sendStatus(403);
-  }
-};
-
-// Verify Token validity and attach token data as request attribute
-// const verifyToken = (req, res) => {
-//   jwt.verify(req.token, 'secretkey', (err, authData) => {
-//     if (err) {
-//       res.sendStatus(403);
-//     } else {
-//       return (req.authData = authData);
-//     }
-//   });
-// };
-
-// Issue Token
-const signToken = (req, res) => {
-  jwt.sign({ userId: req.user._id }, 'secretkey', { expiresIn: '5 min' }, (err, token) => {
-    if (err) {
-      res.sendStatus(500);
-    } else {
-      res.cookie('cookie', token);
-      res.redirect('/');
+class userService {
+  static async getUser({ email }) {
+    const user = await User.findByEmail({ email });
+    if (!user) {
+      console.log('존재하지 않는 이메일입니다');
     }
-  });
-};
+    const id = user.id;
+    const nickname = user.nickname;
+    const description = user.description;
 
-export default { checkTokenMW, signToken };
+    const loginUser = {
+      email,
+      nickname,
+      description,
+    };
+    return loginUser;
+  }
+  static async setUser({ user_id, toUpdate }) {
+    // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
+    let user = await User.findById({ user_id });
+
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!user) {
+      console.log('존재하지 않는 회원입니다.');
+      return;
+    }
+
+    if (toUpdate.nickname) {
+      const fieldToUpdate = 'nickname';
+      const newValue = toUpdate.nickname;
+      user = await User.update({ user_id, fieldToUpdate, newValue });
+    }
+
+    if (toUpdate.description) {
+      const fieldToUpdate = 'description';
+      const newValue = toUpdate.description;
+      user = await User.update({ user_id, fieldToUpdate, newValue });
+    }
+
+    return user;
+  }
+}
+
+export { userService };
