@@ -32,6 +32,7 @@ db.on('connected', () => console.log('mongoose Connected'));
 db.on('error', (error) => console.error(`mongoose not Connected: ${error}`));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/uploads', express.static('uploads'));
 
 // 기본 페이지
 app.get('/', (req, res) => {
@@ -41,4 +42,5 @@ app.get('/', (req, res) => {
 app.use(userRouter);
 app.use('/board', postRouter);
 app.use('/board/comments', commentRouter);
+
 export { app };

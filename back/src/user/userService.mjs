@@ -42,6 +42,12 @@ class userService {
       user = await User.update({ user_id, fieldToUpdate, newValue });
     }
 
+    // if (toUpdate.profilePicture) {
+    //   const fieldToUpdate = 'profilePicture';
+    //   const newValue = toUpdate.profilePicture;
+    //   user = await User.update({ user_id, fieldToUpdate, newValue });
+    // }
+
     return user;
   }
 }
