@@ -1,6 +1,5 @@
 import cors from 'cors';
 import express from 'express';
-import session from 'express-session';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 import passport from 'passport';
@@ -20,17 +19,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(
-  session({
-    secret: 'This is a secret',
-    resave: true,
-    saveUninitialized: true,
-  })
-);
-
 app.use(cookieParser());
 app.use(passport.initialize());
-app.use(passport.session());
 
 const DB_URL = process.env.MONGODB_URL;
 mongoose.connect(DB_URL, {
