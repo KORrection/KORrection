@@ -16,7 +16,8 @@ export default () => {
       async (accessToken, refreshToken, profile, done) => {
         const email = profile.emails[0].value;
 
-        const currentUser = await User.findById({ email });
+        const currentUser = await User.findByEmail({ email });
+        console.log(currentUser);
 
         if (currentUser) {
           return done(null, currentUser);
