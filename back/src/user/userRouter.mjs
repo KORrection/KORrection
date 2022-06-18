@@ -3,6 +3,7 @@ import passport from 'passport';
 import Auth from '../middleware/utils.mjs';
 import { login_required } from '../middleware/login_required.mjs';
 import { userService } from './userService.mjs';
+import upload from '../utils/upload.mjs';
 
 const userRouter = Router();
 
@@ -25,12 +26,9 @@ userRouter.get('/google/callback/', passport.authenticate('google', { session: f
   Auth.signToken(req, res);
 });
 
-userRouter.post('/logout', (req, res, next) => {
-  req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
-  });
+userRouter.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('http://localhost:3000');
 });
 
 userRouter.get('/userlist', login_required, async (req, res, next) => {
@@ -61,5 +59,28 @@ userRouter.put('/users/:id', async function (req, res, next) {
     next(error);
   }
 });
+
+// userRouter.post('/profile', upload.single('image'), async (req, res) => {
+//   console.log(2);
+//   console.log(req.file);
+//   await req.user.update({ profilePicture: req.file.location });
+//   console.log(req.file.location);
+//   res.status(200).json(req.file);
+// });
+
+// userRouter.post('/profile/:id', upload.single('image'), login_required, async (req, res, next) => {
+//   try {
+//     const user_id = req.params.id;
+
+//     const profileUrl = req.body.profilePicture;
+//     const toUpdate = { profileUrl };
+
+//     const updatedurl = await userService.setUser({ user_id, toUpdate });
+
+//     res.json(updatedurl);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 export { userRouter };
