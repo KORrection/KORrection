@@ -1,7 +1,9 @@
-import { Router } from "express";
-import { UserService } from "./userService.mjs";
-import passport from "passport";
-import Login from "../middleware/Authenticate.mjs";
+import { Router } from 'express';
+import passport from 'passport';
+import Auth from '../middleware/utils.mjs';
+import { login_required } from '../middleware/login_required.mjs';
+import { userService } from './userService.mjs';
+import upload from '../utils/upload.mjs';
 
 const userRouter = Router();
 
@@ -12,25 +14,74 @@ const userRouter = Router();
  *    description : 유저 MVP
  */
 
-userRouter.get("/google", passport.authenticate("google", { scope: ["profile", "email"] })); // 프로파일과 이메일 정보를 받는다.
- 
-//? 위에서 구글 서버 로그인이 되면, 네이버 redirect url 설정에 따라 이쪽 라우터로 오게 된다. 인증 코드를 박게됨
 userRouter.get(
-   "/google/callback",
-   passport.authenticate("google", { failureRedirect: "/" }), //? 그리고 passport 로그인 전략에 의해 googleStrategy로 가서 구글계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
-   (req, res) => {
-      res.redirect("/");
-   },
+  '/google',
+  passport.authenticate('google', {
+    session: false,
+    scope: ['profile', 'email'],
+  })
 );
 
-userRouter.post("/logout", Login.isLoggedIn, (req, res, next) => {
-   req.logout((err) => {
-     if (err) { 
-        return next(err); 
-      }
-     res.redirect("/");
-   });
- });
+userRouter.get('/google/callback/', passport.authenticate('google', { session: false }), (req, res) => {
+  Auth.signToken(req, res);
+});
 
+userRouter.get('/logout', (req, res) => {
+  req.logout();
+  res.clearCookie('token');
+  res.redirect('http://localhost:3000');
+});
+
+userRouter.get('/userlist', login_required, async (req, res, next) => {
+  try {
+    const users = await userService.getUsers();
+    res.status(200).send(users);
+  } catch (err) {
+    next(err);
+  }
+});
+
+userRouter.put('/users/:id', async function (req, res, next) {
+  try {
+    const user_id = req.params.id;
+
+    const nickname = req.body.nickname ?? null;
+    const description = req.body.description ?? null;
+
+    const toUpdate = { nickname, description };
+
+    const updatedUser = await userService.setUser({ user_id, toUpdate });
+
+    if (updatedUser.errorMessage) {
+      throw new Error(updatedUser.errorMessage);
+    }
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// userRouter.post('/profile', upload.single('image'), async (req, res) => {
+//   console.log(2);
+//   console.log(req.file);
+//   await req.user.update({ profilePicture: req.file.location });
+//   console.log(req.file.location);
+//   res.status(200).json(req.file);
+// });
+
+// userRouter.post('/profile/:id', upload.single('image'), login_required, async (req, res, next) => {
+//   try {
+//     const user_id = req.params.id;
+
+//     const profileUrl = req.body.profilePicture;
+//     const toUpdate = { profileUrl };
+
+//     const updatedurl = await userService.setUser({ user_id, toUpdate });
+
+//     res.json(updatedurl);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 export { userRouter };
