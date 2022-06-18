@@ -5,8 +5,8 @@ class User {
     const createdNewUser = await UserModel.create({ email, googleId, nickname, profilePicture, description });
     return createdNewUser;
   }
-  static async findById({ user_id }) {
-    const user = await UserModel.findOne({ user_id });
+  static async findByEmail({ email }) {
+    const user = await UserModel.findOne({ email });
 
     return user;
   }
