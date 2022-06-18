@@ -21,6 +21,7 @@ const App = () => {
           <Route path='board' element={<Board />} />
           <Route path='signin' element={<SignIn />} />
           <Route path='signup' element={<SingUp />} />
+          <Route path='google/callback' element={<SignIn />} />
         </Routes>
       </main>
     </div>
