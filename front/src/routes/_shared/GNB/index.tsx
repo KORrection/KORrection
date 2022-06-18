@@ -6,7 +6,7 @@ import { LogoImage } from 'assets/svgs';
 import styles from './gnb.module.scss';
 
 const navData = ['문법 검사기', '퀴즈', '커뮤니티'];
-const navURI = ['grammarly', 'quiz', 'board'];
+const navURI = ['gec', 'quiz', 'board'];
 
 const GNB = () => {
   const cookies = new Cookies();
