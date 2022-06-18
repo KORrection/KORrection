@@ -9,7 +9,7 @@ const PostSchema = new Schema(
       default: () => {
         return nanoid();
       },
-      require: true,
+      required: true,
       index: true,
     },
     cateory: {

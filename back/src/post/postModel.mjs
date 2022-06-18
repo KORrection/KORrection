@@ -1,5 +1,6 @@
 // * (3) database layer (model)
 import { PostModel } from './postSchema.mjs';
+import { PVoteModel } from './postVoteSchema.mjs';
 
 class Post {
   static async createPost({ category, author, title, content }) {
@@ -22,12 +23,16 @@ class Post {
     return await PostModel.deleteOne({ postId });
   }
 
-  static async likePost({ postId }) {
-    return await PostModel.findOneAndUpdate({ postId }, { $set: { $inc: { likeCount: 1 } } }, { new: true });
+  static async upvotePost({ voteUser, votedPost }) {
+    const post = await PostModel.findOneAndUpdate({ _id: votedPost }, { $inc: { likeCount: 1 } }, { new: true });
+    await PVoteModel.create({ postId: votedPost, author: voteUser });
+    return post;
   }
 
-  static async undoLikePost({ postId }) {
-    return await PostModel.findOneAndUpdate({ postId }, { $set: { $inc: { likeCount: -1 } } }, { new: true });
+  static async downvotePost({ author, postId }) {
+    const post = await PostModel.findOneAndUpdate({ postId }, { $inc: { likeCount: -1 } }, { new: true });
+    await PVoteModel.deleteOne({ author, postId });
+    return post;
   }
 }
 

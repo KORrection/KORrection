@@ -149,20 +149,15 @@ postRouter.get('/', async (req, res, next) => {
  *                          properties:
  *                              $ref: '#/definitions/Post'
  */
+// ** get post with comment belongings.
 postRouter.get('/posts/:postId', async (req, res, next) => {
   try {
     const { postId } = req.params;
-    if (req.query.edit) {
-      res.redirect(`post/edit/${postId}`);
-      return;
-    }
-
     const post = await postService.findPost({ postId });
     res.status(200).json({
       status: 'success',
       payload: post,
     });
-    //? res.redirect(`view/${postId}`)}
   } catch (err) {
     next(err);
   }
@@ -289,10 +284,12 @@ postRouter.delete('/posts/:postId', async (req, res, next) => {
  *                              likeCount:
  *                                  type: number
  */
-postRouter.put('/likes/:postId', async (req, res, next) => {
+postRouter.put('/posts/:postId/upvotes', async (req, res, next) => {
   try {
+    // const { userId } = res.locals // email 형식
+    const userId = 'test@gmail.com'; // 테스트용
     const { postId } = req.params;
-    const post = await postService.likePost({ postId });
+    const post = await postService.upvotePost({ userId, postId });
     res.status(200).json({
       status: 'success',
       payload: { likeCount: post.likeCount },
@@ -334,10 +331,10 @@ postRouter.put('/likes/:postId', async (req, res, next) => {
  *                              likeCount:
  *                                  type: number
  */
-postRouter.put('/de-likes/:postId', async (req, res, next) => {
+postRouter.put('/posts/:postId/downvotes', async (req, res, next) => {
   try {
     const { postId } = req.params;
-    const post = await postService.undoLikePost({ postId });
+    const post = await postService.downvotePost({ postId });
     res.status(200).json({
       status: 'success',
       payload: { likecount: post.likeCount },

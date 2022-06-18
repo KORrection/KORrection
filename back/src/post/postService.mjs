@@ -1,5 +1,6 @@
 // * (2)  service layer
 import { Post } from './postModel.mjs';
+import { User } from '../user/userModel.mjs';
 
 class postService {
   static async createPost({ userId, category, title, content }) {
@@ -44,13 +45,28 @@ class postService {
     }
   }
 
-  static async likePost({ postId }) {
-    const post = await Post.likePost({ postId });
-    return post;
+  static async upvotePost({ userId, postId }) {
+    const user = await User.findById({ userId });
+    if (!user) {
+      throw new Error('존재하지 않는 유저입니다.')
+    }
+    const voteUser = user._id
+    console.log(voteUser)
+
+    const post = await Post.findById({ postId });
+    if (!post) {
+      return { errorMessage: '존재하지 않는 게시글입니다.' };
+    }
+    const votedPost = post._id
+    console.log(votedPost)
+
+    const updatedPost = await Post.upvotePost({ voteUser, votedPost });
+    return updatedPost;
   }
 
-  static async undoLikePost({ postId }) {
-    const post = await Post.undoLikePost({ postId });
+  static async downvotePost({ userId, postId }) {
+    const author = userId.substring(0, userId.indexOf('@')); // ! assume that userId = email
+    const post = await Post.downvotePost({ author, postId });
     if (post.likeCount < 0) {
       throw new Error('잘못된 요청입니다.');
     }
