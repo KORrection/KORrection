@@ -3,11 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import styles from './routes.module.scss';
 import Home from './Home';
 import GNB from './_shared/GNB';
-import KGrammarly from './KGrammarly';
+import GEC from './GEC';
 import Quiz from './Quiz';
 import Board from './Board';
-import SignIn from './SignIn';
-import SingUp from './SignUp';
 
 const App = () => {
   return (
@@ -16,12 +14,9 @@ const App = () => {
       <main className={styles.app}>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='grammarly' element={<KGrammarly />} />
+          <Route path='gec' element={<GEC />} />
           <Route path='quiz' element={<Quiz />} />
           <Route path='board' element={<Board />} />
-          <Route path='signin' element={<SignIn />} />
-          <Route path='signup' element={<SingUp />} />
-          <Route path='google/callback' element={<SignIn />} />
         </Routes>
       </main>
     </div>

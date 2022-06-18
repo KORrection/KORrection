@@ -1,8 +1,9 @@
-import { ArrowRight, Comment, Document } from 'assets/svgs';
 import { ChangeEvent, useState } from 'react';
-import styles from './kGrammarly.module.scss';
 
-const KGrammarly = () => {
+import { ArrowRight, Comment, Document } from 'assets/svgs';
+import styles from './gec.module.scss';
+
+const GEC = () => {
   const [textValue, setTextValue] = useState('');
 
   const handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
@@ -46,4 +47,4 @@ const KGrammarly = () => {
   );
 };
 
-export default KGrammarly;
+export default GEC;
