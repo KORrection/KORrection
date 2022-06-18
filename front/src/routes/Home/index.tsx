@@ -10,7 +10,7 @@ const Home = () => {
       <div className={styles.indexBox}>
         <h1>당신의 올바른 한국어를 위하여, 코렉션!</h1>
         <p>For the Correct Korean, KORrection!</p>
-        <Link to='/grammarly'>
+        <Link to='/gec'>
           <button type='button'>코렉션 사용하기</button>
         </Link>
       </div>
