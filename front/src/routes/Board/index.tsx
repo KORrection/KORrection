@@ -2,17 +2,44 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useMount } from 'react-use';
 
+import { IPost } from 'types/board';
+import DropDown from 'routes/_shared/DropDown';
+import PostItem from 'routes/_shared/PostItem';
+import styles from './board.module.scss';
+
 const backendPortNumber = '5001';
 const serverUrl = `http://${window.location.hostname}:${backendPortNumber}/`;
 
+const DROPDOWN_CATEGORIES = ['전체', '자유', '한국어 질문', 'K-pop', 'K-drama'];
+
 const Board = () => {
   const [posts, setPosts] = useState([]);
+  const [currentCategory, setCurrentCategory] = useState('전체');
 
   useMount(() => {
     axios.get(`${serverUrl}board`).then((res) => setPosts(res.data.payload.posts));
   });
 
-  return <div />;
+  return (
+    <section className={styles.pageContainer}>
+      <div className={styles.titleBox}>
+        <h1>커뮤니티 Community</h1>
+        <p>
+          전 세계의 한국어 능력자와 만날 수 있는 코렉션에서
+          <br />
+          궁금한 점을 해결해 보세요!
+        </p>
+      </div>
+      <DropDown selectList={DROPDOWN_CATEGORIES} setCurrentSelect={setCurrentCategory} size='small'>
+        {currentCategory}
+      </DropDown>
+      <ul>
+        {posts.map((post: IPost) => (
+          <PostItem key={post.postId} post={post} />
+        ))}
+      </ul>
+    </section>
+  );
 };
 
 export default Board;
