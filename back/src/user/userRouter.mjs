@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import passport from 'passport';
-import Auth from '../middleware/utils.mjs';
+import Auth from '../passport/utils.mjs';
 import { login_required } from '../middleware/login_required.mjs';
 import { userService } from './userService.mjs';
 import upload from '../utils/upload.mjs';
@@ -32,7 +32,7 @@ userRouter.get('/logout', (req, res) => {
   res.redirect('http://localhost:3000');
 });
 
-userRouter.get('/userlist', login_required, async (req, res, next) => {
+userRouter.get('/users', login_required, async (req, res, next) => {
   try {
     const users = await userService.getUsers();
     res.status(200).send(users);

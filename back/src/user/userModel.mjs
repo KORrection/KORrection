@@ -1,8 +1,8 @@
 import { UserModel } from './userSchema.mjs';
 
 class User {
-  static async create({ email, googleId, nickname, profilePicture, description }) {
-    const createdNewUser = await UserModel.create({ email, googleId, nickname, profilePicture, description });
+  static async create({ email, snsId, nickname, profilePicture, description }) {
+    const createdNewUser = await UserModel.create({ email, snsId, nickname, profilePicture, description });
     return createdNewUser;
   }
   static async findByEmail({ email }) {
