@@ -8,14 +8,11 @@ class postService {
       throw new Error('내용을 모두 입력해주세요');
     }
     const user = await User.findById({ userId });
-    const authorId = user._id;
+    const authorObjId = user._id;
     const authorName = user.nickname;
-    const post = await Post.createPost({ category, authorId, title, content });
-    post.populate('author');
-    console.log(post);
-    console.log(post.author.nickname);
+    const post = await Post.createPost({ category, authorObjId, title, content });
     post.errorMessage = null;
-    return { post };
+    return { post, authorName };
   }
 
   static async findAll() {

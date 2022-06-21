@@ -16,7 +16,7 @@ const PostSchema = new Schema(
       type: String,
       default: 'free',
     },
-    author: {
+    authorObjId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,

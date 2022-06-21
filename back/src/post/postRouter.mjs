@@ -51,16 +51,24 @@ const postRouter = Router();
  *                          properties:
  *                              postId:
  *                                  type: string
+ *                              authorName:
+ *                                  type: string
+ *                              title:
+ *                                  type: string
+ *                              content:
+ *                                  type: string
+ *                              createdAt:
+ *                                  type: date
  */
 postRouter.post('/posts', async (req, res, next) => {
   try {
     // const userId = req.currentUserId;
     const userId = '62b16ee1e9d56170f4bdda07';
     const { category, title, content } = req.body;
-    const post = await postService.createPost({ userId, category, title, content });
+    const { post, authorName } = await postService.createPost({ userId, category, title, content });
     res.status(201).json({
       status: 'success',
-      payload: { postId: post.postId },
+      payload: { postId: post.postId, authorName, title: post.title, content: post.content, createdAt: post.createdAt },
     });
   } catch (err) {
     next(err);
@@ -94,10 +102,6 @@ postRouter.post('/posts', async (req, res, next) => {
  */
 postRouter.get('/', async (req, res, next) => {
   try {
-    if (req.query.write) {
-      res.redirect('post/edit');
-      return;
-    }
     const posts = await postService.findAll();
     res.status(200).json({
       status: 'success',

@@ -8,7 +8,7 @@ const CommentSchema = new Schema(
       type: String,
       required: true,
     },
-    parentPostIdRef: {
+    parentPostObjId: {
       type: Schema.Types.ObjectId,
       ref: 'post',
       required: true, 
@@ -21,8 +21,9 @@ const CommentSchema = new Schema(
         return `[c]${id}`;
       },
     },
-    author: {
-      type: String,
+    authorObjId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
     },
     commentBody: {

@@ -6,7 +6,8 @@ import { Comment } from '../comment/commentModel.mjs';
 const checkPostId = async (req, res, next) => {
   try {
     const post = await Post.findPost({ postId: req.query.pId });
-    res.locals.postId = post.postId;
+    res.locals.parentPostId = post.postId;
+    res.locals.parentPostObjId= post._id;
     next();
   } catch (err) {
     return res.send(err.message);

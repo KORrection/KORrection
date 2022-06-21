@@ -1,8 +1,8 @@
 import { CommentModel } from './commentSchema.mjs';
 
 class Comment {
-  static async createComment({ author, parentPostId, commentBody }) {
-    const newComment = await CommentModel.create({ author, parentPostId, commentBody });
+  static async createComment({ authorObjId, parentPostId, parentPostObjId, commentBody }) {
+    const newComment = await CommentModel.create({ authorObjId, parentPostId, parentPostObjId, commentBody });
     return newComment;
   }
 
