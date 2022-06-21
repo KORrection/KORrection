@@ -20,12 +20,25 @@ class postService {
     return posts;
   }
 
-  static async findPost({ postId }) {
-    const post = await Post.findPost({ postId });
-    if (!post) {
+  static async findPostById({ postId }) {
+    const postAndComments = await Post.findPostById({ postId });
+    if (!postAndComments) {
       throw new Error('게시물이 없습니다');
     }
-    return post;
+    console.log(postAndComments);
+    console.log(postAndComments.authorObjId.nickname);
+    const post = {
+      _id: postAndComments._id,
+      category: postAndComments.category,
+      title: postAndComments.title,
+      content: postAndComments.content,
+      likeCount: postAndComments.likeCount,
+      createdAt: postAndComments.createdAt,
+      updatedAt: postAndComments.updatedAt,
+    };
+    const authorName = postAndComments.authorObjId.nickname;
+    const comments = postAndComments.comments;
+    return { post, authorName, comments };
   }
 
   static async updatePost({ postId, category, title, content }) {

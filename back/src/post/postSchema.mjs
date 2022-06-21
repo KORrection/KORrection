@@ -35,13 +35,13 @@ const PostSchema = new Schema(
       default: 0,
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 PostSchema.virtual('comments', {
-  ref: 'Comment',
+  ref: 'comment',
   localField: '_id',
-  foreignField: 'parentPostIdRef',
+  foreignField: 'parentPostObjId',
 });
 
 const PostModel = model('post', PostSchema);

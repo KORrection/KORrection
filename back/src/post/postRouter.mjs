@@ -140,14 +140,14 @@ postRouter.get('/', async (req, res, next) => {
  *                          properties:
  *                              $ref: '#/definitions/Post'
  */
-// ** get post with comment belongings.
+// ** get a post with comment belongings.
 postRouter.get('/posts/:postId', async (req, res, next) => {
   try {
     const { postId } = req.params;
-    const post = await postService.findPost({ postId });
+    const { post, authorName, comments } = await postService.findPostById({ postId });
     res.status(200).json({
       status: 'success',
-      payload: post,
+      payload: { post, authorName, comments },
     });
   } catch (err) {
     next(err);

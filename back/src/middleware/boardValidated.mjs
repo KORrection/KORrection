@@ -5,7 +5,7 @@ import { Comment } from '../comment/commentModel.mjs';
 // upvotes?postId=postId
 const checkPostId = async (req, res, next) => {
   try {
-    const post = await Post.findPost({ postId: req.query.pId });
+    const post = await Post.findPostById({ postId: req.query.pId });
     res.locals.parentPostId = post.postId;
     res.locals.parentPostObjId= post._id;
     next();
