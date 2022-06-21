@@ -1,6 +1,6 @@
-@use '/src/styles/constants/colors';
-@use '/src/styles/mixins/flexbox';
-@use '/src/styles/mixins/responsive';
+@use 'src/styles/constants/colors';
+@use 'src/styles/mixins/flexbox';
+@use 'src/styles/mixins/responsive';
 
 .pageContainer {
   @include flexbox.flexbox(center, center);
