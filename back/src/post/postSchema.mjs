@@ -12,12 +12,13 @@ const PostSchema = new Schema(
       required: true,
       index: true,
     },
-    cateory: {
+    category: {
       type: String,
       default: 'free',
     },
     author: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'user',
       required: true,
     },
     title: {
@@ -37,6 +38,12 @@ const PostSchema = new Schema(
   { timestamps: true }
 );
 
+PostSchema.virtual('comments', {
+  ref: 'Comment',
+  localField: '_id',
+  foreignField: 'parentPostIdRef'
+})
+
 const PostModel = model('post', PostSchema);
 export { PostModel };
 
@@ -48,7 +55,8 @@ export { PostModel };
  *     required:
  *       - _id
  *       - postId
- *       - author
+ *       - authorId
+ *       - authorName
  *       - category
  *       - title
  *       - content
@@ -60,7 +68,9 @@ export { PostModel };
  *         type: string
  *       postId:
  *         type: string
- *       author:
+ *       authorId:
+ *         type: string
+ *       authorName:
  *         type: string
  *       category:
  *         type: string

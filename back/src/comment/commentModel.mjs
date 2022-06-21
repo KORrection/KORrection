@@ -6,7 +6,7 @@ class Comment {
     return newComment;
   }
 
-  static async getComments({ parentPostId }) {
+  static async getCommentsByPostId({ parentPostId }) {
     return await CommentModel.find({ parentPostId });
   }
 

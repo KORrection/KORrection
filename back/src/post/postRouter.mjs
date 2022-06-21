@@ -52,23 +52,10 @@ const postRouter = Router();
  *                              postId:
  *                                  type: string
  */
-// postRouter.post('/posts', async (req, res, next) => {
-//   try {
-//     const { userId } = res.locals; // TODO: check whether the userId is in email-format or not
-//     const { category, title, content } = req.body;
-//     const post = await postService.createPost({ userId, category, title, content });
-//     res.status(201).json({
-//       status: 'success',
-//       payload: { postId: post.postId },
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
 postRouter.post('/posts', async (req, res, next) => {
   try {
-    const userId = 'test@gmail.com';
+    const userId = req.currentUserId;
+    console.log(userId);
     const { category, title, content } = req.body;
     const post = await postService.createPost({ userId, category, title, content });
     res.status(201).json({
@@ -286,10 +273,10 @@ postRouter.delete('/posts/:postId', async (req, res, next) => {
  */
 postRouter.put('/posts/:postId/upvotes', async (req, res, next) => {
   try {
-    // const { userId } = res.locals // email 형식
-    const userId = 'test@gmail.com'; // 테스트용
+    const userObjId = req.currentUserId;
+    console.log(userObjId);
     const { postId } = req.params;
-    const post = await postService.upvotePost({ userId, postId });
+    const post = await postService.upvotePost({ userObjId, postId });
     res.status(200).json({
       status: 'success',
       payload: { likeCount: post.likeCount },

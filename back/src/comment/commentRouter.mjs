@@ -2,7 +2,7 @@
 
 import { Router } from 'express';
 import { commentService } from './commentService.mjs';
-import { checkPostId, valParentPost } from '../middleware/boardValidated.mjs';
+import { checkPostId, validateParentPost } from '../middleware/boardValidated.mjs';
 
 const commentRouter = Router();
 
@@ -43,7 +43,7 @@ commentRouter.post('/', checkPostId, async (req, res, next) => {
 commentRouter.get('/', checkPostId, async (req, res, next) => {
   try {
     const parentPostId = res.locals.postId;
-    const comments = await commentService.getComments({ parentPostId });
+    const comments = await commentService.getCommentsByPostId({ parentPostId });
     res.status(200).json({
       status: 'success',
       payload: { comments },
@@ -54,7 +54,7 @@ commentRouter.get('/', checkPostId, async (req, res, next) => {
 });
 
 // * Update one comment
-commentRouter.put('/:commentId', valParentPost, async (req, res, next) => {
+commentRouter.put('/:commentId', validateParentPost, async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const { commentBody } = req.body;
@@ -70,7 +70,7 @@ commentRouter.put('/:commentId', valParentPost, async (req, res, next) => {
 
 // * Delete
 // ** (1) Delete one comment (delete DB docs for real)
-commentRouter.delete('/:commentId', valParentPost, async (req, res, next) => {
+commentRouter.delete('/:commentId', validateParentPost, async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const isDeleted = await commentService.deleteComment({ commentId });
@@ -84,7 +84,7 @@ commentRouter.delete('/:commentId', valParentPost, async (req, res, next) => {
 });
 
 // ** (2) Pretend To Delete one comment (just change 'isDeleted' value from false to ) - 대댓글 시 필요..
-// commentRouter.delete('/:commentId', valParentPost, async (req, res, next) => {
+// commentRouter.delete('/:commentId', validateParentPost, async (req, res, next) => {
 //   try {
 //     const { commentId } = req.params;
 //     const comment = await commentService.pretendToDelCom({ commentId });

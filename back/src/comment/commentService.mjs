@@ -11,8 +11,8 @@ class commentService {
     return comment;
   }
 
-  static async getComments({ parentPostId }) {
-    const comments = await Comment.getComments({ parentPostId });
+  static async getCommentsByPostId({ parentPostId }) {
+    const comments = await Comment.getCommentsByPostId({ parentPostId });
     return comments;
   }
 

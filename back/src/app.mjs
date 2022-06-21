@@ -9,6 +9,7 @@ import { swaggerUi, specs } from './swagger.js';
 import { userRouter } from './user/userRouter.mjs';
 import { postRouter } from './post/postRouter.mjs';
 import { commentRouter } from './comment/commentRouter.mjs';
+import { login_required } from './middleware/login_required.mjs';
 
 dotenv.config();
 const app = express();
@@ -39,6 +40,6 @@ app.get('/', (req, res) => {
 });
 
 app.use(userRouter);
-app.use('/board', postRouter);
-app.use('/board/comments', commentRouter);
+app.use('/board', login_required, postRouter);
+app.use('/board/comments', login_required, commentRouter);
 export { app };

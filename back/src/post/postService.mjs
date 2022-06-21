@@ -45,13 +45,11 @@ class postService {
     }
   }
 
-  static async upvotePost({ userId, postId }) {
-    const user = await User.findById({ userId });
+  static async upvotePost({ userObjId, postId }) {
+    const user = await User.findById({ userObjId });
     if (!user) {
       throw new Error('존재하지 않는 유저입니다.')
     }
-    const voteUser = user._id
-    console.log(voteUser)
 
     const post = await Post.findById({ postId });
     if (!post) {

@@ -14,7 +14,7 @@ const checkPostId = async (req, res, next) => {
 };
 
 // comments/:cId?pId=pId 에서 cId와 pId 관계가 올바른지 검사
-const valParentPost = async (req, res, next) => {
+const validateParentPost = async (req, res, next) => {
   try {
     const comment = await Comment.findCommentById({ commentId: req.params.commentId });
     if (comment.parentPostId === req.query.pId) {
@@ -25,4 +25,4 @@ const valParentPost = async (req, res, next) => {
   }
 };
 
-export { checkPostId, valParentPost };
+export { checkPostId, validateParentPost };
