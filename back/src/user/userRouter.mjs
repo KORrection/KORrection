@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import passport from 'passport';
-import Auth from '../middleware/utils.mjs';
+import Auth from '../passport/utils.mjs';
 import { login_required } from '../middleware/login_required.mjs';
 import { userService } from './userService.mjs';
 import upload from '../utils/upload.mjs';

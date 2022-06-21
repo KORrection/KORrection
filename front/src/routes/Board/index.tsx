@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMount } from 'react-use';
 
 import { IPost } from 'types/board';
@@ -12,10 +12,16 @@ const DROPDOWN_CATEGORIES = ['전체', '자유', '한국어 질문', 'K-pop', 'K
 
 const Board = () => {
   const [posts, setPosts] = useState([]);
+  const [filteredposts, setFilteredPosts] = useState([]);
   const [currentCategory, setCurrentCategory] = useState('전체');
 
   useMount(() => {
-    getApi('board').then((res) => setPosts(res.data.payload.posts));
+    getApi('board').then((res) => {
+      const newPosts = res.data.payload.posts;
+
+      setPosts(newPosts);
+      setFilteredPosts(newPosts);
+    });
   });
 
   return (
@@ -33,7 +39,7 @@ const Board = () => {
           {currentCategory}
         </DropDown>
         <ul>
-          {posts.map((post: IPost) => (
+          {filteredposts.map((post: IPost) => (
             <PostItem key={post.postId} post={post} />
           ))}
         </ul>
