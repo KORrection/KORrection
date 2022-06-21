@@ -9,9 +9,9 @@ export default () => {
   passport.use(
     new GoogleStrategy(
       {
-        clientID: process.env.GOOGLE_ID, // 구글 로그인에서 발급받은 REST API 키
-        clientSecret: process.env.GOOGLE_SECRET, // 구글 로그인에서 발급받은 SECRET 키
-        callbackURL: '/google/callback', // 구글 로그인 Redirect URI 경로
+        clientID: process.env.GOOGLE_ID,
+        clientSecret: process.env.GOOGLE_SECRET,
+        callbackURL: '/google/callback',
       },
       async (accessToken, refreshToken, profile, done) => {
         const email = profile.emails[0].value;
@@ -24,7 +24,7 @@ export default () => {
         } else {
           const newUser = await User.create({
             email,
-            googldId: profile.id,
+            snsId: profile.id,
             nickname: 'null',
             profilePicture: 'null',
             description: 'null',
