@@ -1,6 +1,5 @@
 import { Comment } from './commentModel.mjs';
 import { User } from '../user/userModel.mjs';
-// import { Post } from '../post/postModel.mjs';
 
 class commentService {
   static async createComment({ userId, parentPostId, parentPostObjId, commentBody }) {

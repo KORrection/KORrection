@@ -59,12 +59,23 @@ commentRouter.post('/', checkPostId, async (req, res, next) => {
   try {
     // const userId = req.currentUserId;
     const userId = '62b16ee1e9d56170f4bdda07';
-    const { parentPostId, parentPostObjId} = res.locals;
+    const { parentPostId, parentPostObjId } = res.locals;
     const { commentBody } = req.body;
-    const { comment, authorName } = await commentService.createComment({ userId, parentPostId, parentPostObjId, commentBody });
+    const { comment, authorName } = await commentService.createComment({
+      userId,
+      parentPostId,
+      parentPostObjId,
+      commentBody,
+    });
     res.status(201).json({
       status: 'success',
-      payload: { postId: comment.parentPostId, authorName, commentId: comment.commentId, commentBody: comment.commentBody, createdAt: comment.createdAt },
+      payload: {
+        postId: comment.parentPostId,
+        authorName,
+        commentId: comment.commentId,
+        commentBody: comment.commentBody,
+        createdAt: comment.createdAt,
+      },
     });
   } catch (err) {
     next(err);
@@ -75,7 +86,7 @@ commentRouter.post('/', checkPostId, async (req, res, next) => {
 // all matches to the post
 commentRouter.get('/', checkPostId, async (req, res, next) => {
   try {
-    const parentPostId = res.locals.postId;
+    const { parentPostId } = res.locals;
     const comments = await commentService.getCommentsByPostId({ parentPostId });
     res.status(200).json({
       status: 'success',
