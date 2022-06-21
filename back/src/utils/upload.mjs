@@ -1,9 +1,6 @@
 import aws from 'aws-sdk';
 import multer from 'multer';
 import multerS3 from 'multer-s3-v2';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const s3 = new aws.S3({
   region: process.env.AWS_BUCKET_REGION,

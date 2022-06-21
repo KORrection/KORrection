@@ -7,7 +7,7 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    googleId: {
+    snsId: {
       type: String,
     },
     nickname: {
