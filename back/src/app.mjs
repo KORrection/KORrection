@@ -3,7 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 import passport from 'passport';
-import passportConfig from './passport';
+import passportConfig from './passport/index.mjs';
 import cookieParser from 'cookie-parser';
 import { swaggerUi, specs } from './swagger.js';
 import { userRouter } from './user/userRouter.mjs';
