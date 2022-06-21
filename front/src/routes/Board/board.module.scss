@@ -31,3 +31,12 @@
     }
   }
 }
+
+@include responsive.after(LD) {
+  .pageContainer {
+    article {
+      width: 1200px;
+      margin: auto;
+    }
+  }
+}
