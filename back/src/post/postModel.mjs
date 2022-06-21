@@ -3,8 +3,8 @@ import { PostModel } from './postSchema.mjs';
 import { PVoteModel } from './postVoteSchema.mjs';
 
 class Post {
-  static async createPost({ category, author, title, content }) {
-    const newPost = await PostModel.create({ category, author, title, content });
+  static async createPost({ category, authorId, title, content }) {
+    const newPost = await PostModel.create({ category, author: authorId, title, content });
     return newPost;
   }
   static async findAll() {

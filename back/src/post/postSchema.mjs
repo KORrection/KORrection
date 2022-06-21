@@ -18,7 +18,7 @@ const PostSchema = new Schema(
     },
     author: {
       type: Schema.Types.ObjectId,
-      ref: 'user',
+      ref: 'User',
       required: true,
     },
     title: {
@@ -41,8 +41,8 @@ const PostSchema = new Schema(
 PostSchema.virtual('comments', {
   ref: 'Comment',
   localField: '_id',
-  foreignField: 'parentPostIdRef'
-})
+  foreignField: 'parentPostIdRef',
+});
 
 const PostModel = model('post', PostSchema);
 export { PostModel };

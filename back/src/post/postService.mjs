@@ -7,10 +7,15 @@ class postService {
     if (!category || !userId || !title || !content) {
       throw new Error('내용을 모두 입력해주세요');
     }
-    const author = userId.substring(0, userId.indexOf('@')); // ! assume that userId = email
-    const post = await Post.createPost({ category, author, title, content });
+    const user = await User.findById({ userId });
+    const authorId = user._id;
+    const authorName = user.nickname;
+    const post = await Post.createPost({ category, authorId, title, content });
+    post.populate('author');
+    console.log(post);
+    console.log(post.author.nickname);
     post.errorMessage = null;
-    return post;
+    return { post };
   }
 
   static async findAll() {
@@ -48,15 +53,15 @@ class postService {
   static async upvotePost({ userObjId, postId }) {
     const user = await User.findById({ userObjId });
     if (!user) {
-      throw new Error('존재하지 않는 유저입니다.')
+      throw new Error('존재하지 않는 유저입니다.');
     }
 
     const post = await Post.findById({ postId });
     if (!post) {
       return { errorMessage: '존재하지 않는 게시글입니다.' };
     }
-    const votedPost = post._id
-    console.log(votedPost)
+    const votedPost = post._id;
+    console.log(votedPost);
 
     const updatedPost = await Post.upvotePost({ voteUser, votedPost });
     return updatedPost;

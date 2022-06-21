@@ -54,8 +54,8 @@ const postRouter = Router();
  */
 postRouter.post('/posts', async (req, res, next) => {
   try {
-    const userId = req.currentUserId;
-    console.log(userId);
+    // const userId = req.currentUserId;
+    const userId = '62b16ee1e9d56170f4bdda07';
     const { category, title, content } = req.body;
     const post = await postService.createPost({ userId, category, title, content });
     res.status(201).json({
