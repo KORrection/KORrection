@@ -22,6 +22,14 @@ userRouter.get(
   })
 );
 
+/**
+ * @swagger
+ * paths:
+ *  /google:
+ *   get:
+ *    tags: [Users]
+ *    summary: 로그인
+ */
 userRouter.get('/google/callback/', passport.authenticate('google', { session: false }), (req, res) => {
   Auth.signToken(req, res);
 });
@@ -31,7 +39,14 @@ userRouter.get('/logout', (req, res) => {
   res.clearCookie('token');
   res.redirect('http://localhost:3000');
 });
-
+/**
+ * @swagger
+ * paths:
+ *  /logout:
+ *   get:
+ *    tags: [Users]
+ *    summary: 로그아웃
+ */
 userRouter.get('/users', login_required, async function (req, res, next) {
   try {
     // 전체 사용자 목록을 얻음
@@ -41,7 +56,14 @@ userRouter.get('/users', login_required, async function (req, res, next) {
     next(error);
   }
 });
-
+/**
+ * @swagger
+ * paths:
+ *  /users:
+ *   get:
+ *    tags: [Users]
+ *    summary: 전체 사용자 목록
+ */
 userRouter.put('/users/:id', async function (req, res, next) {
   try {
     const user_id = req.params.id;
@@ -62,6 +84,29 @@ userRouter.put('/users/:id', async function (req, res, next) {
   }
 });
 
+/**
+ * @swagger
+ * paths:
+ *  /users/:id:
+ *    put:
+ *      tags: [Users]
+ *      summary: 닉네임 / 자기소개 변경
+ *      parameters:
+ *      - in: body
+ *        schema:
+ *          type: object
+ *          properties:
+ *            nickname:
+ *              type: string
+ *            description:
+ *              type: string
+ *      responses:
+ *        200:
+ *          description: succ
+ *          content:
+ *            application/json:
+ */
+
 userRouter.post('/profile/:id', upload.single('image'), async (req, res, next) => {
   try {
     const user_id = req.params.id;
@@ -80,5 +125,26 @@ userRouter.post('/profile/:id', upload.single('image'), async (req, res, next) =
     next(error);
   }
 });
+
+/**
+ * @swagger
+ * paths:
+ *  /profile/:id:
+ *    post:
+ *      tags: [Users]
+ *      summary: 프로필 이미지 변경
+ *      parameters:
+ *      - in: body
+ *        schema:
+ *          type: object
+ *          properties:
+ *            profilePicture:
+ *              type: string
+ *      responses:
+ *        200:
+ *          description: succ
+ *          content:
+ *            application/json:
+ */
 
 export { userRouter };
