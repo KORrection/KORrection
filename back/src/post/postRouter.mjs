@@ -2,7 +2,6 @@
 
 import { Router } from 'express';
 import { postService } from './postService.mjs';
-//import { loginRequired } from '../middlewares/loginRequired';
 
 const postRouter = Router();
 /**
@@ -62,8 +61,7 @@ const postRouter = Router();
  */
 postRouter.post('/posts', async (req, res, next) => {
   try {
-    // const userId = req.currentUserId;
-    const userId = '62b16ee1e9d56170f4bdda07';
+    const userId = req.currentUserId;
     const { category, title, content } = req.body;
     const { post, authorName } = await postService.createPost({ userId, category, title, content });
     res.status(201).json({
