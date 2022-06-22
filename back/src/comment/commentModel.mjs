@@ -22,6 +22,10 @@ class Comment {
     return await CommentModel.deleteOne({ commentId });
   }
 
+  static async deleteCommentsByPostId({ postId }) {
+    return await CommentModel.deleteMany({ parentPostId: postId });
+  }
+
   static async pretendToDelCom({ commentId }) {
     return await CommentModel.findOneAndUpdate({ commentId }, { $set: { isDeleted: true } }, { new: true });
   }

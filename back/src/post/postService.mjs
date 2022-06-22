@@ -1,6 +1,8 @@
 // * (2)  service layer
 import { Post } from './postModel.mjs';
 import { User } from '../user/userModel.mjs';
+import { Comment } from '../comment/commentModel.mjs';
+import mongoose from 'mongoose';
 
 class postService {
   static async createPost({ userId, category, title, content }) {
@@ -50,8 +52,9 @@ class postService {
   }
 
   static async deletePost({ postId }) {
-    const doc = await Post.deletePost({ postId });
-    if (doc.acknowledged && doc.deletedCount == 1) {
+    const commentDoc = Comment.deleteCommentsByPostId({ postId });
+    const postDoc = await Post.deletePost({ postId });
+    if (postDoc.acknowledged && postDoc.deletedCount == 1) {
       // console.log('Delete successfully');
       return { isDeleted: true, message: '게시물이 삭제되었습니다.' };
     } else {
