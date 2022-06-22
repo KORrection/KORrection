@@ -44,6 +44,11 @@ PostSchema.virtual('comments', {
   foreignField: 'parentPostObjId',
 });
 
+PostSchema.virtual('upvotes', {
+  ref: 'postVote',
+  localField: '_id',
+  foreignField: 'postId',
+});
 const PostModel = model('post', PostSchema);
 export { PostModel };
 

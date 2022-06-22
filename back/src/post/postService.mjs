@@ -2,6 +2,7 @@
 import { Post } from './postModel.mjs';
 import { User } from '../user/userModel.mjs';
 import { Comment } from '../comment/commentModel.mjs';
+import { PostVote } from './postVoteModel.mjs';
 
 class postService {
   static async createPost({ userId, category, title, content }) {
@@ -9,7 +10,7 @@ class postService {
       throw new Error('내용을 모두 입력해주세요');
     }
     const user = await User.findById({ userId });
-    const authorObjId = user._id;
+    const authorObjId = userId;
     const authorName = user.nickname;
     const post = await Post.createPost({ category, authorObjId, title, content });
     post.errorMessage = null;
@@ -26,8 +27,6 @@ class postService {
     if (!postAndComments) {
       throw new Error('게시물이 없습니다');
     }
-    console.log(postAndComments);
-    console.log(postAndComments.authorObjId.nickname);
     const post = {
       _id: postAndComments._id,
       category: postAndComments.category,
@@ -63,20 +62,15 @@ class postService {
   }
 
   static async upvotePost({ userObjId, postId }) {
-    const user = await User.findById({ userObjId });
-    if (!user) {
-      throw new Error('존재하지 않는 유저입니다.');
+    const voteRecord = await PostVote.findPostVote({ userObjId, postId });
+    if (voteRecord) {
+      throw new Error('좋아요는 한 번만 가능합니다.');
     }
-
-    const post = await Post.findById({ postId });
-    if (!post) {
-      return { errorMessage: '존재하지 않는 게시글입니다.' };
-    }
-    const votedPost = post._id;
-    console.log(votedPost);
-
-    const updatedPost = await Post.upvotePost({ user, votedPost });
-    return updatedPost;
+    const post = await Post.find;
+    const postObjId = post._id;
+    const newVoteRecord = await PostVote.createPostVote({ userObjId, postObjId });
+    newVoteRecord.postObjId.LikeCount;
+    return newVoteRecord;
   }
 
   static async downvotePost({ userId, postId }) {

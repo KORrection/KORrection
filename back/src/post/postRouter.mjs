@@ -1,8 +1,5 @@
-// * (1) http req, res handler layer
-
 import { Router } from 'express';
 import { postService } from './postService.mjs';
-//import { loginRequired } from '../middlewares/loginRequired';
 
 const postRouter = Router();
 /**
@@ -138,7 +135,12 @@ postRouter.get('/', async (req, res, next) => {
  *                      payload:
  *                          type: object
  *                          properties:
- *                              $ref: '#/definitions/Post'
+ *                              post:
+ *                                type: object
+ *                              authorName:
+ *                                type: string
+ *                              comments:
+ *                                type: object
  */
 // ** get a post with comment belongings.
 postRouter.get('/posts/:postId', async (req, res, next) => {
@@ -165,7 +167,7 @@ postRouter.get('/posts/:postId', async (req, res, next) => {
  *      security:
  *	      - jwt: []
  *      parameters:
- *        - name: id
+ *        - name: postId
  *          in: path
  *          type: string
  *          description: post의 고유 id
@@ -247,7 +249,7 @@ postRouter.delete('/posts/:postId', async (req, res, next) => {
 /**
  * @swagger
  * paths:
- *  /board/likes/{postId}:
+ *  /board/{postId}/upvote:
  *    put:
  *      tags: [Post]
  *      summary: like the Post(좋아요)
@@ -277,8 +279,8 @@ postRouter.delete('/posts/:postId', async (req, res, next) => {
  */
 postRouter.put('/posts/:postId/upvotes', async (req, res, next) => {
   try {
-    const userObjId = req.currentUserId;
-    console.log(userObjId);
+    // const userObjId = req.currentUserId;
+    const userObjId = '62b16ee1e9d56170f4bdda07';
     const { postId } = req.params;
     const post = await postService.upvotePost({ userObjId, postId });
     res.status(200).json({
