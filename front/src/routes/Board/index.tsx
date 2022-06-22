@@ -7,6 +7,7 @@ import { getApi } from 'services';
 import DropDown from 'routes/_shared/DropDown';
 import PostItem from 'routes/_shared/PostItem';
 import styles from './board.module.scss';
+import { Button } from 'routes/_shared/Button';
 
 const DROPDOWN_CATEGORIES = ['전체', '자유', '한국어 질문', 'K-pop', 'K-drama'];
 
@@ -35,9 +36,14 @@ const Board = () => {
         </p>
       </div>
       <article>
-        <DropDown selectList={DROPDOWN_CATEGORIES} setCurrentSelect={setCurrentCategory} size='small'>
-          {currentCategory}
-        </DropDown>
+        <div>
+          <DropDown selectList={DROPDOWN_CATEGORIES} setCurrentSelect={setCurrentCategory} size='small'>
+            {currentCategory}
+          </DropDown>
+          <Button type='button' size='large'>
+            글쓰기
+          </Button>
+        </div>
         <ul>
           {filteredposts.map((post: IPost) => (
             <PostItem key={post.postId} post={post} />

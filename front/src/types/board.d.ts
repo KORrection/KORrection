@@ -2,7 +2,7 @@ export interface IPost {
   _id: string;
   postId: string;
   author: string;
-  cateory: string;
+  category: string;
   title: string;
   content: string;
   likeCount: number;

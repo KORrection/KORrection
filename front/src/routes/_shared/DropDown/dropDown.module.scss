@@ -15,7 +15,7 @@ $ASSET_PATH: '/assets/svgs/';
     text-align: center;
     cursor: pointer;
     background-color: colors.$WHITE;
-    border: 1px solid rgb(209, 216, 220);
+    border: 1px solid colors.$SUB_BORDER;
     border-radius: 10px;
     -webkit-box-pack: justify;
     -webkit-box-align: center;

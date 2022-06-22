@@ -20,7 +20,7 @@ const PostItem = ({ post }: IProps) => {
         <dl>
           <div className={styles.leftContainer}>
             <dt>카테고리</dt>
-            <dd className={styles.subText}>{post.cateory}</dd>
+            <dd className={styles.subText}>{post.category}</dd>
             <dt>글 제목</dt>
             <dd className={styles.mainText}>{post.title}</dd>
           </div>
