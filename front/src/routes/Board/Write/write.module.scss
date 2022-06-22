@@ -1,0 +1,55 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
+
+.pageContainer {
+  @include flexbox.flexbox(center, center);
+  width: 100%;
+  height: 100%;
+
+  .formContainer {
+    width: 100%;
+    height: 100%;
+
+    .titleContainer {
+      display: flex;
+      height: 40px;
+      margin-bottom: 15px;
+
+      input {
+        width: 100%;
+        padding: 0 15px;
+        margin-left: 10px;
+        border: 1px solid colors.$MAIN_BORDER;
+        border-radius: 10px;
+      }
+    }
+  }
+}
+
+.textEditorContainer {
+  h1 {
+    font-size: 32px;
+    font-weight: bold;
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  h3 {
+    font-size: 19px;
+    font-weight: bold;
+  }
+
+  .buttonContainer {
+    button {
+      font-size: 20px;
+    }
+  }
+
+  .editor {
+    border: 1px solid colors.$SUB_BORDER;
+  }
+}

@@ -8,8 +8,9 @@ import DropDown from 'routes/_shared/DropDown';
 import PostItem from 'routes/_shared/PostItem';
 import styles from './board.module.scss';
 import { Button } from 'routes/_shared/Button';
+import { Link } from 'react-router-dom';
 
-const DROPDOWN_CATEGORIES = ['전체', '자유', '한국어 질문', 'K-pop', 'K-drama'];
+const DROPDOWN_CATEGORIES = ['전체', '자유', '한국어 질문'];
 
 const Board = () => {
   const [posts, setPosts] = useState([]);
@@ -25,6 +26,19 @@ const Board = () => {
     });
   });
 
+  useEffect(() => {
+    let newFilteredPosts = posts;
+
+    if (currentCategory === '전체') {
+      newFilteredPosts = posts;
+    } else if (currentCategory === '자유') {
+      newFilteredPosts = posts.filter((post: IPost) => post.category === 'free');
+    } else if (currentCategory === '한국어 질문') {
+      newFilteredPosts = posts.filter((post: IPost) => post.category === 'qna');
+    }
+    setFilteredPosts(newFilteredPosts);
+  }, [currentCategory, posts]);
+
   return (
     <section className={styles.pageContainer}>
       <div className={styles.titleBox}>
@@ -36,13 +50,15 @@ const Board = () => {
         </p>
       </div>
       <article>
-        <div>
+        <div className={styles.componentsContainer}>
           <DropDown selectList={DROPDOWN_CATEGORIES} setCurrentSelect={setCurrentCategory} size='small'>
             {currentCategory}
           </DropDown>
-          <Button type='button' size='large'>
-            글쓰기
-          </Button>
+          <Link to='write'>
+            <Button type='button' size='large'>
+              글쓰기
+            </Button>
+          </Link>
         </div>
         <ul>
           {filteredposts.map((post: IPost) => (

@@ -28,7 +28,7 @@ const PostItem = ({ post }: IProps) => {
             <dt>작성 날짜</dt>
             <dd className={styles.subText}>{post.createdAt.substring(0, 10)}</dd>
             <dt>작성자</dt>
-            <dd className={styles.mainText}>{post.author}</dd>
+            <dd className={styles.mainText}>{post.authorObjId}</dd>
           </div>
         </dl>
       </button>

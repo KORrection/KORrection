@@ -7,6 +7,7 @@ import GEC from './GEC';
 import Quiz from './Quiz';
 import Board from './Board';
 import Post from './Board/Post';
+import Write from './Board/Write';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path='quiz' element={<Quiz />} />
           <Route path='board' element={<Board />} />
           <Route path='board/:postId' element={<Post />} />
+          <Route path='board/write' element={<Write />} />
         </Routes>
       </main>
     </div>
