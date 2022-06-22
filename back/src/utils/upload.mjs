@@ -14,9 +14,11 @@ const upload = multer({
   storage: multerS3({
     s3,
     bucket: process.env.AWS_BUCKET_NAME,
+
     key: (req, file, cb) => {
       const ext = file.originalname.split('.').pop();
-      cb(null, `images/${file.fieldname}-${Date.now()}${ext}`);
+      cb(null, `${file.fieldname}-${Date.now()}.${ext}`);
+      console.log(file);
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 },
