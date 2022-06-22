@@ -2,7 +2,6 @@
 import { Post } from './postModel.mjs';
 import { User } from '../user/userModel.mjs';
 import { Comment } from '../comment/commentModel.mjs';
-import mongoose from 'mongoose';
 
 class postService {
   static async createPost({ userId, category, title, content }) {
@@ -52,7 +51,7 @@ class postService {
   }
 
   static async deletePost({ postId }) {
-    const commentDoc = Comment.deleteCommentsByPostId({ postId });
+    await Comment.deleteCommentsByPostId({ postId });
     const postDoc = await Post.deletePost({ postId });
     if (postDoc.acknowledged && postDoc.deletedCount == 1) {
       // console.log('Delete successfully');
@@ -76,7 +75,7 @@ class postService {
     const votedPost = post._id;
     console.log(votedPost);
 
-    const updatedPost = await Post.upvotePost({ voteUser, votedPost });
+    const updatedPost = await Post.upvotePost({ user, votedPost });
     return updatedPost;
   }
 
