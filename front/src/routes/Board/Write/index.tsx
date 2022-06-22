@@ -7,6 +7,7 @@ import DropDown from 'routes/_shared/DropDown';
 import styles from './write.module.scss';
 import TextEditor from './TextEditor';
 import { postApi } from 'services';
+import { Button } from 'routes/_shared/Button';
 
 const DROPDOWN_CATEGORIES = ['전체', '자유', '한국어 질문'];
 
@@ -18,16 +19,19 @@ const Write = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const html = stateToHTML(editorState.getCurrentContent());
-    // console.log(html);
 
     postApi('board/posts', {
       category: 'free',
-      title: '테스트33',
+      title: inputVal,
       content: html,
-    }).then((res) => console.log(res));
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
   };
 
-  const handleInputChange = (e) => {};
+  const handleInputChange = (e: FormEvent<HTMLInputElement>) => {
+    setInputVal(e.currentTarget.value);
+  };
 
   return (
     <section className={styles.pageContainer}>
@@ -36,11 +40,15 @@ const Write = () => {
           <DropDown selectList={DROPDOWN_CATEGORIES} setCurrentSelect={setCurrentCategory} size='small'>
             {currentCategory}
           </DropDown>
-          <input type='text' name='title' placeholder='글 제목' onChange={handleInputChange} />
+          <input type='text' name='title' placeholder='글 제목' value={inputVal} onChange={handleInputChange} />
         </div>
 
         <TextEditor editorState={editorState} setEditorState={setEditorState} />
-        <button type='submit'>save</button>
+        <div className={styles.buttonWrapper}>
+          <Button type='submit' size='large' primary>
+            save
+          </Button>
+        </div>
       </form>
     </section>
   );

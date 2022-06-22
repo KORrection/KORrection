@@ -29,7 +29,7 @@ const TextEditor = ({ editorState, setEditorState }: IProps) => {
   };
 
   return (
-    <div className={styles.textEditorContainer}>
+    <div className={styles.editorContainer}>
       <div className={styles.buttonContainer}>
         <button type='button' onMouseDown={(e) => handleBlockClick(e, 'header-one')}>
           h1
