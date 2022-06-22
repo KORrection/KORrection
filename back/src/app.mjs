@@ -1,6 +1,5 @@
 import cors from 'cors';
 import express from 'express';
-import session from 'express-session';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 import passport from 'passport';
@@ -8,7 +7,8 @@ import passportConfig from './passport/index.mjs';
 import cookieParser from 'cookie-parser';
 import { swaggerUi, specs } from './swagger.js';
 import { userRouter } from './user/userRouter.mjs';
-import { postRouter } from './board/postRouter.mjs';
+import { postRouter } from './post/postRouter.mjs';
+import { commentRouter } from './comment/commentRouter.mjs';
 
 dotenv.config();
 const app = express();
@@ -19,17 +19,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(
-  session({
-    secret: 'This is a secret',
-    resave: true,
-    saveUninitialized: true,
-  })
-);
-
 app.use(cookieParser());
 app.use(passport.initialize());
-app.use(passport.session());
 
 const DB_URL = process.env.MONGODB_URL;
 mongoose.connect(DB_URL, {
@@ -41,6 +32,7 @@ db.on('connected', () => console.log('mongoose Connected'));
 db.on('error', (error) => console.error(`mongoose not Connected: ${error}`));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/uploads', express.static('uploads'));
 
 // 기본 페이지
 app.get('/', (req, res) => {
@@ -48,6 +40,7 @@ app.get('/', (req, res) => {
 });
 
 app.use(userRouter);
-app.use(postRouter);
+app.use('/board', postRouter);
+app.use('/board/comments', commentRouter);
 
 export { app };

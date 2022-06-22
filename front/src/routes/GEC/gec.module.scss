@@ -3,7 +3,7 @@
 @use '/src/styles/mixins/responsive';
 
 .pageContainer {
-  @include flexbox.flexbox(between, center);
+  @include flexbox.flexbox(center, center);
   flex-direction: column;
   width: 100%;
   height: calc(100vh - 100px);
@@ -11,34 +11,54 @@
 
   .container {
     width: 100%;
-    height: 50%;
+    height: 100%;
 
     + .container {
-      padding-top: 30px;
+      margin-top: 30px;
     }
 
-    .grammarlyText {
-      width: 100%;
-      height: 100%;
-      resize: none;
-      border: none;
-    }
-
-    h2 {
+    .title {
+      @include flexbox.flexbox(start, center);
       margin-bottom: 15px;
-      font-weight: 600;
+
+      svg {
+        height: 60px;
+      }
+
+      h2 {
+        font-weight: 600;
+      }
+    }
+
+    .textContainer {
+      position: relative;
+      width: 100%;
+      height: calc(100% - 75px);
+
+      .grammarlyText {
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+        resize: none;
+        border: 1px solid colors.$GRAYE;
+        border-radius: 10px;
+      }
+
+      .textLength {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+      }
     }
   }
 
   ul {
-    height: calc(100% - 40px);
-
     .suggestionCard {
+      @include flexbox.flexbox(start, center);
       width: 100%;
       height: 100px;
       padding: 20px;
-      margin-bottom: 10px;
-      line-height: 25px;
+      word-break: keep-all;
       border: 1px solid colors.$MAIN_BORDER;
       border-radius: 10px;
 
@@ -60,16 +80,23 @@
 
 @include responsive.after(ML) {
   .pageContainer {
-    display: flex;
+    @include flexbox.flexbox(start, center);
     flex-wrap: wrap;
     padding: 10px;
 
     .container {
       width: 50%;
       height: 100%;
+      padding-right: 3%;
 
       + .container {
-        padding-top: 0;
+        padding-right: 0;
+        margin-top: 0;
+      }
+
+      .textLength {
+        right: 40px;
+        bottom: 20px;
       }
     }
   }
@@ -79,5 +106,12 @@
   .pageContainer {
     width: 1200px;
     margin: auto;
+
+    .container {
+      .textLength {
+        right: 60px;
+        bottom: 20px;
+      }
+    }
   }
 }

@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 
 const PostSchema = new Schema(
   {
-    shortId: {
+    postId: {
       type: String,
       default: () => {
         return nanoid();
@@ -28,7 +28,7 @@ const PostSchema = new Schema(
       type: String,
       required: true,
     },
-    likes: {
+    likeCount: {
       type: Number,
       required: true,
       default: 0,
@@ -47,7 +47,7 @@ export { PostModel };
  *     type: object
  *     required:
  *       - _id
- *       - shortId
+ *       - postId
  *       - author
  *       - category
  *       - title
@@ -58,7 +58,7 @@ export { PostModel };
  *     properties:
  *       _id:
  *         type: string
- *       shortId:
+ *       postId:
  *         type: string
  *       author:
  *         type: string
@@ -68,7 +68,7 @@ export { PostModel };
  *         type: string
  *       content:
  *         type: string
- *       like:
+ *       likeCount:
  *         type: number
  *       createdAt:
  *         type: string
