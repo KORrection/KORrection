@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import passport from 'passport';
-import Auth from '../passport/utils.mjs';
+import Auth from '../passport/token.mjs';
 import { login_required } from '../middleware/login_required.mjs';
 import { userService } from './userService.mjs';
 import upload from '../utils/upload.mjs';
@@ -22,6 +22,14 @@ userRouter.get(
   })
 );
 
+/**
+ * @swagger
+ * paths:
+ *  /google:
+ *   get:
+ *    tags: [Users]
+ *    summary: 로그인
+ */
 userRouter.get('/google/callback/', passport.authenticate('google', { session: false }), (req, res) => {
   Auth.signToken(req, res);
 });
@@ -31,16 +39,31 @@ userRouter.get('/logout', (req, res) => {
   res.clearCookie('token');
   res.redirect('http://localhost:3000');
 });
-
-userRouter.get('/userlist', login_required, async (req, res, next) => {
+/**
+ * @swagger
+ * paths:
+ *  /logout:
+ *   get:
+ *    tags: [Users]
+ *    summary: 로그아웃
+ */
+userRouter.get('/users', login_required, async function (req, res, next) {
   try {
+    // 전체 사용자 목록을 얻음
     const users = await userService.getUsers();
     res.status(200).send(users);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 });
-
+/**
+ * @swagger
+ * paths:
+ *  /users:
+ *   get:
+ *    tags: [Users]
+ *    summary: 전체 사용자 목록
+ */
 userRouter.put('/users/:id', async function (req, res, next) {
   try {
     const user_id = req.params.id;
@@ -61,27 +84,67 @@ userRouter.put('/users/:id', async function (req, res, next) {
   }
 });
 
-// userRouter.post('/profile', upload.single('image'), async (req, res) => {
-//   console.log(2);
-//   console.log(req.file);
-//   await req.user.update({ profilePicture: req.file.location });
-//   console.log(req.file.location);
-//   res.status(200).json(req.file);
-// });
+/**
+ * @swagger
+ * paths:
+ *  /users/:id:
+ *    put:
+ *      tags: [Users]
+ *      summary: 닉네임 / 자기소개 변경
+ *      parameters:
+ *      - in: body
+ *        schema:
+ *          type: object
+ *          properties:
+ *            nickname:
+ *              type: string
+ *            description:
+ *              type: string
+ *      responses:
+ *        200:
+ *          description: succ
+ *          content:
+ *            application/json:
+ */
 
-// userRouter.post('/profile/:id', upload.single('image'), login_required, async (req, res, next) => {
-//   try {
-//     const user_id = req.params.id;
+userRouter.post('/profile/:id', upload.single('image'), async (req, res, next) => {
+  try {
+    const user_id = req.params.id;
 
-//     const profileUrl = req.body.profilePicture;
-//     const toUpdate = { profileUrl };
+    const profilePicture = req.file.key ?? null;
+    const toUpdate = { profilePicture };
 
-//     const updatedurl = await userService.setUser({ user_id, toUpdate });
+    const updatedUser = await userService.fileUpload({ user_id, toUpdate });
 
-//     res.json(updatedurl);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+    if (updatedUser.errorMessage) {
+      throw new Error(updatedUser.errorMessage);
+    }
+    res.status(200).json(updatedUser);
+    console.log(updatedUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * @swagger
+ * paths:
+ *  /profile/:id:
+ *    post:
+ *      tags: [Users]
+ *      summary: 프로필 이미지 변경
+ *      parameters:
+ *      - in: body
+ *        schema:
+ *          type: object
+ *          properties:
+ *            profilePicture:
+ *              type: string
+ *      responses:
+ *        200:
+ *          description: succ
+ *          content:
+ *            application/json:
+ */
 
 export { userRouter };

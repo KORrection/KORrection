@@ -9,7 +9,7 @@ class userService {
     if (!user) {
       console.log('존재하지 않는 이메일입니다');
     }
-    const id = user.id;
+    const id = user.email;
     const nickname = user.nickname;
     const description = user.description;
 
@@ -41,14 +41,27 @@ class userService {
       const newValue = toUpdate.description;
       user = await User.update({ user_id, fieldToUpdate, newValue });
     }
+    return user;
+  }
+  static async fileUpload({ user_id, toUpdate }) {
+    let user = await User.findById({ user_id });
 
-    // if (toUpdate.profilePicture) {
-    //   const fieldToUpdate = 'profilePicture';
-    //   const newValue = toUpdate.profilePicture;
-    //   user = await User.update({ user_id, fieldToUpdate, newValue });
-    // }
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!user) {
+      console.log('존재하지 않는 회원입니다.');
+      return;
+    }
+    if (toUpdate.profilePicture) {
+      const fieldToUpdate = 'profilePicture';
+      const newValue = toUpdate.profilePicture;
+      user = await User.update({ user_id, fieldToUpdate, newValue });
+    }
 
     return user;
+  }
+  static async getUsers() {
+    const users = await User.findAll();
+    return users;
   }
 }
 

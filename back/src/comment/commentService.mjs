@@ -1,18 +1,20 @@
 import { Comment } from './commentModel.mjs';
-// import { Post } from '../post/postModel.mjs';
+import { User } from '../user/userModel.mjs';
 
 class commentService {
-  static async createComment({ userId, parentPostId, commentBody }) {
+  static async createComment({ userId, parentPostId, parentPostObjId, commentBody }) {
     if (!commentBody) {
       throw new Error('댓글 내용을 입력하세요.');
     }
-    const author = userId.substring(0, userId.indexOf('@')); // ! assume that userId = email
-    const comment = await Comment.createComment({ author, parentPostId, commentBody });
-    return comment;
+    const user = await User.findById({ userId });
+    const authorObjId = user._id;
+    const authorName = user.nickname;
+    const comment = await Comment.createComment({ authorObjId, parentPostId, parentPostObjId, commentBody });
+    return { comment, authorName };
   }
 
-  static async getComments({ parentPostId }) {
-    const comments = await Comment.getComments({ parentPostId });
+  static async getCommentsByPostId({ parentPostId }) {
+    const comments = await Comment.getCommentsByPostId({ parentPostId });
     return comments;
   }
 

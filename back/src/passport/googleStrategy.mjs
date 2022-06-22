@@ -17,14 +17,13 @@ export default () => {
         const email = profile.emails[0].value;
 
         const currentUser = await User.findByEmail({ email });
-        console.log(currentUser);
 
         if (currentUser) {
           return done(null, currentUser);
         } else {
           const newUser = await User.create({
             email,
-            snsId: profile.id,
+            Id: profile.id,
             nickname: 'null',
             profilePicture: 'null',
             description: 'null',
