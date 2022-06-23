@@ -56,6 +56,7 @@ userRouter.get('/users', login_required, async function (req, res, next) {
     next(error);
   }
 });
+
 /**
  * @swagger
  * paths:
@@ -64,16 +65,16 @@ userRouter.get('/users', login_required, async function (req, res, next) {
  *    tags: [Users]
  *    summary: 전체 사용자 목록
  */
-userRouter.put('/users/:id', async function (req, res, next) {
+userRouter.put('/users', async function (req, res, next) {
   try {
-    const user_id = req.params.id;
+    const userId = req.body._id;
 
     const nickname = req.body.nickname ?? null;
     const description = req.body.description ?? null;
 
     const toUpdate = { nickname, description };
 
-    const updatedUser = await userService.setUser({ user_id, toUpdate });
+    const updatedUser = await userService.setUser({ userId, toUpdate });
 
     if (updatedUser.errorMessage) {
       throw new Error(updatedUser.errorMessage);
@@ -107,14 +108,14 @@ userRouter.put('/users/:id', async function (req, res, next) {
  *            application/json:
  */
 
-userRouter.post('/profile/:id', upload.single('image'), async (req, res, next) => {
+userRouter.post('/profile', login_required, upload.single('image'), async (req, res, next) => {
   try {
-    const user_id = req.params.id;
+    const userId = req.body._id;
 
     const profilePicture = req.file.key ?? null;
     const toUpdate = { profilePicture };
 
-    const updatedUser = await userService.fileUpload({ user_id, toUpdate });
+    const updatedUser = await userService.fileUpload({ userId, toUpdate });
 
     if (updatedUser.errorMessage) {
       throw new Error(updatedUser.errorMessage);
