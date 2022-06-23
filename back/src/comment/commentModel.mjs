@@ -22,7 +22,10 @@ class Comment {
     return await CommentModel.deleteOne({ commentId });
   }
 
-  static async deleteCommentsByPostId({ postId }) {
+  static async deleteCommentsByPostId({ postId }, { session }) {
+    if (session !== undefined) {
+      return await CommentModel.deleteMany({ parentPostId: postId }).session(session);
+    }
     return await CommentModel.deleteMany({ parentPostId: postId });
   }
 

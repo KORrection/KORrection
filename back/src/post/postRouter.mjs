@@ -145,10 +145,10 @@ postRouter.get('/', async (req, res, next) => {
 postRouter.get('/posts/:postId', async (req, res, next) => {
   try {
     const { postId } = req.params;
-    const { post, authorName, comments } = await postService.findPostById({ postId });
+    const { post, authorName, authorPic, comments } = await postService.findPostById({ postId });
     res.status(200).json({
       status: 'success',
-      payload: { post, authorName, comments },
+      payload: { post, authorName, authorPic, comments },
     });
   } catch (err) {
     next(err);
@@ -278,8 +278,7 @@ postRouter.delete('/posts/:postId', async (req, res, next) => {
  */
 postRouter.put('/posts/:postId/upvotes', async (req, res, next) => {
   try {
-    // const userObjId = req.currentUserId;
-    const userObjId = '62b16ee1e9d56170f4bdda07';
+    const userObjId = req.currentUserId;
     const { postId } = req.params;
     const post = await postService.upvotePost({ userObjId, postId });
     res.status(200).json({

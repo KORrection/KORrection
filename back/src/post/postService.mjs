@@ -3,21 +3,9 @@ import { Post } from './postModel.mjs';
 import { User } from '../user/userModel.mjs';
 import { Comment } from '../comment/commentModel.mjs';
 import { PostVote } from './postVoteModel.mjs';
+import mongoose from 'mongoose';
 
 class postService {
-  // static async createPost(userId, { category, title, content }) {
-  //   if (!category || !title || !content) {
-  //     throw new Error('내용을 모두 입력해주세요');
-  //   }
-  //   console.log(userId);
-  //   const user = await User.findById(userId);
-  //   console.log(user);
-  //   const authorObjId = userId;
-  //   const authorName = user.nickname;
-  //   const post = await Post.createPost({ category, authorObjId, title, content });
-  //   post.errorMessage = null;
-  //   return { post, authorName };
-  // }
   static async createPost({ userId, category, title, content }) {
     if (!category || !title || !content) {
       throw new Error('내용을 모두 입력해주세요');
@@ -31,8 +19,20 @@ class postService {
   }
 
   static async findAll() {
-    const posts = await Post.findAll();
-    return posts;
+    const posts = await Post.findAll(); // array
+    const refinedPosts = posts.map((post) => {
+      return {
+        category: post.category,
+        authorName: post.authorObjId.nickname,
+        authorPic: post.authorObjId.profilePicture,
+        title: post.title,
+        content: post.content,
+        likeCount: post.likeCount,
+        postId: post.postId,
+        createdAt: post.createdAt,
+      };
+    });
+    return refinedPosts;
   }
 
   static async findPostById({ postId }) {
@@ -50,8 +50,9 @@ class postService {
       updatedAt: postAndComments.updatedAt,
     };
     const authorName = postAndComments.authorObjId.nickname;
+    const authorPic = postAndComments.authorObjId.profilePicture;
     const comments = postAndComments.comments;
-    return { post, authorName, comments };
+    return { post, authorName, authorPic, comments };
   }
 
   static async updatePost({ postId, category, title, content }) {
@@ -63,13 +64,25 @@ class postService {
   }
 
   static async deletePost({ postId }) {
-    await Comment.deleteCommentsByPostId({ postId });
-    const postDoc = await Post.deletePost({ postId });
-    if (postDoc.acknowledged && postDoc.deletedCount == 1) {
-      // console.log('Delete successfully');
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    let postDoc;
+
+    try {
+      await Comment.deleteCommentsByPostId({ postId }, { session });
+      postDoc = await Post.deletePost({ postId }, { session });
+      await session.commitTransaction();
+    } catch (error) {
+      await session.abortTransaction();
+    } finally {
+      await session.endSession();
+    }
+
+    if (postDoc !== undefined && postDoc.acknowledged && postDoc.deletedCount == 1) {
+      console.log('Delete successfully');
       return { isDeleted: true, message: '게시물이 삭제되었습니다.' };
     } else {
-      // console.log("Post doesn't exist or already deleted");
+      console.log("Post doesn't exist or already deleted");
       throw new Error('없는 게시물입니다.');
     }
   }
