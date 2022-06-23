@@ -5,8 +5,21 @@ import { Comment } from '../comment/commentModel.mjs';
 import { PostVote } from './postVoteModel.mjs';
 
 class postService {
+  // static async createPost(userId, { category, title, content }) {
+  //   if (!category || !title || !content) {
+  //     throw new Error('내용을 모두 입력해주세요');
+  //   }
+  //   console.log(userId);
+  //   const user = await User.findById(userId);
+  //   console.log(user);
+  //   const authorObjId = userId;
+  //   const authorName = user.nickname;
+  //   const post = await Post.createPost({ category, authorObjId, title, content });
+  //   post.errorMessage = null;
+  //   return { post, authorName };
+  // }
   static async createPost({ userId, category, title, content }) {
-    if (!category || !userId || !title || !content) {
+    if (!category || !title || !content) {
       throw new Error('내용을 모두 입력해주세요');
     }
     const user = await User.findById({ userId });

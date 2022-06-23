@@ -10,11 +10,9 @@ class User {
 
     return user;
   }
-  static async findById({ user_id }) {
-    const user = await UserModel.findOne({ _id: user_id });
-    return user;
+  static async findById({ userId }) {
+    return await UserModel.findOne({ _id: userId });
   }
-
   static async findAll() {
     const users = await UserModel.findAll({});
     return users;

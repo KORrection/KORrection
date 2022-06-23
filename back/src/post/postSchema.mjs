@@ -14,7 +14,7 @@ const PostSchema = new Schema(
     },
     category: {
       type: String,
-      default: 'free',
+      default: '자유',
     },
     authorObjId: {
       type: Schema.Types.ObjectId,
