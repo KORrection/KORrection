@@ -31,8 +31,20 @@ class postService {
   }
 
   static async findAll() {
-    const posts = await Post.findAll();
-    return posts;
+    const posts = await Post.findAll(); // array
+    const refinedPosts = posts.map((post) => {
+      return {
+        category: post.category,
+        authorName: post.authorObjId.nickname,
+        authorPic: post.authorObjId.profilePicture,
+        title: post.title,
+        content: post.content,
+        likeCount: post.likeCount,
+        postId: post.postId,
+        createdAt: post.createdAt,
+      };
+    });
+    return refinedPosts;
   }
 
   static async findPostById({ postId }) {

@@ -6,7 +6,7 @@ class Post {
     return newPost;
   }
   static async findAll() {
-    return await PostModel.find({});
+    return await PostModel.find({}).populate('authorObjId');
   }
 
   static async findPostById({ postId }) {
