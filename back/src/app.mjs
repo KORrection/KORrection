@@ -42,6 +42,6 @@ app.get('/', (req, res) => {
 
 app.use(userRouter);
 app.use('/board', postRouter);
-app.use('/board/comments', commentRouter);
+app.use('/board/comments', login_required, commentRouter);
 
 export { app };

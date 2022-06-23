@@ -14,7 +14,6 @@ class User {
     const user = await UserModel.findOne({ _id: userId });
     return user;
   }
-
   static async findAll() {
     const users = await UserModel.findAll({});
     return users;

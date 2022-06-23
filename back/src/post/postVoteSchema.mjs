@@ -3,22 +3,14 @@ const { Schema, model } = pkg;
 
 const PostVoteSchema = new Schema(
   {
-    // postId: {
-    //   type: String,
-    //   required: true,
-    // },
-    postId: {
+    postObjId: {
       type: Schema.Types.ObjectId,
       ref: 'post',
       required: true,
     },
-    // author: {
-    //   type: String,
-    //   required: true,
-    // },
-    author: {
+    userObjId: {
       type: Schema.Types.ObjectId,
-      ref: 'user',
+      ref: 'User',
       required: true,
     },
   },
