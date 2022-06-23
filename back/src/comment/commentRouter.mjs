@@ -58,7 +58,7 @@ const commentRouter = Router();
 commentRouter.post('/', checkPostId, async (req, res, next) => {
   try {
     // const userId = req.currentUserId;
-    const userId = '62b16ee1e9d56170f4bdda07';
+    const userId = '62b43a24ba416653fc32121d';
     const { parentPostId, parentPostObjId } = res.locals;
     const { commentBody } = req.body;
     const { comment, authorName } = await commentService.createComment({
