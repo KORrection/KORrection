@@ -62,8 +62,9 @@ class postService {
       updatedAt: postAndComments.updatedAt,
     };
     const authorName = postAndComments.authorObjId.nickname;
+    const authorPic = postAndComments.authorObjId.profilePicture;
     const comments = postAndComments.comments;
-    return { post, authorName, comments };
+    return { post, authorName, authorPic, comments };
   }
 
   static async updatePost({ postId, category, title, content }) {

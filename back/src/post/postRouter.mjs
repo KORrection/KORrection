@@ -145,10 +145,10 @@ postRouter.get('/', async (req, res, next) => {
 postRouter.get('/posts/:postId', async (req, res, next) => {
   try {
     const { postId } = req.params;
-    const { post, authorName, comments } = await postService.findPostById({ postId });
+    const { post, authorName, authorPic, comments } = await postService.findPostById({ postId });
     res.status(200).json({
       status: 'success',
-      payload: { post, authorName, comments },
+      payload: { post, authorName, authorPic, comments },
     });
   } catch (err) {
     next(err);
