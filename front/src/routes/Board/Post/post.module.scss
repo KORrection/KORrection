@@ -1,0 +1,28 @@
+.pageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .speechBubble {
+    position: relative;
+    width: 90%;
+    padding: 10px;
+    background: #ff8282;
+    border-radius: 10px;
+  }
+
+  .speechBubble::after {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    width: 0;
+    height: 0;
+    margin-top: -12.5px;
+    margin-left: -25px;
+    content: '';
+    border: 25px solid transparent;
+    border-top: 0;
+    border-right-color: #ff8282;
+    border-left: 0;
+  }
+}
