@@ -7,7 +7,7 @@ const checkPostId = async (req, res, next) => {
   try {
     const post = await Post.findPostById({ postId: req.query.pId });
     res.locals.parentPostId = post.postId;
-    res.locals.parentPostObjId= post._id;
+    res.locals.parentPostObjId = post._id;
     next();
   } catch (err) {
     return res.send(err.message);

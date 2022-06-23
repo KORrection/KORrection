@@ -14,7 +14,7 @@ const PostSchema = new Schema(
     },
     category: {
       type: String,
-      default: 'free',
+      default: '자유',
     },
     authorObjId: {
       type: Schema.Types.ObjectId,
@@ -44,6 +44,11 @@ PostSchema.virtual('comments', {
   foreignField: 'parentPostObjId',
 });
 
+PostSchema.virtual('upvotes', {
+  ref: 'postVote',
+  localField: '_id',
+  foreignField: 'postId',
+});
 const PostModel = model('post', PostSchema);
 export { PostModel };
 

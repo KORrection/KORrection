@@ -1,8 +1,8 @@
 import { UserModel } from './userSchema.mjs';
 
 class User {
-  static async create({ email, Id, nickname, profilePicture, description }) {
-    const createdNewUser = await UserModel.create({ email, Id, nickname, profilePicture, description });
+  static async create({ email, nickname, profilePicture, description }) {
+    const createdNewUser = await UserModel.create({ email, nickname, profilePicture, description });
     return createdNewUser;
   }
   static async findByEmail({ email }) {
@@ -10,17 +10,16 @@ class User {
 
     return user;
   }
-  static async findById({ user_id }) {
-    const user = await UserModel.findOne({ _id: user_id });
+  static async findById({ userId }) {
+    const user = await UserModel.findOne({ _id: userId });
     return user;
   }
-
   static async findAll() {
     const users = await UserModel.findAll({});
     return users;
   }
-  static async update({ user_id, fieldToUpdate, newValue }) {
-    const filter = { _id: user_id };
+  static async update({ userId, fieldToUpdate, newValue }) {
+    const filter = { _id: userId };
     const update = { [fieldToUpdate]: newValue };
     const option = { returnOriginal: false };
 
