@@ -7,7 +7,7 @@ import { getApi } from 'services';
 import DropDown from 'routes/_shared/DropDown';
 import PostItem from 'routes/_shared/PostItem';
 import styles from './board.module.scss';
-import { Button } from 'routes/_shared/Button';
+import Button from 'routes/_shared/Button';
 import { Link } from 'react-router-dom';
 
 const DROPDOWN_CATEGORIES = ['전체', '자유', '한국어 질문'];

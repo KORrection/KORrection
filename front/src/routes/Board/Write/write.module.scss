@@ -24,32 +24,79 @@
         border-radius: 10px;
       }
     }
+
+    .buttonWrapper {
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 }
 
-.textEditorContainer {
-  h1 {
+.editorContainer {
+  h1,
+  h2,
+  h3 {
     font-size: 32px;
     font-weight: bold;
   }
 
+  h1 {
+    font-size: 32px;
+  }
+
   h2 {
     font-size: 24px;
-    font-weight: bold;
   }
 
   h3 {
     font-size: 19px;
-    font-weight: bold;
   }
 
   .buttonContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 10px;
+
     button {
-      font-size: 20px;
+      height: 40px;
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 10px;
+      transition: 300ms;
+
+      &:hover {
+        background-color: colors.$MAIN_BORDER;
+      }
     }
   }
 
   .editor {
-    border: 1px solid colors.$SUB_BORDER;
+    height: calc(100vh - 300px);
+    padding: 10px;
+    margin-bottom: 10px;
+    line-height: 22px;
+    border: 1px solid colors.$MAIN_BORDER;
+    transition: padding 100ms;
+
+    &:hover {
+      cursor: text;
+    }
+  }
+}
+
+@include responsive.after(684px) {
+  .editorContainer {
+    .editor {
+      height: calc(100vh - 260px);
+      padding: 20px;
+    }
+  }
+}
+
+@include responsive.after(LD) {
+  .pageContainer {
+    width: 1200px;
+    margin: auto;
   }
 }

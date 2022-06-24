@@ -12,7 +12,7 @@ interface IButtonProps {
   onSubmit?: (e: FormEvent) => void;
 }
 
-export const Button = ({ children, type, size, primary, onClick, onSubmit }: IButtonProps) => {
+const Button = ({ children, type, size, primary, onClick, onSubmit }: IButtonProps) => {
   return type === 'button' ? (
     <button type='button' className={cx(styles.button, styles[size], { [styles.primary]: primary })} onClick={onClick}>
       {children}
@@ -27,3 +27,5 @@ export const Button = ({ children, type, size, primary, onClick, onSubmit }: IBu
     </button>
   );
 };
+
+export default Button;
