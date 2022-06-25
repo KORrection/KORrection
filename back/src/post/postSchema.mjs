@@ -9,15 +9,16 @@ const PostSchema = new Schema(
       default: () => {
         return nanoid();
       },
-      require: true,
+      required: true,
       index: true,
     },
-    cateory: {
+    category: {
       type: String,
-      default: 'free',
+      default: '자유',
     },
-    author: {
-      type: String,
+    authorObjId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
     },
     title: {
@@ -34,9 +35,20 @@ const PostSchema = new Schema(
       default: 0,
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+PostSchema.virtual('comments', {
+  ref: 'comment',
+  localField: '_id',
+  foreignField: 'parentPostObjId',
+});
+
+PostSchema.virtual('upvotes', {
+  ref: 'postVote',
+  localField: '_id',
+  foreignField: 'postId',
+});
 const PostModel = model('post', PostSchema);
 export { PostModel };
 
@@ -48,7 +60,8 @@ export { PostModel };
  *     required:
  *       - _id
  *       - postId
- *       - author
+ *       - authorId
+ *       - authorName
  *       - category
  *       - title
  *       - content
@@ -60,7 +73,9 @@ export { PostModel };
  *         type: string
  *       postId:
  *         type: string
- *       author:
+ *       authorId:
+ *         type: string
+ *       authorName:
  *         type: string
  *       category:
  *         type: string

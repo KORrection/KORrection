@@ -9,13 +9,21 @@ import { swaggerUi, specs } from './swagger.js';
 import { userRouter } from './user/userRouter.mjs';
 import { postRouter } from './post/postRouter.mjs';
 import { commentRouter } from './comment/commentRouter.mjs';
+import { login_required } from './middleware/login_required.mjs';
 
 dotenv.config();
 const app = express();
 passportConfig();
 
 // CORS 에러 방지
-app.use(cors());
+const corsConfig = {
+  origin: true,
+  credentials: true,
+};
+
+app.use(cors(corsConfig));
+app.options('*', cors(corsConfig));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -40,7 +48,7 @@ app.get('/', (req, res) => {
 });
 
 app.use(userRouter);
-app.use('/board', postRouter);
-app.use('/board/comments', commentRouter);
+app.use('/board', login_required, postRouter);
+app.use('/board/comments', login_required, commentRouter);
 
 export { app };

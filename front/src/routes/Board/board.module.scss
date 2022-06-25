@@ -30,6 +30,13 @@
       transition: 200ms;
     }
   }
+
+  article {
+    .componentsContainer {
+      @include flexbox.flexbox(between, center);
+      padding: 0 2px;
+    }
+  }
 }
 
 @include responsive.after(LD) {

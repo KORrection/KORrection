@@ -17,14 +17,13 @@ export default () => {
         const email = profile.emails[0].value;
 
         const currentUser = await User.findByEmail({ email });
-        console.log(currentUser);
 
         if (currentUser) {
           return done(null, currentUser);
         } else {
           const newUser = await User.create({
             email,
-            snsId: profile.id,
+            // socialId: profile.id, 나중에 소셜 로그인을 더 추가하면 비교값이 되는 변수
             nickname: 'null',
             profilePicture: 'null',
             description: 'null',

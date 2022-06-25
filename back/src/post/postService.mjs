@@ -1,28 +1,58 @@
 // * (2)  service layer
 import { Post } from './postModel.mjs';
+import { User } from '../user/userModel.mjs';
+import { Comment } from '../comment/commentModel.mjs';
+import { PostVote } from './postVoteModel.mjs';
+import mongoose from 'mongoose';
 
 class postService {
   static async createPost({ userId, category, title, content }) {
-    if (!category || !userId || !title || !content) {
+    if (!category || !title || !content) {
       throw new Error('내용을 모두 입력해주세요');
     }
-    const author = userId.substring(0, userId.indexOf('@')); // ! assume that userId = email
-    const post = await Post.createPost({ category, author, title, content });
+    const user = await User.findById({ userId });
+    const authorObjId = userId;
+    const authorName = user.nickname;
+    const post = await Post.createPost({ category, authorObjId, title, content });
     post.errorMessage = null;
-    return post;
+    return { post, authorName };
   }
 
   static async findAll() {
-    const posts = await Post.findAll();
-    return posts;
+    const posts = await Post.findAll(); // array
+    const refinedPosts = posts.map((post) => {
+      return {
+        category: post.category,
+        authorName: post.authorObjId.nickname,
+        authorPic: post.authorObjId.profilePicture,
+        title: post.title,
+        content: post.content,
+        likeCount: post.likeCount,
+        postId: post.postId,
+        createdAt: post.createdAt,
+      };
+    });
+    return refinedPosts;
   }
 
-  static async findPost({ postId }) {
-    const post = await Post.findPost({ postId });
-    if (!post) {
+  static async findPostById({ postId }) {
+    const postAndComments = await Post.findPostById({ postId });
+    if (!postAndComments) {
       throw new Error('게시물이 없습니다');
     }
-    return post;
+    const post = {
+      _id: postAndComments._id,
+      category: postAndComments.category,
+      title: postAndComments.title,
+      content: postAndComments.content,
+      likeCount: postAndComments.likeCount,
+      createdAt: postAndComments.createdAt,
+      updatedAt: postAndComments.updatedAt,
+    };
+    const authorName = postAndComments.authorObjId.nickname;
+    const authorPic = postAndComments.authorObjId.profilePicture;
+    const comments = postAndComments.comments;
+    return { post, authorName, authorPic, comments };
   }
 
   static async updatePost({ postId, category, title, content }) {
@@ -34,23 +64,44 @@ class postService {
   }
 
   static async deletePost({ postId }) {
-    const doc = await Post.deletePost({ postId });
-    if (doc.acknowledged && doc.deletedCount == 1) {
-      // console.log('Delete successfully');
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    let postDoc;
+
+    try {
+      await Comment.deleteCommentsByPostId({ postId }, { session });
+      postDoc = await Post.deletePost({ postId }, { session });
+      await session.commitTransaction();
+    } catch (error) {
+      await session.abortTransaction();
+    } finally {
+      await session.endSession();
+    }
+
+    if (postDoc !== undefined && postDoc.acknowledged && postDoc.deletedCount == 1) {
+      console.log('Delete successfully');
       return { isDeleted: true, message: '게시물이 삭제되었습니다.' };
     } else {
-      // console.log("Post doesn't exist or already deleted");
+      console.log("Post doesn't exist or already deleted");
       throw new Error('없는 게시물입니다.');
     }
   }
 
-  static async likePost({ postId }) {
-    const post = await Post.likePost({ postId });
-    return post;
+  static async upvotePost({ userObjId, postId }) {
+    const voteRecord = await PostVote.findPostVote({ userObjId, postId });
+    if (voteRecord) {
+      throw new Error('좋아요는 한 번만 가능합니다.');
+    }
+    const post = await Post.find;
+    const postObjId = post._id;
+    const newVoteRecord = await PostVote.createPostVote({ userObjId, postObjId });
+    newVoteRecord.postObjId.LikeCount;
+    return newVoteRecord;
   }
 
-  static async undoLikePost({ postId }) {
-    const post = await Post.undoLikePost({ postId });
+  static async downvotePost({ userId, postId }) {
+    const author = userId.substring(0, userId.indexOf('@')); // ! assume that userId = email
+    const post = await Post.downvotePost({ author, postId });
     if (post.likeCount < 0) {
       throw new Error('잘못된 요청입니다.');
     }

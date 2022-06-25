@@ -20,7 +20,7 @@ const PostItem = ({ post }: IProps) => {
         <dl>
           <div className={styles.leftContainer}>
             <dt>카테고리</dt>
-            <dd className={styles.subText}>{post.cateory}</dd>
+            <dd className={styles.subText}>{post.category}</dd>
             <dt>글 제목</dt>
             <dd className={styles.mainText}>{post.title}</dd>
           </div>
@@ -28,7 +28,7 @@ const PostItem = ({ post }: IProps) => {
             <dt>작성 날짜</dt>
             <dd className={styles.subText}>{post.createdAt.substring(0, 10)}</dd>
             <dt>작성자</dt>
-            <dd className={styles.mainText}>{post.author}</dd>
+            <dd className={styles.mainText}>{post.authorObjId}</dd>
           </div>
         </dl>
       </button>

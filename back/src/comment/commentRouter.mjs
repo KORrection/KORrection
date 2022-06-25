@@ -2,36 +2,79 @@
 
 import { Router } from 'express';
 import { commentService } from './commentService.mjs';
-import { checkPostId, valParentPost } from '../middleware/boardValidated.mjs';
+import { checkPostId, validateParentPost } from '../middleware/boardValidated.mjs';
 
 const commentRouter = Router();
+/**
+ * @swagger
+ * tags:
+ *  name: comment
+ *  description: Board에서 사용되는 Comment API
+ */
 
-// * Create
-// commentRouter.post('/posts/:parentPostId/comments', async (req, res, next) => {
-//   try {
-//     const { userId } = req.locals;
-//     const { parentPostId } = req.params;
-//     const { commentBody } = req.body;
-//     const comment = await commentService.createComment({ userId, parentPostId, commentBody });
-//     res.staus(201).json({
-//       status: 'success',
-//       payload: { comment },
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
-// 테스트용
+// *  Create
+/**
+ * @swagger
+ * paths:
+ *  /board/comments?pId=postId:
+ *   post:
+ *    tags: [Post]
+ *    summary: Creates new post
+ *    security:
+ *	      - jwt: []
+ *    parameters:
+ *      - in: body
+ *        name: commentBody
+ *        description: 댓글 작성 내용
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            commentBody:
+ *              type: string
+ *      - in: query
+ *        name: pId (postId)
+ *        description: ?pId=parentPostId => ###이 유효한 값일 때 createComment 가능
+ *        schema:
+ *          type: string
+ *    responses:
+ *      201:
+ *       description: 새 댓글 생성 성공!!
+ *       content:
+ *          application/json:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      status:
+ *                          type: string
+ *                      payload:
+ *                          type: object
+ *                          properties:
+ *                              comment:
+ *                                  type: object
+ *                              authorName:
+ *                                  type: string
+ */
 commentRouter.post('/', checkPostId, async (req, res, next) => {
   try {
-    const userId = 'test@gmail.com';
-    const parentPostId = res.locals.postId;
+    const userId = req.currentUserId;
+    const { parentPostId, parentPostObjId } = res.locals;
     const { commentBody } = req.body;
-    const comment = await commentService.createComment({ userId, parentPostId, commentBody });
+    const { comment, authorName } = await commentService.createComment({
+      userId,
+      parentPostId,
+      parentPostObjId,
+      commentBody,
+    });
     res.status(201).json({
       status: 'success',
-      payload: { comment },
+      payload: {
+        postId: comment.parentPostId,
+        authorName,
+        commentId: comment.commentId,
+        commentBody: comment.commentBody,
+        createdAt: comment.createdAt,
+      },
     });
   } catch (err) {
     next(err);
@@ -42,8 +85,8 @@ commentRouter.post('/', checkPostId, async (req, res, next) => {
 // all matches to the post
 commentRouter.get('/', checkPostId, async (req, res, next) => {
   try {
-    const parentPostId = res.locals.postId;
-    const comments = await commentService.getComments({ parentPostId });
+    const { parentPostId } = res.locals;
+    const comments = await commentService.getCommentsByPostId({ parentPostId });
     res.status(200).json({
       status: 'success',
       payload: { comments },
@@ -54,7 +97,7 @@ commentRouter.get('/', checkPostId, async (req, res, next) => {
 });
 
 // * Update one comment
-commentRouter.put('/:commentId', valParentPost, async (req, res, next) => {
+commentRouter.put('/:commentId', validateParentPost, async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const { commentBody } = req.body;
@@ -70,7 +113,7 @@ commentRouter.put('/:commentId', valParentPost, async (req, res, next) => {
 
 // * Delete
 // ** (1) Delete one comment (delete DB docs for real)
-commentRouter.delete('/:commentId', valParentPost, async (req, res, next) => {
+commentRouter.delete('/:commentId', validateParentPost, async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const isDeleted = await commentService.deleteComment({ commentId });
@@ -84,7 +127,7 @@ commentRouter.delete('/:commentId', valParentPost, async (req, res, next) => {
 });
 
 // ** (2) Pretend To Delete one comment (just change 'isDeleted' value from false to ) - 대댓글 시 필요..
-// commentRouter.delete('/:commentId', valParentPost, async (req, res, next) => {
+// commentRouter.delete('/:commentId', validateParentPost, async (req, res, next) => {
 //   try {
 //     const { commentId } = req.params;
 //     const comment = await commentService.pretendToDelCom({ commentId });
