@@ -5,11 +5,11 @@ class PostVote {
     return await PVoteModel.findOne({ userObjId, postObjId });
   }
   static async createPostVote({ userObjId, postObjId }) {
-    return await PVoteModel.create({ userObjId, postObjId }).populate('postObjId');
+    return await PVoteModel.create({ userObjId, postObjId });
   }
 
-  static async deletePostVote({ userObjId, postObjId }) {
-    return await PVoteModel.deleteOne({ userObjId, postObjId });
+  static async deletePostVote({ postVoteId }, session) {
+    return await PVoteModel.deleteOne({ _id: postVoteId }).session(session);
   }
 }
 

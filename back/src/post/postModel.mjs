@@ -15,8 +15,11 @@ class Post {
       .populate({ path: 'authorObjId', select: ['nickname', 'profilePicture'] });
   }
 
-  static async updatePost({ postId, category, title, content }) {
-    return await PostModel.findOneAndUpdate({ postId }, { $set: { category, title, content } }, { new: true });
+  static async updatePost({ postId, updates }, session) {
+    if (session !== undefined) {
+      return await PostModel.findOneAndUpdate({ postId }, { $inc: updates }, { new: true }).session(session);
+    }
+    return await PostModel.findOneAndUpdate({ postId }, { $set: updates }, { new: true });
   }
 
   static async deletePost({ postId }, { session }) {
