@@ -1,8 +1,7 @@
 import { Post } from '../post/postModel.mjs';
 import { Comment } from '../comment/commentModel.mjs';
 
-// comments?postId=postId 에서 postId가 유효한지 검사
-// upvotes?postId=postId
+// comments?pId=postId 에서 postId가 유효한지 검사
 const checkPostId = async (req, res, next) => {
   try {
     const post = await Post.findPostById({ postId: req.query.pId });

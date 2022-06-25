@@ -283,7 +283,7 @@ postRouter.put('/posts/:postId/upvotes', async (req, res, next) => {
     const post = await postService.upvotePost({ userObjId, postId });
     res.status(200).json({
       status: 'success',
-      payload: { likeCount: post.likeCount },
+      payload: { postId, likeCount: post.likeCount },
     });
   } catch (err) {
     next(err);
@@ -322,13 +322,14 @@ postRouter.put('/posts/:postId/upvotes', async (req, res, next) => {
  *                              likeCount:
  *                                  type: number
  */
-postRouter.put('/posts/:postId/downvotes', async (req, res, next) => {
+postRouter.put('/posts/:postId/devotes', async (req, res, next) => {
   try {
+    const userObjId = req.currentUserId;
     const { postId } = req.params;
-    const post = await postService.downvotePost({ postId });
+    const post = await postService.devotePost({ userObjId, postId });
     res.status(200).json({
       status: 'success',
-      payload: { likecount: post.likeCount },
+      payload: { postId, likecount: post.likeCount },
     });
   } catch (err) {
     next(err);
