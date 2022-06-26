@@ -59,7 +59,8 @@ class postService {
     if (!title || !content) {
       throw new Error('제목과 내용을 입력해주세요');
     }
-    const post = await Post.updatePost({ postId, category, title, content });
+    const updates = { category, title, content };
+    const post = await Post.updatePost({ postId, updates });
     return post;
   }
 
@@ -88,24 +89,63 @@ class postService {
   }
 
   static async upvotePost({ userObjId, postId }) {
-    const voteRecord = await PostVote.findPostVote({ userObjId, postId });
+    const post = await Post.findPostById({ postId });
+    const postObjId = post._id;
+    const voteRecord = await PostVote.findPostVote({ userObjId, postObjId });
     if (voteRecord) {
       throw new Error('좋아요는 한 번만 가능합니다.');
     }
-    const post = await Post.find;
-    const postObjId = post._id;
-    const newVoteRecord = await PostVote.createPostVote({ userObjId, postObjId });
-    newVoteRecord.postObjId.LikeCount;
-    return newVoteRecord;
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    let updatedPost;
+
+    try {
+      await PostVote.createPostVote({ userObjId, postObjId });
+      const updates = { likeCount: 1 };
+      updatedPost = await Post.updatePost({ postId, updates }, session);
+      await session.commitTransaction();
+    } catch (err) {
+      await session.abortTransaction();
+    } finally {
+      await session.endSession();
+    }
+    return updatedPost;
   }
 
-  static async downvotePost({ userId, postId }) {
-    const author = userId.substring(0, userId.indexOf('@')); // ! assume that userId = email
-    const post = await Post.downvotePost({ author, postId });
-    if (post.likeCount < 0) {
-      throw new Error('잘못된 요청입니다.');
+  static async devotePost({ userObjId, postId }) {
+    let updatedPost;
+    let voteDoc;
+    const post = await Post.findPostById({ postId });
+    const postObjId = post._id;
+    const voteRecord = await PostVote.findPostVote({ userObjId, postObjId });
+    if (voteRecord == undefined) {
+      throw new Error('좋아요한 내역이 없습니다.');
     }
-    return post;
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+      const updates = { likeCount: -1 };
+      updatedPost = await Post.updatePost({ postId, updates }, session);
+      const postVoteId = voteRecord._id;
+      voteDoc = await PostVote.deletePostVote({ postVoteId }, session);
+      await session.commitTransaction();
+    } catch (err) {
+      console.log(err);
+      await session.abortTransaction();
+    } finally {
+      await session.endSession();
+    }
+
+    if (voteDoc !== undefined && voteDoc.acknowledged && voteDoc.deletedCount == 1) {
+      console.log('Delete successfully');
+      return updatedPost;
+    } else {
+      console.log("Vote record doesn't exist or already deleted");
+      throw new Error('좋아요한 내역이 없습니다');
+    }
   }
 }
 
