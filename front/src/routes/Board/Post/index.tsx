@@ -1,39 +1,43 @@
+/* eslint-disable react/no-danger */
+import { Default } from 'assets/images';
 import { useState, useMount } from 'hooks';
 import { useParams } from 'react-router-dom';
 
 import { getApi } from 'services';
-import { IBoard } from 'types/board';
+import { IPost } from 'types/board';
 
 import styles from './post.module.scss';
 
 const Post = () => {
   const params = useParams();
 
-  const [post, setPost] = useState<IBoard>();
+  const [post, setPost] = useState<IPost>({ category: '', createdAt: '', likeCount: 0, title: '', content: '' });
+  const [author, setAuthor] = useState({ authorName: '', authorPic: '' });
 
   useMount(() => {
     getApi(`board/posts/${params.postId}`)
-      .then((res) => setPost(res.data.payload))
+      .then((res) => {
+        const { authorName, authorPic, post: newPost } = res.data.payload;
+
+        setPost(newPost);
+        setAuthor({ authorName, authorPic });
+      })
+      // eslint-disable-next-line no-console
       .catch((err) => console.error(err));
   });
 
-  /**  _id: string;
-  category: string;
-  title: string;
-  content: string;
-  likeCount: number;
-  createdAt: string;
-  updatedAt: string; */
-
   return (
     <div className={styles.pageContainer}>
+      <div className={styles.authorContainer}>
+        <img src={Default} alt='authorProfileImg' />
+        <p>{author.authorName}</p>
+      </div>
       <div className={styles.speechBubble}>
-        <p>{post?.post?.title}</p>
-        <p>{post?.authorName}</p>
-        <p>{post?.post?.category}</p>
-        <p>{post?.post?.content}</p>
-        <p>{post?.post?.likeCount}</p>
-        <p>{post?.post?.createdAt}</p>
+        <p className={styles.category}>{post.category}</p>
+        <h1 className={styles.title}>{post.title}</h1>
+        <div dangerouslySetInnerHTML={{ __html: post.content }} className={styles.content} />
+        <p>{post.likeCount}</p>
+        <p>{post.createdAt.substring(0, 10)}</p>
       </div>
     </div>
   );

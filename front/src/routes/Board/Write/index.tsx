@@ -9,10 +9,13 @@ import DropDown from 'routes/_shared/DropDown';
 import Button from 'routes/_shared/Button';
 import TextEditor from './TextEditor';
 import styles from './write.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 const DROPDOWN_CATEGORIES = ['자유', '한국어 질문'];
 
 const Write = () => {
+  const navigate = useNavigate();
+
   const [currentCategory, setCurrentCategory] = useState('자유');
   const [title, setTitle] = useState('');
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
@@ -26,7 +29,7 @@ const Write = () => {
       title,
       content,
     })
-      .then((res) => console.log(res))
+      .then(() => navigate('/board'))
       .catch((err) => console.error(err));
   };
 

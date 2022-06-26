@@ -1,18 +1,19 @@
 export interface IPost {
-  _id: string;
-  id?: string;
-  postId?: string;
-  authorObjId?: string;
   category: string;
-  title: string;
   content: string;
-  likeCount: number;
   createdAt: string;
-  updatedAt: string;
+  likeCount: number;
+  title: string;
+  updatedAt?: string;
+  _id?: string;
+  authorName?: string;
+  authorPic?: string;
+  postId?: string;
 }
 
-export interface IBoard {
+export interface IPostDetail {
   authorName: string;
+  authorPic: string;
   comments: array;
   post: IPost;
 }

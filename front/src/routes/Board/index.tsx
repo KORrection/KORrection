@@ -18,12 +18,15 @@ const Board = () => {
   const [currentCategory, setCurrentCategory] = useState('전체');
 
   useMount(() => {
-    getApi('board').then((res) => {
-      const newPosts = res.data.payload.posts;
+    getApi('board')
+      .then((res) => {
+        const newPosts = res.data.payload.posts;
 
-      setPosts(newPosts);
-      setFilteredPosts(newPosts);
-    });
+        setPosts(newPosts);
+        setFilteredPosts(newPosts);
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(err));
   });
 
   useEffect(() => {
@@ -40,7 +43,7 @@ const Board = () => {
   }, [currentCategory, posts]);
 
   return (
-    <section className={styles.pageContainer}>
+    <div className={styles.pageContainer}>
       <div className={styles.titleBox}>
         <h1>커뮤니티 Community</h1>
         <p>
@@ -49,7 +52,7 @@ const Board = () => {
           궁금한 점을 해결해 보세요!
         </p>
       </div>
-      <article>
+      <section>
         <div className={styles.componentsContainer}>
           <DropDown selectList={DROPDOWN_CATEGORIES} setCurrentSelect={setCurrentCategory} size='small'>
             {currentCategory}
@@ -62,11 +65,11 @@ const Board = () => {
         </div>
         <ul>
           {filteredposts.map((post: IPost) => (
-            <PostItem key={post.postId} post={post} />
+            <PostItem key={post.postId} post={post!} />
           ))}
         </ul>
-      </article>
-    </section>
+      </section>
+    </div>
   );
 };
 
