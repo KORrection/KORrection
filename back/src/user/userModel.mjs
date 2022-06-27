@@ -26,6 +26,24 @@ class User {
     const updatedUser = await UserModel.findOneAndUpdate(filter, update, option);
     return updatedUser;
   }
+
+  static async sortPostByUser({ userObjId }) {
+    const userAndPosts = await UserModel.findOne({ _id: userObjId }).populate('posts');
+    return userAndPosts;
+  }
+
+  static async sortCommentsByUser({ userObjId }) {
+    const userAndComments = await UserModel.findOne({ _id: userObjId }).populate('comments');
+    return userAndComments;
+  }
+
+  static async sortUpvotesByUser({ userObjId }) {
+    const userAndUpvotes = await UserModel.findOne({ _id: userObjId }).populate({
+      path: 'upvotes',
+      populate: { path: 'postObjId', populate: { path: 'authorObjId', select: 'nickname' } },
+    });
+    return userAndUpvotes;
+  }
 }
 
 export { User };
