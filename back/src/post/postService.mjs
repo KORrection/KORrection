@@ -51,9 +51,20 @@ class postService {
     };
     const authorName = postAndComments.authorObjId.nickname;
     const authorPic = postAndComments.authorObjId.profilePicture;
-    const comments = postAndComments.comments;
+    const comments = await postAndComments.comments;
+    const refinedComments = comments.map((comment) => {
+      return {
+        _id: comment._id,
+        author: comment.authorObjId.nickname,
+        authorPic: comment.authorObjId.profilePicture,
+        commentId: comment.commentId,
+        commentBody: comment.commentBody,
+        createdAt: comment.createdAt,
+        isAuthor: comment.authorObjId._id == userId ? true : false,
+      };
+    });
     const isAuthor = postAndComments.authorObjId._id == userId ? true : false;
-    return { post, authorName, authorPic, comments, isAuthor };
+    return { post, authorName, authorPic, comments: refinedComments, isAuthor };
   }
 
   static async updatePost({ postId, category, title, content }) {

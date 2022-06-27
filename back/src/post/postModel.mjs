@@ -6,26 +6,20 @@ class Post {
     return newPost;
   }
   static async findAll() {
-    return await PostModel.find({}).populate('authorObjId');
+    return await PostModel.find({});
   }
 
   static async findPostById({ postId }) {
     return await PostModel.findOne({ postId })
-      .populate('comments')
-      .populate({ path: 'authorObjId', select: ['nickname', 'profilePicture'] });
+      .populate({ path: 'comments', populate: { path: 'authorObjId' } })
+      .populate({ path: 'authorObjId', select: 'nickname' });
   }
 
-  static async updatePost({ postId, updates }, session) {
-    if (session !== undefined) {
-      return await PostModel.findOneAndUpdate({ postId }, { $inc: updates }, { new: true }).session(session);
-    }
-    return await PostModel.findOneAndUpdate({ postId }, { $set: updates }, { new: true });
+  static async updatePost({ postId, category, title, content }) {
+    return await PostModel.findOneAndUpdate({ postId }, { $set: { category, title, content } }, { new: true });
   }
 
-  static async deletePost({ postId }, { session }) {
-    if (session !== undefined) {
-      return await PostModel.deleteOne({ postId }).session(session);
-    }
+  static async deletePost({ postId }) {
     return await PostModel.deleteOne({ postId });
   }
 
