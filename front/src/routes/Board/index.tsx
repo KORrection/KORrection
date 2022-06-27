@@ -1,18 +1,22 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useMount } from 'react-use';
+import { useRecoilValue } from 'recoil';
 
-import { IPost } from 'types/board';
 import { getApi } from 'services';
+import { IPost } from 'types/board';
+import { userLoginState } from 'states/user';
 
 import DropDown from 'routes/_shared/DropDown';
 import PostItem from 'routes/_shared/PostItem';
 import styles from './board.module.scss';
 import Button from 'routes/_shared/Button';
-import { Link } from 'react-router-dom';
 
 const DROPDOWN_CATEGORIES = ['전체', '자유', '한국어 질문'];
 
 const Board = () => {
+  const isLoggedIn = useRecoilValue(userLoginState);
+
   const [posts, setPosts] = useState([]);
   const [filteredposts, setFilteredPosts] = useState([]);
   const [currentCategory, setCurrentCategory] = useState('전체');
@@ -41,6 +45,12 @@ const Board = () => {
     }
     setFilteredPosts(newFilteredPosts);
   }, [currentCategory, posts]);
+
+  if (!isLoggedIn) {
+    window.location.href = 'http://localhost:5001/google';
+
+    return <div>로그인이 필요한 서비스입니다..</div>;
+  }
 
   return (
     <div className={styles.pageContainer}>
