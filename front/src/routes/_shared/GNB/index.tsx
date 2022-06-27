@@ -1,7 +1,10 @@
+import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
-
+import { useRecoilState } from 'recoil';
 import { cx } from 'styles';
+
+import { userLoginState } from 'states/user';
 import { LogoImage } from 'assets/svgs';
 import styles from './gnb.module.scss';
 
@@ -9,9 +12,13 @@ const navData = ['문법 검사기', '퀴즈', '커뮤니티'];
 const navURI = ['gec', 'quiz', 'board'];
 
 const GNB = () => {
-  const cookies = new Cookies();
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(userLoginState);
 
-  const isLoggedIn = !!cookies.get('token');
+  useEffect(() => {
+    const cookies = new Cookies();
+
+    setIsLoggedIn(!!cookies.get('token'));
+  }, [setIsLoggedIn]);
 
   return (
     <header className={styles.container}>

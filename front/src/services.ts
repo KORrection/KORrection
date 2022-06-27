@@ -18,3 +18,8 @@ export const postApi = (endpoint: string, data: object) => {
     withCredentials: true,
   });
 };
+
+export const deleteApi = (endpoint: string) =>
+  axios.delete(`${SERVER_URL}/${endpoint}`, {
+    withCredentials: true,
+  });
