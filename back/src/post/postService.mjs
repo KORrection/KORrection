@@ -35,7 +35,7 @@ class postService {
     return refinedPosts;
   }
 
-  static async findPostById({ postId }) {
+  static async findPostById({ postId, userId }) {
     const postAndComments = await Post.findPostById({ postId });
     if (!postAndComments) {
       throw new Error('게시물이 없습니다');
@@ -52,7 +52,8 @@ class postService {
     const authorName = postAndComments.authorObjId.nickname;
     const authorPic = postAndComments.authorObjId.profilePicture;
     const comments = postAndComments.comments;
-    return { post, authorName, authorPic, comments };
+    const isAuthor = postAndComments.authorObjId._id == userId ? true : false;
+    return { post, authorName, authorPic, comments, isAuthor };
   }
 
   static async updatePost({ postId, category, title, content }) {
