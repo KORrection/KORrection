@@ -120,8 +120,7 @@ userRouter.post('/profile', login_required, upload.single('image'), async (req, 
     if (updatedUser.errorMessage) {
       throw new Error(updatedUser.errorMessage);
     }
-    res.status(200).json(updatedUser);
-    console.log(updatedUser);
+    res.status(200).json(req.file.location);
   } catch (error) {
     next(error);
   }
