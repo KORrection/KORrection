@@ -38,11 +38,11 @@ class User {
   }
 
   static async sortUpvotesByUser({ userObjId }) {
-    const userAndPosts = await UserModel.findOne({ _id: userObjId }).populate({
+    const userAndUpvotes = await UserModel.findOne({ _id: userObjId }).populate({
       path: 'upvotes',
       populate: { path: 'postObjId', populate: { path: 'authorObjId', select: 'nickname' } },
     });
-    return userAndPosts;
+    return userAndUpvotes;
   }
 }
 

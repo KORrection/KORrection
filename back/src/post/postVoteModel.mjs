@@ -4,6 +4,7 @@ class PostVote {
   static async findPostVote({ userObjId, postObjId }) {
     return await PVoteModel.findOne({ userObjId, postObjId });
   }
+
   static async createPostVote({ userObjId, postObjId }) {
     return await PVoteModel.create({ userObjId, postObjId });
   }
