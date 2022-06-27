@@ -22,9 +22,5 @@ class Post {
   static async deletePost({ postId }) {
     return await PostModel.deleteOne({ postId });
   }
-
-  static async plusOneToLikeCount({ postObjId }) {
-    return await PostModel.findOneAndUpdate({ _id: postObjId }, { $inc: { likeCount: 1 } }, { new: true });
-  }
 }
 export { Post };
