@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import { swaggerUi, specs } from './swagger.js';
 import { userRouter } from './user/userRouter.mjs';
 import { postRouter } from './post/postRouter.mjs';
+import { gecRouter } from './gec/gecRouter.mjs';
 import { quizRouter } from './quiz/quizRouter.mjs';
 import { commentRouter } from './comment/commentRouter.mjs';
 import { login_required } from './middleware/login_required.mjs';
@@ -24,6 +25,8 @@ const corsConfig = {
 
 app.use(cors(corsConfig));
 app.options('*', cors(corsConfig));
+
+// app.use(cors({ origin: true, credentials: true }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -47,6 +50,7 @@ app.use('/uploads', express.static('uploads'));
 app.get('/', (req, res) => {
   res.send('안녕하세요, 16팀 레이서 프로젝트 API 입니다.');
 });
+app.use(gecRouter);
 app.use(quizRouter);
 app.use(userRouter);
 app.use('/board', login_required, postRouter);
