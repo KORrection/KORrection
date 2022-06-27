@@ -9,7 +9,7 @@ const server = app.listen(PORT, () => {
 });
 
 process.on('SIGINT', () => {
-  console.log('SIGINT received');
+  console.log('SIGINT received.');
   server.close(() => {
     console.log('server is closed.');
     mongoose.connection.close(false, () => {
@@ -20,12 +20,23 @@ process.on('SIGINT', () => {
 });
 
 process.on('SIGTERM', () => {
-  console.log('SIGTERM received');
+  console.log('SIGTERM received.');
   server.close(() => {
     console.log('server is closed.');
     mongoose.connection.close(false, () => {
       console.log('Mongoose connection is disconnected. ');
       process.exit(0);
+    });
+  });
+});
+
+process.on('uncaughtException', () => {
+  console.log('uncaughtException occurs.');
+  server.close(() => {
+    console.log('server is closed.');
+    mongoose.connection.close(false, () => {
+      console.log('Mongoose connection is disconnected. ');
+      process.exit(1);
     });
   });
 });
