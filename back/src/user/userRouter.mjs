@@ -148,4 +148,18 @@ userRouter.post('/profile', login_required, upload.single('image'), async (req, 
  *            application/json:
  */
 
+userRouter.get('/users/user/posts', async (req, res, next) => {
+  try {
+    // const userObjId = req.currentUSerId;
+    const userObjId = '62b4245773fd451e9640600c';
+    const posts = await userService.findPostsByUser({ userObjId });
+    res.status(200).json({
+      status: 'success',
+      payload: { posts },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export { userRouter };
