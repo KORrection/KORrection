@@ -16,4 +16,5 @@ export interface IPostDetail {
   authorPic: string;
   comments: array;
   post: IPost;
+  isAuthor: boolean;
 }

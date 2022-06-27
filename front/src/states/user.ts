@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
 export const userLoginState = atom({
-  key: '#movieListState',
+  key: '#userLoginState',
   default: false,
 });

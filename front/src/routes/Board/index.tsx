@@ -9,8 +9,8 @@ import { userLoginState } from 'states/user';
 
 import DropDown from 'routes/_shared/DropDown';
 import PostItem from 'routes/_shared/PostItem';
-import styles from './board.module.scss';
 import Button from 'routes/_shared/Button';
+import styles from './board.module.scss';
 
 const DROPDOWN_CATEGORIES = ['전체', '자유', '한국어 질문'];
 
