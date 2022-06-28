@@ -1,17 +1,18 @@
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useMount } from 'react-use';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { ContentState, EditorState } from 'draft-js';
-import htmlToDraft from 'html-to-draftjs';
+import { EditorState } from 'draft-js';
 
-import { getApi } from 'services';
+import { getApi, postApi } from 'services';
 import { userLoginState } from 'states/user';
 import { IComment, IPost } from 'types/board';
 
 import styles from './post.module.scss';
-import PostBubble from './PostBubble';
-import CommentBubble from './CommentBubble';
+import PostBubble from './SpeechBubble/PostBubble';
+import CommentBubble from './SpeechBubble/CommentBubble';
+import Button from 'routes/_shared/Button';
+import { convertHtmlToDraft } from 'utils/convertPost';
 
 const POST_INITIAL_STATE = { category: '', createdAt: '', likeCount: 0, title: '', content: '' };
 const AUTHOR_INITIAL_STATE = { authorName: '', authorPic: '', isAuthor: false };
@@ -27,21 +28,15 @@ const Post = () => {
   const [author, setAuthor] = useState(AUTHOR_INITIAL_STATE);
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
   const [comments, setComments] = useState<IComment[]>(COMMENT_INITIAL_STATE);
+  const [commentInput, setCommentInput] = useState('');
 
   useMount(() => {
     getApi(`board/posts/${params.postId}`)
       .then((res) => {
         const { authorName, authorPic, post: newPost, isAuthor, comments: newComments } = res.data.payload;
+        console.log(res.data.payload);
 
-        const blocksFromHtml = htmlToDraft(newPost.content);
-
-        if (blocksFromHtml) {
-          const { contentBlocks, entityMap } = blocksFromHtml;
-          const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-          const editor = EditorState.createWithContent(contentState);
-          setEditorState(editor);
-        }
-
+        setEditorState(convertHtmlToDraft(newPost.content));
         setPost(newPost);
         setAuthor({ authorName, authorPic, isAuthor });
         setComments(newComments);
@@ -56,12 +51,50 @@ const Post = () => {
     return <div>로그인이 필요한 서비스입니다..</div>;
   }
 
+  const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setCommentInput(e.currentTarget.value);
+  };
+
+  const handleCommentSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      await postApi(
+        'board/comments',
+        {
+          commentBody: commentInput,
+        },
+        {
+          params: {
+            pId: params.postId,
+          },
+        }
+      );
+      const { data } = await getApi('board/comments', {
+        params: {
+          pId: params.postId,
+        },
+      });
+
+      setCommentInput('');
+      setComments(data.payload.comments);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className={styles.pageContainer}>
       <PostBubble post={post} author={author} editorState={editorState} setEditorState={setEditorState} />
-      {comments.map((comment, i) => (
+      {comments.map((comment) => (
         <CommentBubble key={comment.commentId} comment={comment} />
       ))}
+      <form className={styles.commentInputWrapper} onSubmit={handleCommentSubmit}>
+        <textarea value={commentInput} onChange={handleCommentChange} className={styles.commentInput} />
+        <Button type='submit' size='large'>
+          Comment
+        </Button>
+      </form>
     </div>
   );
 };
