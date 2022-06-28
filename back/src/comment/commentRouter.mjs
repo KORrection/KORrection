@@ -85,8 +85,9 @@ commentRouter.post('/', checkPostId, async (req, res, next) => {
 // all matches to the post
 commentRouter.get('/', checkPostId, async (req, res, next) => {
   try {
+    const userId = req.currentUserId;
     const { parentPostId } = res.locals;
-    const comments = await commentService.getCommentsByPostId({ parentPostId });
+    const comments = await commentService.getCommentsByPostId({ parentPostId, userId });
     res.status(200).json({
       status: 'success',
       payload: { comments },
