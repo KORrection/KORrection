@@ -1,11 +1,17 @@
 import pkg from 'mongoose';
+import { nanoid } from 'nanoid';
+
 const { Schema, model } = pkg;
 
 const gecClientSchema = new Schema(
   {
     taskId: {
-      type: 'string',
+      type: String,
       required: true,
+      default: () => {
+        const id = nanoid();
+        return `[t]${id}`;
+      },
     },
     userObjId: {
       type: Schema.Types.ObjectId,

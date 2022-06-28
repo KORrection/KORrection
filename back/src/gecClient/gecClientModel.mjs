@@ -2,8 +2,11 @@ import { gecClientModel } from './gecClientSchema.mjs';
 
 class gecClient {
   static async findTaskByUser({ userObjId }) {
-    const task = await gecClientModel.findOne({ userObjId });
-    return task;
+    return await gecClientModel.findOne({ userObjId });
+  }
+
+  static async createTask({ userObjId }) {
+    return await gecClientModel.create({ userObjId });
   }
 }
 

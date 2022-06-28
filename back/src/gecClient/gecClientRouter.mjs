@@ -23,7 +23,8 @@ gecRouter.get('/gec', login_required, async (req, res, next) => {
 gecRouter.post('/gec/corrections', login_required, async (req, res, next) => {
   try {
     const userObjId = req.currentUserId;
-    const task = await gecClientService.requestCorrection({ userObjId });
+    const sentences = req.body;
+    const task = await gecClientService.requestCorrection({ userObjId, sentences });
     res.status(200).json({
       status: 'success',
       payload: task,
@@ -37,7 +38,12 @@ gecRouter.post('/gec/corrections', login_required, async (req, res, next) => {
 gecRouter.get('/gec/corrections/:taskId', async (req, res, next) => {
   try {
     const userObjId = req.currentUserId;
-    res.status(200);
+    const { taskId } = req.params;
+    const { status, result } = await gecClientService.checkTaskProgress({ userObjId, taskId });
+    res.status(200).json({
+      status: 'success',
+      payload: { status, result },
+    });
   } catch (err) {
     next(err);
   }
