@@ -18,3 +18,9 @@ export interface IPostDetail {
   post: IPost;
   isAuthor: boolean;
 }
+
+export interface IAuthor {
+  authorName: string;
+  authorPic: string;
+  isAuthor: boolean;
+}
