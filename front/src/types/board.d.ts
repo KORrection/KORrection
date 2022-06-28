@@ -11,10 +11,20 @@ export interface IPost {
   postId?: string;
 }
 
+export interface IComment {
+  _id: string;
+  author: string;
+  authorPic: string;
+  commentId: string;
+  commentBody: string;
+  isAuthor: boolean;
+  createdAt: string;
+}
+
 export interface IPostDetail {
   authorName: string;
   authorPic: string;
-  comments: array;
+  comments: IComment;
   post: IPost;
   isAuthor: boolean;
 }

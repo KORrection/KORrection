@@ -72,7 +72,14 @@ const PostBubble = ({ post, author, editorState, setEditorState }: IProps) => {
   return (
     <section className={styles.postContainer}>
       <div className={styles.authorContainer}>
-        <img src={author.authorPic} alt='authorProfileImg' />
+        <img
+          src={author.authorPic}
+          alt='authorProfileImg'
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = 'https://www.yokogawa.com/public/img/default_image.png';
+          }}
+        />
         <p>{author.authorName}</p>
       </div>
       {isEditing ? (

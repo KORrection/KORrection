@@ -7,13 +7,17 @@ import htmlToDraft from 'html-to-draftjs';
 
 import { getApi } from 'services';
 import { userLoginState } from 'states/user';
-import { IPost } from 'types/board';
+import { IComment, IPost } from 'types/board';
 
 import styles from './post.module.scss';
 import PostBubble from './PostBubble';
+import CommentBubble from './CommentBubble';
 
 const POST_INITIAL_STATE = { category: '', createdAt: '', likeCount: 0, title: '', content: '' };
 const AUTHOR_INITIAL_STATE = { authorName: '', authorPic: '', isAuthor: false };
+const COMMENT_INITIAL_STATE = [
+  { _id: '', author: '', authorPic: '', commentId: '', commentBody: '', createdAt: '', isAuthor: false },
+];
 
 const Post = () => {
   const params = useParams();
@@ -22,12 +26,13 @@ const Post = () => {
   const [post, setPost] = useState<IPost>(POST_INITIAL_STATE);
   const [author, setAuthor] = useState(AUTHOR_INITIAL_STATE);
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
+  const [comments, setComments] = useState<IComment[]>(COMMENT_INITIAL_STATE);
 
   useMount(() => {
     getApi(`board/posts/${params.postId}`)
       .then((res) => {
-        const { authorName, authorPic, post: newPost, isAuthor } = res.data.payload;
-        console.log(res.data.payload);
+        const { authorName, authorPic, post: newPost, isAuthor, comments: newComments } = res.data.payload;
+
         const blocksFromHtml = htmlToDraft(newPost.content);
 
         if (blocksFromHtml) {
@@ -39,6 +44,7 @@ const Post = () => {
 
         setPost(newPost);
         setAuthor({ authorName, authorPic, isAuthor });
+        setComments(newComments);
       })
       // eslint-disable-next-line no-console
       .catch((err) => console.error(err));
@@ -53,6 +59,9 @@ const Post = () => {
   return (
     <div className={styles.pageContainer}>
       <PostBubble post={post} author={author} editorState={editorState} setEditorState={setEditorState} />
+      {comments.map((comment, i) => (
+        <CommentBubble key={comment.commentId} comment={comment} />
+      ))}
     </div>
   );
 };
