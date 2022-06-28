@@ -14,12 +14,13 @@ import styles from './speechBubble.module.scss';
 
 interface IProps {
   post: IPost;
+  setPost: Dispatch<SetStateAction<IPost>>;
   author: IAuthor;
   editorState: EditorState;
   setEditorState: Dispatch<SetStateAction<EditorState>>;
 }
 
-const PostBubble = ({ post, author, editorState, setEditorState }: IProps) => {
+const PostBubble = ({ post, setPost, author, editorState, setEditorState }: IProps) => {
   const params = useParams();
   const navigate = useNavigate();
 
@@ -36,9 +37,12 @@ const PostBubble = ({ post, author, editorState, setEditorState }: IProps) => {
       category: post.category,
       title,
       content,
-    }).then(() => {
+    }).then((res) => {
+      const { content: newContent, title: newTitle } = res.data.payload;
+
+      setPost((prev) => ({ ...prev, content: newContent, title: newTitle }));
+      setTitle(newTitle);
       setIsEditing(false);
-      navigate(`/board/${params.postId}`);
     });
   };
 
