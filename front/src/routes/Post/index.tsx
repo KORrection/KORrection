@@ -85,7 +85,13 @@ const Post = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <PostBubble post={post} author={author} editorState={editorState} setEditorState={setEditorState} />
+      <PostBubble
+        post={post}
+        setPost={setPost}
+        author={author}
+        editorState={editorState}
+        setEditorState={setEditorState}
+      />
       {comments.map((comment) => (
         <CommentBubble key={comment.commentId} comment={comment} />
       ))}
