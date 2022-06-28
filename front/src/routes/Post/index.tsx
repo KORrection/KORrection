@@ -55,33 +55,23 @@ const Post = () => {
     setCommentInput(e.currentTarget.value);
   };
 
-  const handleCommentSubmit = async (e: FormEvent) => {
+  const handleCommentSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    try {
-      const res = await postApi(
-        'board/comments',
-        {
-          commentBody: commentInput,
-        },
-        {
-          params: {
-            pId: params.postId,
-          },
-        }
-      );
-      console.log(res);
-      const { data } = await getApi('board/comments', {
+    postApi(
+      'board/comments',
+      {
+        commentBody: commentInput,
+      },
+      {
         params: {
           pId: params.postId,
         },
-      });
-
+      }
+    ).then((res) => {
+      setComments((prev) => [...prev, res.data.payload]);
       setCommentInput('');
-      setComments(data.payload.comments);
-    } catch (err) {
-      console.log(err);
-    }
+    });
   };
 
   if (!post) {
