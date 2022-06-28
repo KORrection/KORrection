@@ -35,7 +35,6 @@ const Post = () => {
     getApi(`board/posts/${params.postId}`)
       .then((res) => {
         const { authorName, authorPic, post: newPost, isAuthor, comments: newComments } = res.data.payload;
-        console.log(res.data.payload);
 
         setEditorState(convertHtmlToDraft(newPost.content));
         setPost(newPost);
@@ -60,7 +59,7 @@ const Post = () => {
     e.preventDefault();
 
     try {
-      await postApi(
+      const res = await postApi(
         'board/comments',
         {
           commentBody: commentInput,
@@ -71,6 +70,7 @@ const Post = () => {
           },
         }
       );
+      console.log(res);
       const { data } = await getApi('board/comments', {
         params: {
           pId: params.postId,

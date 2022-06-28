@@ -6,6 +6,7 @@ import { stateToHTML } from 'draft-js-export-html';
 
 import { deleteApi, putApi } from 'services/axios';
 import { IAuthor, IPost } from 'types/board';
+import { IMAGE_ON_ERROR_URL } from 'constants/index';
 
 import { Favourite } from 'assets/svgs';
 import Button from 'routes/_shared/Button';
@@ -81,7 +82,7 @@ const PostBubble = ({ post, setPost, author, editorState, setEditorState }: IPro
           alt='authorProfileImg'
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = 'https://www.yokogawa.com/public/img/default_image.png';
+            e.currentTarget.src = IMAGE_ON_ERROR_URL;
           }}
         />
         <p>{author.authorName}</p>

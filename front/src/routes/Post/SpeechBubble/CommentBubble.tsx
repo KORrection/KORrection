@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { deleteApi, putApi } from 'services/axios';
 import { IComment } from 'types/board';
+import { IMAGE_ON_ERROR_URL } from 'constants/index';
 
 import Button from 'routes/_shared/Button';
 import styles from './speechBubble.module.scss';
@@ -12,17 +13,12 @@ interface IProps {
   comment: IComment;
 }
 
-/** author: string;
-  authorPic: string;
-  commentId: string;
-  commentBody: string;
-  isAuthor: boolean;
-  createdAt: string; */
-
 const CommentBubble = ({ comment }: IProps) => {
   const params = useParams();
 
   const [isEditing, setIsEditing] = useState(false);
+  const [localComment, setLocalComment] = useState<IComment>(comment);
+  const [isDeleted, setIsDeleted] = useState(false);
   const [commentInput, setCommentInput] = useState(comment.commentBody);
 
   const handleCommentSubmit = (e: FormEvent) => {
@@ -38,21 +34,10 @@ const CommentBubble = ({ comment }: IProps) => {
           pId: params.postId,
         },
       }
-    ).then(() => {
-      /** data:
-            payload:
-              comment:
-              authorObjId: "62b43a24ba416653fc32121d"
-              commentBody: "댓글 테스트22dd"
-              commentId: "[c]mtbO_maDI5Rtziwbm4bvr"
-              createdAt: "2022-06-28T09:09:07.772Z"
-              isDeleted: false
-              likeCount: 0
-              parentPostId: "FCwWAm1jf2veAHLldLnof"
-              parentPostObjId: "62b56e0fbf875b81e9eaf06d"
-              updatedAt: "2022-06-28T10:01:41.223Z"
-              __v: 0
-              _id: "62bac533f34c3dc255793a70" */
+    ).then((res) => {
+      const { commentBody } = res.data.payload.comment;
+
+      setLocalComment((prev) => ({ ...prev, commentBody }));
       setIsEditing(false);
     });
   };
@@ -70,19 +55,16 @@ const CommentBubble = ({ comment }: IProps) => {
       params: {
         pId: params.postId,
       },
-    }).then(
-      (res) => console.log(res)
-      /** data:
-            payload:
-              isDeleted:
-                isDeleted: true
-                message: "댓글이 삭제되었습니다." */
-    );
+    }).then(() => setIsDeleted(true));
   };
 
   const handleModifyClick = () => {
     setIsEditing((prev) => !prev);
   };
+
+  if (isDeleted) {
+    return null;
+  }
 
   return (
     <section className={styles.postContainer}>
@@ -92,7 +74,7 @@ const CommentBubble = ({ comment }: IProps) => {
           alt='authorProfileImg'
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = 'https://www.yokogawa.com/public/img/default_image.png';
+            e.currentTarget.src = IMAGE_ON_ERROR_URL;
           }}
         />
         <p>{comment.author}</p>
@@ -111,7 +93,7 @@ const CommentBubble = ({ comment }: IProps) => {
         </form>
       ) : (
         <div className={styles.speechBubble}>
-          <div dangerouslySetInnerHTML={{ __html: comment.commentBody }} className={styles.content} />
+          <div dangerouslySetInnerHTML={{ __html: localComment.commentBody }} className={styles.content} />
           <div className={styles.subTitleContainer}>
             <time>{comment.createdAt.substring(0, 10)}</time>
             {comment.isAuthor && (
