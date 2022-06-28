@@ -57,7 +57,7 @@ const postRouter = Router();
  *                              createdAt:
  *                                  type: date
  */
-postRouter.post('/posts', async (req, res, next) => {
+postRouter.post('/board/posts', async (req, res, next) => {
   try {
     const userId = req.currentUserId;
     const { category, title, content } = req.body;
@@ -96,7 +96,7 @@ postRouter.post('/posts', async (req, res, next) => {
  *                          properties:
  *                              $ref: '#/definitions/Post'
  */
-postRouter.get('/', async (req, res, next) => {
+postRouter.get('/board', async (req, res, next) => {
   try {
     const posts = await postService.findAll();
     res.status(200).json({
@@ -142,7 +142,7 @@ postRouter.get('/', async (req, res, next) => {
  *                                type: object
  */
 // ** get a post with comment belongings.
-postRouter.get('/posts/:postId', async (req, res, next) => {
+postRouter.get('/board/posts/:postId', async (req, res, next) => {
   try {
     const userId = req.currentUserId;
     const { postId } = req.params;
@@ -198,7 +198,7 @@ postRouter.get('/posts/:postId', async (req, res, next) => {
  *                      payload:
  *                          $ref: '#/definitions/Post'
  */
-postRouter.put('/posts/:postId', async (req, res, next) => {
+postRouter.put('/board/posts/:postId', async (req, res, next) => {
   try {
     const { postId } = req.params;
     const { category, title, content } = req.body;
@@ -232,7 +232,7 @@ postRouter.put('/posts/:postId', async (req, res, next) => {
  *        200:
  *          description: deletion completed
  */
-postRouter.delete('/posts/:postId', async (req, res, next) => {
+postRouter.delete('/board/posts/:postId', async (req, res, next) => {
   try {
     const { postId } = req.params;
     const isDeleted = await postService.deletePost({ postId });
@@ -277,7 +277,7 @@ postRouter.delete('/posts/:postId', async (req, res, next) => {
  *                              likeCount:
  *                                  type: number
  */
-postRouter.put('/posts/:postId/upvotes', async (req, res, next) => {
+postRouter.put('/board/posts/:postId/upvotes', async (req, res, next) => {
   try {
     const userObjId = req.currentUserId;
     const { postId } = req.params;
@@ -323,7 +323,7 @@ postRouter.put('/posts/:postId/upvotes', async (req, res, next) => {
  *                              likeCount:
  *                                  type: number
  */
-postRouter.put('/posts/:postId/devotes', async (req, res, next) => {
+postRouter.put('/board/posts/:postId/devotes', async (req, res, next) => {
   try {
     const userObjId = req.currentUserId;
     const { postId } = req.params;
@@ -331,6 +331,20 @@ postRouter.put('/posts/:postId/devotes', async (req, res, next) => {
     res.status(200).json({
       status: 'success',
       payload: { postId, likecount: post.likeCount },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// /posts?user={userId}
+postRouter.get('/board/posts', async (req, res, next) => {
+  try {
+    const userObjId = req.currentUserId;
+    const posts = await postService.findPostsByUser({ userObjId });
+    res.status(200).json({
+      status: 'success',
+      payload: { posts },
     });
   } catch (err) {
     next(err);

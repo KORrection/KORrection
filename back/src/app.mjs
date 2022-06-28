@@ -53,7 +53,7 @@ app.get('/', (req, res) => {
 app.use(gecRouter);
 app.use(quizRouter);
 app.use(userRouter);
-app.use('/board', login_required, postRouter);
-app.use('/board/comments', login_required, commentRouter);
+app.use(login_required, postRouter);
+app.use(login_required, commentRouter);
 
 export { app };

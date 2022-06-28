@@ -2,7 +2,7 @@
 
 import { Router } from 'express';
 import { commentService } from './commentService.mjs';
-import { checkPostId, validateParentPost } from '../middleware/boardValidated.mjs';
+import { checkPostId, validateParentPost } from '../middleware/boardValidator.mjs';
 
 const commentRouter = Router();
 /**
@@ -55,7 +55,7 @@ const commentRouter = Router();
  *                              authorName:
  *                                  type: string
  */
-commentRouter.post('/', checkPostId, async (req, res, next) => {
+commentRouter.post('/board/comments', checkPostId, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
     const { parentPostId, parentPostObjId } = res.locals;
@@ -77,7 +77,7 @@ commentRouter.post('/', checkPostId, async (req, res, next) => {
 
 // * Read
 // all matches to the post
-commentRouter.get('/', checkPostId, async (req, res, next) => {
+commentRouter.get('/board/comments', checkPostId, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
     const { parentPostId } = res.locals;
@@ -92,7 +92,7 @@ commentRouter.get('/', checkPostId, async (req, res, next) => {
 });
 
 // * Update one comment
-commentRouter.put('/:commentId', validateParentPost, async (req, res, next) => {
+commentRouter.put('/board/comments/:commentId', validateParentPost, async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const { commentBody } = req.body;
@@ -107,8 +107,8 @@ commentRouter.put('/:commentId', validateParentPost, async (req, res, next) => {
 });
 
 // * Delete
-// ** (1) Delete one comment (delete DB docs for real)
-commentRouter.delete('/:commentId', validateParentPost, async (req, res, next) => {
+// ** Delete one comment (delete DB docs for real)
+commentRouter.delete('/board/comments/:commentId', validateParentPost, async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const isDeleted = await commentService.deleteComment({ commentId });
@@ -121,23 +121,18 @@ commentRouter.delete('/:commentId', validateParentPost, async (req, res, next) =
   }
 });
 
-// ** (2) Pretend To Delete one comment (just change 'isDeleted' value from false to ) - 대댓글 시 필요..
-// commentRouter.delete('/:commentId', validateParentPost, async (req, res, next) => {
-//   try {
-//     const { commentId } = req.params;
-//     const comment = await commentService.pretendToDelCom({ commentId });
-//     res.status(200).json({
-//       status: 'success',
-//       payload: {
-//         parentPostId: comment.parentPostId,
-//         commentId: comment.commentId,
-//         isDeleted: comment.isDeleted,
-//         commentBody: '삭제된 댓글입니다',
-//       },
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
+// * get User's comment
+commentRouter.get('/users/my/comments', async (req, res, next) => {
+  try {
+    const userObjId = req.currentUserId;
+    const comments = await commentService.findCommentsByUser({ userObjId });
+    res.status(200).json({
+      status: 'success',
+      payload: { comments },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
 export { commentRouter };

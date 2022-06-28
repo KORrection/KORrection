@@ -56,9 +56,10 @@ class commentService {
     }
   }
 
-  static async pretendToDelCom({ commentId }) {
-    const comment = await Comment.pretendToDelCom({ commentId });
-    return comment;
+  static async findCommentsByUser({ userObjId }) {
+    const userBelongings = await User.getCommentsByUser({ userObjId });
+    const comments = userBelongings.comments.length == 0 ? '작성한 내역이 없습니다' : userBelongings.comments;
+    return comments;
   }
 }
 

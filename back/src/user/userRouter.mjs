@@ -147,43 +147,4 @@ userRouter.post('/profile', login_required, upload.single('image'), async (req, 
  *            application/json:
  */
 
-userRouter.get('/users/my/posts', login_required, async (req, res, next) => {
-  try {
-    const userObjId = req.currentUserId;
-    const posts = await userService.findPostsByUser({ userObjId });
-    res.status(200).json({
-      status: 'success',
-      payload: { posts },
-    });
-  } catch (err) {
-    next(err);
-  }
-});
-
-userRouter.get('/users/my/comments', login_required, async (req, res, next) => {
-  try {
-    const userObjId = req.currentUserId;
-    const comments = await userService.findCommentsByUser({ userObjId });
-    res.status(200).json({
-      status: 'success',
-      payload: { comments },
-    });
-  } catch (err) {
-    next(err);
-  }
-});
-
-userRouter.get('/users/my/upvotes', login_required, async (req, res, next) => {
-  try {
-    const userObjId = req.currentUserId;
-    const Upvotes = await userService.findUpvotesByUser({ userObjId });
-    res.status(200).json({
-      status: 'success',
-      payload: { Upvotes },
-    });
-  } catch (err) {
-    next(err);
-  }
-});
-
 export { userRouter };

@@ -2,7 +2,7 @@
 import { Post } from './postModel.mjs';
 import { User } from '../user/userModel.mjs';
 import { Comment } from '../comment/commentModel.mjs';
-import { PostVote } from './postVoteModel.mjs';
+import { PostVote } from '../postVote/postVoteModel.mjs';
 import mongoose from 'mongoose';
 
 class postService {
@@ -158,6 +158,12 @@ class postService {
       console.log("Vote record doesn't exist or already deleted");
       throw new Error('좋아요한 내역이 없습니다');
     }
+  }
+
+  static async findPostsByUser({ userObjId }) {
+    const userBelongings = await User.getPostByUser({ userObjId });
+    const post = userBelongings.posts.length == 0 ? '작성한 내역이 없습니다' : userBelongings.posts;
+    return post;
   }
 }
 
