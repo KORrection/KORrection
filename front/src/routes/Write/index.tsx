@@ -7,7 +7,7 @@ import { postApi } from 'services';
 
 import DropDown from 'routes/_shared/DropDown';
 import Button from 'routes/_shared/Button';
-import TextEditor from './TextEditor';
+import TextEditor from 'routes/_shared/TextEditor';
 import styles from './write.module.scss';
 import { useNavigate } from 'react-router-dom';
 
@@ -37,6 +37,10 @@ const Write = () => {
     setTitle(e.currentTarget.value);
   };
 
+  const handleCancelClick = () => {
+    navigate('/board');
+  };
+
   return (
     <section className={styles.pageContainer}>
       <form onSubmit={handleSubmit} className={styles.formContainer}>
@@ -49,6 +53,9 @@ const Write = () => {
 
         <TextEditor editorState={editorState} setEditorState={setEditorState} />
         <div className={styles.buttonWrapper}>
+          <Button type='button' size='large' onClick={handleCancelClick}>
+            cancel
+          </Button>
           <Button type='submit' size='large' primary>
             save
           </Button>

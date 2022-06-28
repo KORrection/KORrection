@@ -23,3 +23,14 @@ export const deleteApi = (endpoint: string) =>
   axios.delete(`${SERVER_URL}/${endpoint}`, {
     withCredentials: true,
   });
+
+export const putApi = (endpoint: string, data?: object) => {
+  const bodyData = JSON.stringify(data);
+
+  return axios.put(`${SERVER_URL}/${endpoint}`, bodyData, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    withCredentials: true,
+  });
+};

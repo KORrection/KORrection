@@ -1,7 +1,7 @@
 import { Editor, EditorState, RichUtils, DraftEditorCommand } from 'draft-js';
 import { Dispatch, MouseEvent, SetStateAction } from 'react';
 
-import styles from './write.module.scss';
+import styles from './textEditor.module.scss';
 
 interface IProps {
   editorState: EditorState;

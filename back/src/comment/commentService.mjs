@@ -8,14 +8,33 @@ class commentService {
     }
     const user = await User.findById({ userId });
     const authorObjId = user._id;
-    const authorName = user.nickname;
     const comment = await Comment.createComment({ authorObjId, parentPostId, parentPostObjId, commentBody });
-    return { comment, authorName };
+    const refinedComment = {
+      _id: comment.id,
+      author: user.nickname,
+      authorPic: user.profilePicture,
+      commentId: comment.commentId,
+      commentBody: comment.commentBody,
+      isAuthor: true,
+      createdAt: comment.createdAt,
+    };
+    return refinedComment;
   }
 
-  static async getCommentsByPostId({ parentPostId }) {
+  static async getCommentsByPostId({ parentPostId, userId }) {
     const comments = await Comment.getCommentsByPostId({ parentPostId });
-    return comments;
+    const refinedComments = comments.map((comment) => {
+      return {
+        _id: comment._id,
+        author: comment.authorObjId.nickname,
+        authorPic: comment.authorObjId.profilePicture,
+        commentId: comment.commentId,
+        commentBody: comment.commentBody,
+        createdAt: comment.createdAt,
+        isAuthor: comment.authorObjId._id == userId ? true : false,
+      };
+    });
+    return refinedComments;
   }
 
   static async updateComment({ commentId, commentBody }) {
@@ -29,10 +48,10 @@ class commentService {
   static async deleteComment({ commentId }) {
     const doc = await Comment.deleteComment({ commentId });
     if (doc.acknowledged && doc.deletedCount == 1) {
-      //console.log('Delete successfully');
+      console.log('Delete successfully');
       return { isDeleted: true, message: '댓글이 삭제되었습니다.' };
     } else {
-      //console.log("Comment doesn't exist or already deleted");
+      console.log("Comment doesn't exist or already deleted");
       throw new Error('없는 댓글입니다.');
     }
   }

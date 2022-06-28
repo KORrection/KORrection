@@ -6,8 +6,8 @@ import GNB from './_shared/GNB';
 import GEC from './GEC';
 import Quiz from './Quiz';
 import Board from './Board';
-import Post from './Board/Post';
-import Write from './Board/Write';
+import Post from './Post';
+import Write from './Write';
 
 const App = () => {
   return (

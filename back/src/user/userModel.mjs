@@ -27,17 +27,17 @@ class User {
     return updatedUser;
   }
 
-  static async sortPostByUser({ userObjId }) {
+  static async getPostByUser({ userObjId }) {
     const userAndPosts = await UserModel.findOne({ _id: userObjId }).populate('posts');
     return userAndPosts;
   }
 
-  static async sortCommentsByUser({ userObjId }) {
+  static async getCommentsByUser({ userObjId }) {
     const userAndComments = await UserModel.findOne({ _id: userObjId }).populate('comments');
     return userAndComments;
   }
 
-  static async sortUpvotesByUser({ userObjId }) {
+  static async getUpvotesByUser({ userObjId }) {
     const userAndUpvotes = await UserModel.findOne({ _id: userObjId }).populate({
       path: 'upvotes',
       populate: { path: 'postObjId', populate: { path: 'authorObjId', select: 'nickname' } },
