@@ -9,8 +9,8 @@ import { userLoginState } from 'states/user';
 
 import DropDown from 'routes/_shared/DropDown';
 import PostItem from 'routes/_shared/PostItem';
-import styles from './board.module.scss';
 import Button from 'routes/_shared/Button';
+import styles from './board.module.scss';
 
 const DROPDOWN_CATEGORIES = ['전체', '자유', '한국어 질문'];
 
@@ -39,9 +39,9 @@ const Board = () => {
     if (currentCategory === '전체') {
       newFilteredPosts = posts;
     } else if (currentCategory === '자유') {
-      newFilteredPosts = posts.filter((post: IPost) => post.category === 'free');
+      newFilteredPosts = posts.filter((post: IPost) => post.category === '자유');
     } else if (currentCategory === '한국어 질문') {
-      newFilteredPosts = posts.filter((post: IPost) => post.category === 'qna');
+      newFilteredPosts = posts.filter((post: IPost) => post.category === '한국어 질문');
     }
     setFilteredPosts(newFilteredPosts);
   }, [currentCategory, posts]);

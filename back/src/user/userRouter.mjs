@@ -65,7 +65,7 @@ userRouter.get('/users', login_required, async function (req, res, next) {
  *    tags: [Users]
  *    summary: 전체 사용자 목록
  */
-userRouter.put('/users', async function (req, res, next) {
+userRouter.put('/users', login_required, async function (req, res, next) {
   try {
     const userId = req.body._id;
 
