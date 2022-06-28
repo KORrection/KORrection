@@ -10,7 +10,7 @@ import { IAuthor, IPost } from 'types/board';
 import { Favourite } from 'assets/svgs';
 import Button from 'routes/_shared/Button';
 import TextEditor from 'routes/_shared/TextEditor';
-import styles from './post.module.scss';
+import styles from './speechBubble.module.scss';
 
 interface IProps {
   post: IPost;

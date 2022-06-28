@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Button from 'routes/_shared/Button';
 import { IComment } from 'types/board';
 
-import styles from './post.module.scss';
+import styles from './speechBubble.module.scss';
 
 interface IProps {
   comment: IComment;
