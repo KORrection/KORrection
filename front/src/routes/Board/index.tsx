@@ -39,9 +39,9 @@ const Board = () => {
     if (currentCategory === '전체') {
       newFilteredPosts = posts;
     } else if (currentCategory === '자유') {
-      newFilteredPosts = posts.filter((post: IPost) => post.category === 'free');
+      newFilteredPosts = posts.filter((post: IPost) => post.category === '자유');
     } else if (currentCategory === '한국어 질문') {
-      newFilteredPosts = posts.filter((post: IPost) => post.category === 'qna');
+      newFilteredPosts = posts.filter((post: IPost) => post.category === '한국어 질문');
     }
     setFilteredPosts(newFilteredPosts);
   }, [currentCategory, posts]);
