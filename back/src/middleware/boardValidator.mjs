@@ -25,4 +25,17 @@ const validateParentPost = async (req, res, next) => {
   }
 };
 
-export { checkPostId, validateParentPost };
+// comments?user={userId} 에서 받은 userId와 currentUserId가 같은지 비교
+const validateUserId = async (req, res, next) => {
+  try {
+    const userId = req.query.user;
+    const userObjId = req.currentUserId;
+    if (userId !== userObjId) {
+      throw new Error('잘못된 접근입니다.');
+    }
+    next();
+  } catch (err) {
+    return res.send(err.message);
+  }
+};
+export { checkPostId, validateParentPost, validateUserId };

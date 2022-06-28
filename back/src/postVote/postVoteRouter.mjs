@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import { postVoteService } from './postVoteService.mjs';
+import { validateUserId } from '../middleware/boardValidator.mjs';
 
 const postVoteRouter = Router();
 
-postVoteRouter.get('/users/my/upvotes', async (req, res, next) => {
+postVoteRouter.get('/board/upvotes', validateUserId, async (req, res, next) => {
   try {
     const userObjId = req.currentUserId;
     const Upvotes = await postVoteService.findUpvotesByUser({ userObjId });

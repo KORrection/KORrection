@@ -11,6 +11,7 @@ import { postRouter } from './post/postRouter.mjs';
 import { gecRouter } from './gec/gecRouter.mjs';
 import { quizRouter } from './quiz/quizRouter.mjs';
 import { commentRouter } from './comment/commentRouter.mjs';
+import { postVoteRouter } from './postVote/postVoteRouter.mjs';
 import { login_required } from './middleware/login_required.mjs';
 
 dotenv.config();
@@ -55,5 +56,6 @@ app.use(quizRouter);
 app.use(userRouter);
 app.use(login_required, postRouter);
 app.use(login_required, commentRouter);
+app.use(login_required, postVoteRouter);
 
 export { app };

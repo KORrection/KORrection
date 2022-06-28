@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { postService } from './postService.mjs';
+import { validateUserId } from '../middleware/boardValidator.mjs';
 
 const postRouter = Router();
 /**
@@ -337,8 +338,9 @@ postRouter.put('/board/posts/:postId/devotes', async (req, res, next) => {
   }
 });
 
+// * User's post
 // /posts?user={userId}
-postRouter.get('/board/posts', async (req, res, next) => {
+postRouter.get('/board/posts', validateUserId, async (req, res, next) => {
   try {
     const userObjId = req.currentUserId;
     const posts = await postService.findPostsByUser({ userObjId });
