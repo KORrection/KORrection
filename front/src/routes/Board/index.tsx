@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { useMount } from 'react-use';
 import { useRecoilValue } from 'recoil';
 
-import { getApi } from 'services';
+import { getApi } from 'services/axios';
 import { IPost } from 'types/board';
 import { userLoginState } from 'states/user';
+import { SERVER_URL } from 'constants/index';
 
 import DropDown from 'routes/_shared/DropDown';
 import PostItem from 'routes/_shared/PostItem';
@@ -47,7 +48,7 @@ const Board = () => {
   }, [currentCategory, posts]);
 
   if (!isLoggedIn) {
-    window.location.href = 'http://localhost:5001/google';
+    window.location.href = `${SERVER_URL}/google`;
 
     return <div>로그인이 필요한 서비스입니다..</div>;
   }

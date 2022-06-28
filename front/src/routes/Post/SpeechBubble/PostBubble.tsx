@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 
-import { deleteApi, putApi } from 'services';
+import { deleteApi, putApi } from 'services/axios';
 import { IAuthor, IPost } from 'types/board';
 
 import { Favourite } from 'assets/svgs';

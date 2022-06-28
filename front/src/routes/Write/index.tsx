@@ -3,7 +3,7 @@ import { EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import 'draft-js/dist/Draft.css';
 
-import { postApi } from 'services';
+import { postApi } from 'services/axios';
 
 import DropDown from 'routes/_shared/DropDown';
 import Button from 'routes/_shared/Button';

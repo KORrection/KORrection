@@ -4,15 +4,16 @@ import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { EditorState } from 'draft-js';
 
-import { getApi, postApi } from 'services';
+import { getApi, postApi } from 'services/axios';
 import { userLoginState } from 'states/user';
 import { IComment, IPost } from 'types/board';
+import { convertHtmlToDraft } from 'utils/convertPost';
+import { SERVER_URL } from 'constants/index';
 
 import styles from './post.module.scss';
 import PostBubble from './SpeechBubble/PostBubble';
 import CommentBubble from './SpeechBubble/CommentBubble';
 import Button from 'routes/_shared/Button';
-import { convertHtmlToDraft } from 'utils/convertPost';
 
 const POST_INITIAL_STATE = { category: '', createdAt: '', likeCount: 0, title: '', content: '' };
 const AUTHOR_INITIAL_STATE = { authorName: '', authorPic: '', isAuthor: false };
@@ -46,7 +47,7 @@ const Post = () => {
   });
 
   if (!isLoggedIn) {
-    window.location.href = 'http://localhost:5001/google';
+    window.location.href = `${SERVER_URL}/google`;
 
     return <div>로그인이 필요한 서비스입니다..</div>;
   }

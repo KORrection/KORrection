@@ -5,6 +5,8 @@ import { useRecoilState } from 'recoil';
 import { cx } from 'styles';
 
 import { userLoginState } from 'states/user';
+import { SERVER_URL } from 'constants/index';
+
 import { LogoImage } from 'assets/svgs';
 import styles from './gnb.module.scss';
 
@@ -38,11 +40,11 @@ const GNB = () => {
           ))}
           <li>
             {isLoggedIn ? (
-              <a href='http://localhost:5001/logout'>
+              <a href={`${SERVER_URL}/logout`}>
                 <p>로그아웃</p>
               </a>
             ) : (
-              <a href='http://localhost:5001/google'>
+              <a href={`${SERVER_URL}/google`}>
                 <p>로그인</p>
               </a>
             )}
