@@ -9,17 +9,15 @@ class commentService {
     const user = await User.findById({ userId });
     const authorObjId = user._id;
     const comment = await Comment.createComment({ authorObjId, parentPostId, parentPostObjId, commentBody });
-    const refinedComment = comment.map((comment) => {
-      return {
-        _id: comment.id,
-        author: user.nickname,
-        authorPic: user.profilePicture,
-        commentId: comment.commentId,
-        commentBody: comment.commentBody,
-        isAuthor: userId === comment.authorObjId ? true : false,
-        createdAt: comment.createdAt,
-      };
-    });
+    const refinedComment = {
+      _id: comment.id,
+      author: user.nickname,
+      authorPic: user.profilePicture,
+      commentId: comment.commentId,
+      commentBody: comment.commentBody,
+      isAuthor: true,
+      createdAt: comment.createdAt,
+    };
     return refinedComment;
   }
 
