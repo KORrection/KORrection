@@ -8,6 +8,7 @@ import Quiz from './Quiz';
 import Board from './Board';
 import Post from './Post';
 import Write from './Write';
+import Profile from './Profile';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path='board' element={<Board />} />
           <Route path='board/:postId' element={<Post />} />
           <Route path='board/write' element={<Write />} />
+          <Route path='profile' element={<Profile />} />
         </Routes>
       </main>
     </div>
