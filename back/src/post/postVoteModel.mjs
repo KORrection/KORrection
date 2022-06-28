@@ -5,8 +5,8 @@ class PostVote {
     return await PVoteModel.findOne({ userObjId, postObjId });
   }
 
-  static async createPostVote({ userObjId, postObjId }) {
-    return await PVoteModel.create({ userObjId, postObjId });
+  static async createPostVote({ userObjId, postObjId }, session) {
+    return await PVoteModel.create({ userObjId, postObjId }).session(session);
   }
 
   static async deletePostVote({ postVoteId }, session) {

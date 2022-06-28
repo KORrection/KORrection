@@ -149,7 +149,7 @@ userRouter.post('/profile', login_required, upload.single('image'), async (req, 
 
 userRouter.get('/users/my/posts', login_required, async (req, res, next) => {
   try {
-    const userObjId = req.currentUSerId;
+    const userObjId = req.currentUserId;
     const posts = await userService.findPostsByUser({ userObjId });
     res.status(200).json({
       status: 'success',
@@ -162,7 +162,7 @@ userRouter.get('/users/my/posts', login_required, async (req, res, next) => {
 
 userRouter.get('/users/my/comments', login_required, async (req, res, next) => {
   try {
-    const userObjId = req.currentUSerId;
+    const userObjId = req.currentUserId;
     const comments = await userService.findCommentsByUser({ userObjId });
     res.status(200).json({
       status: 'success',
@@ -175,7 +175,7 @@ userRouter.get('/users/my/comments', login_required, async (req, res, next) => {
 
 userRouter.get('/users/my/upvotes', login_required, async (req, res, next) => {
   try {
-    const userObjId = req.currentUSerId;
+    const userObjId = req.currentUserId;
     const Upvotes = await userService.findUpvotesByUser({ userObjId });
     res.status(200).json({
       status: 'success',

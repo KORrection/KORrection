@@ -113,7 +113,7 @@ class postService {
     let updatedPost;
 
     try {
-      await PostVote.createPostVote({ userObjId, postObjId });
+      await PostVote.createPostVote({ userObjId, postObjId }, session);
       const updates = { likeCount: 1 };
       updatedPost = await Post.updatePost({ postId, updates }, session);
       await session.commitTransaction();
