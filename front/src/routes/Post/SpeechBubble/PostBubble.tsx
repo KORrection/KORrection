@@ -14,7 +14,7 @@ import styles from './speechBubble.module.scss';
 
 interface IProps {
   post: IPost;
-  setPost: Dispatch<SetStateAction<IPost>>;
+  setPost: Dispatch<SetStateAction<IPost | null>>;
   author: IAuthor;
   editorState: EditorState;
   setEditorState: Dispatch<SetStateAction<EditorState>>;
@@ -40,7 +40,12 @@ const PostBubble = ({ post, setPost, author, editorState, setEditorState }: IPro
     }).then((res) => {
       const { content: newContent, title: newTitle } = res.data.payload;
 
-      setPost((prev) => ({ ...prev, content: newContent, title: newTitle }));
+      setPost((prev) => {
+        if (prev) {
+          return { ...prev, title: newTitle, content: newContent };
+        }
+        return null;
+      });
       setTitle(newTitle);
       setIsEditing(false);
     });

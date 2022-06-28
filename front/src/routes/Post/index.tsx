@@ -15,7 +15,7 @@ import PostBubble from './SpeechBubble/PostBubble';
 import CommentBubble from './SpeechBubble/CommentBubble';
 import Button from 'routes/_shared/Button';
 
-const POST_INITIAL_STATE = { category: '', createdAt: '', likeCount: 0, title: '', content: '' };
+const POST_INITIAL_STATE = null;
 const AUTHOR_INITIAL_STATE = { authorName: '', authorPic: '', isAuthor: false };
 const COMMENT_INITIAL_STATE = [
   { _id: '', author: '', authorPic: '', commentId: '', commentBody: '', createdAt: '', isAuthor: false },
@@ -25,7 +25,7 @@ const Post = () => {
   const params = useParams();
   const isLoggedIn = useRecoilValue(userLoginState);
 
-  const [post, setPost] = useState<IPost>(POST_INITIAL_STATE);
+  const [post, setPost] = useState<IPost | null>(POST_INITIAL_STATE);
   const [author, setAuthor] = useState(AUTHOR_INITIAL_STATE);
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
   const [comments, setComments] = useState<IComment[]>(COMMENT_INITIAL_STATE);
@@ -83,6 +83,10 @@ const Post = () => {
       console.log(err);
     }
   };
+
+  if (!post) {
+    return null;
+  }
 
   return (
     <div className={styles.pageContainer}>
