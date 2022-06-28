@@ -8,8 +8,8 @@ class Comment {
 
   static async getCommentsByPostId({ parentPostId }) {
     return await CommentModel.find({ parentPostId }).populate({
-      path: 'comments',
-      populate: { path: 'authorObjId', select: ['nickname', 'profilePicture'] },
+      path: 'authorObjId',
+      select: ['nickname', 'profilePicture'],
     });
   }
 
