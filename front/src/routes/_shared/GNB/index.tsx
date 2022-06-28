@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Cookies } from 'react-cookie';
 import { useRecoilState } from 'recoil';
 import { cx } from 'styles';
 
@@ -14,13 +12,7 @@ const navData = ['문법 검사기', '퀴즈', '커뮤니티'];
 const navURI = ['gec', 'quiz', 'board'];
 
 const GNB = () => {
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(userLoginState);
-
-  useEffect(() => {
-    const cookies = new Cookies();
-
-    setIsLoggedIn(!!cookies.get('token'));
-  }, [setIsLoggedIn]);
+  const [isLoggedIn] = useRecoilState(userLoginState);
 
   return (
     <header className={styles.container}>
