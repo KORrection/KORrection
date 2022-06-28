@@ -11,7 +11,7 @@ class Post {
 
   static async findPostById({ postId }) {
     return await PostModel.findOne({ postId })
-      .populate('comments')
+      .populate({ path: 'comments', populate: { path: 'authorObjId', select: ['nickname', 'profilePicture'] } })
       .populate({ path: 'authorObjId', select: ['nickname', 'profilePicture'] });
   }
 
