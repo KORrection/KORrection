@@ -13,9 +13,20 @@ class commentService {
     return { comment, authorName };
   }
 
-  static async getCommentsByPostId({ parentPostId }) {
+  static async getCommentsByPostId({ parentPostId, userId }) {
     const comments = await Comment.getCommentsByPostId({ parentPostId });
-    return comments;
+    const refinedComments = comments.map((comment) => {
+      return {
+        _id: comment._id,
+        author: comment.authorObjId.nickname,
+        authorPic: comment.authorObjId.profilePicture,
+        commentId: comment.commentId,
+        commentBody: comment.commentBody,
+        createdAt: comment.createdAt,
+        isAuthor: comment.authorObjId._id == userId ? true : false,
+      };
+    });
+    return refinedComments;
   }
 
   static async updateComment({ commentId, commentBody }) {

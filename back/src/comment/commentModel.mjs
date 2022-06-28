@@ -7,7 +7,10 @@ class Comment {
   }
 
   static async getCommentsByPostId({ parentPostId }) {
-    return await CommentModel.find({ parentPostId });
+    return await CommentModel.find({ parentPostId }).populate({
+      path: 'comments',
+      populate: { path: 'authorObjId', select: ['nickname', 'profilePicture'] },
+    });
   }
 
   static async findCommentById({ commentId }) {
