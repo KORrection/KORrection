@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import { swaggerUi, specs } from './swagger.js';
 import { userRouter } from './user/userRouter.mjs';
 import { postRouter } from './post/postRouter.mjs';
+import { gecClientRouter } from './gecClient/gecClientRouter.mjs';
 import { commentRouter } from './comment/commentRouter.mjs';
 import { login_required } from './middleware/login_required.mjs';
 
@@ -50,5 +51,6 @@ app.get('/', (req, res) => {
 app.use(userRouter);
 app.use('/board', login_required, postRouter);
 app.use('/board/comments', login_required, commentRouter);
+app.use(gecClientRouter);
 
 export { app };

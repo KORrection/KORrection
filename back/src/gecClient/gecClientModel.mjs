@@ -8,6 +8,10 @@ class gecClient {
   static async createTask({ userObjId }) {
     return await gecClientModel.create({ userObjId });
   }
+
+  static async deleteTask({ userObjId, taskId }) {
+    return await gecClientModel.deleteOne({ userObjId, taskId });
+  }
 }
 
 export { gecClient };
