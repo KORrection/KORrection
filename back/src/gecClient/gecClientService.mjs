@@ -1,4 +1,5 @@
 import { gecClient } from './gecClientModel.mjs';
+import axios from 'axios';
 
 class gecClientService {
   static async checkTaskExist({ userObjId }) {
@@ -22,21 +23,36 @@ class gecClientService {
       throw new Error('내용을 입력해 주세요.');
     }
     const task = await gecClient.createTask({ userObjId });
-
-    // TODO: (건태) split sentences and send to flask server to start analyzing (sentences를 쪼개고, 플라스크에 taskId와 sentence보내서 분석 시작하기 - 하단부 post 요청 시 보낼 body 참고 )
-
+    sentences = sentences.split('.');
+    const flaskRequest = {
+      taskId: task.taskId,
+      sentences,
+    };
+    //console.log(flaskRequest);
+    await axios.post(process.env.FLASK_URL, flaskRequest, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     return task;
   }
 
   static async checkTaskProgress({ userObjId, taskId }) {
-    // TODO: (건태) const taskWork = request GET to flask server with taskId (taskId로 플라스크에 GET 요청 날리기)
+    const endPoint = `/${taskId}`;
 
-    let taskWork; // TODO: 윗 줄 작업 끝나면 지워주세요
+    const taskWork = await axios
+      .get(process.env.FLASK_URL + endPoint, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      })
+      .then((res) => res.data);
 
     if (taskWork.status == 'InProgress') {
       return { status: 'InProgress', result: '분석이 진행 중입니다.' };
     }
-    const result = taskWork.result;
+    const result = taskWork.sentences;
     await gecClient.deleteTask({ userObjId, taskId });
     return { status: 'Completed', result };
   }
