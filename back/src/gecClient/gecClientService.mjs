@@ -33,12 +33,12 @@ class gecClientService {
 
     let taskWork; // TODO: 윗 줄 작업 끝나면 지워주세요
 
-    if (taskWork.status == 'inProgress') {
-      return { status: 'inProgress', result: '분석이 진행 중입니다.' };
+    if (taskWork.status == 'InProgress') {
+      return { status: 'InProgress', result: '분석이 진행 중입니다.' };
     }
     const result = taskWork.result;
     await gecClient.deleteTask({ userObjId, taskId });
-    return { status: 'completed', result };
+    return { status: 'Completed', result };
   }
 }
 
@@ -63,5 +63,5 @@ export { gecClientService };
 // const taskWork = {
 //   taskId: '~~',
 //   status: 'completed',
-//   result: [ [ s1, s2, s3] , [s1, s2, s3] , ... ],
+//   result: [ [ s1, s2, s3] , [s1, s2, s3] ],
 // };
