@@ -2,7 +2,12 @@
 
 import { Router } from 'express';
 import { commentService } from './commentService.mjs';
-import { checkPostId, validateParentPost } from '../middleware/boardValidator.mjs';
+import {
+  checkPostId,
+  validateParentPost,
+  validateUserId,
+  getCommentsMiddleware,
+} from '../middleware/boardValidator.mjs';
 
 const commentRouter = Router();
 /**
@@ -76,12 +81,11 @@ commentRouter.post('/board/comments', checkPostId, async (req, res, next) => {
 });
 
 // * Read
-// all matches to the post
-commentRouter.get('/board/comments', checkPostId, async (req, res, next) => {
+// post에 해당하는 comments 가져오거나 한 유저가 작성한 comments 가져오기
+commentRouter.get('/board/comments', getCommentsMiddleware, async (req, res, next) => {
   try {
-    const userId = req.currentUserId;
-    const { parentPostId } = res.locals;
-    const comments = await commentService.getCommentsByPostId({ parentPostId, userId });
+    const { condition } = res.locals;
+    const comments = await commentService.getComments({ condition });
     res.status(200).json({
       status: 'success',
       payload: { comments },
@@ -115,20 +119,6 @@ commentRouter.delete('/board/comments/:commentId', validateParentPost, async (re
     res.status(200).json({
       status: 'success',
       payload: { isDeleted },
-    });
-  } catch (err) {
-    next(err);
-  }
-});
-
-// * get User's comment
-commentRouter.get('/users/my/comments', async (req, res, next) => {
-  try {
-    const userObjId = req.currentUserId;
-    const comments = await commentService.findCommentsByUser({ userObjId });
-    res.status(200).json({
-      status: 'success',
-      payload: { comments },
     });
   } catch (err) {
     next(err);

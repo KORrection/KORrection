@@ -342,7 +342,8 @@ postRouter.put('/board/posts/:postId/devotes', async (req, res, next) => {
 // /posts?user={userId}
 postRouter.get('/board/posts', validateUserId, async (req, res, next) => {
   try {
-    const userObjId = req.currentUserId;
+    // const userObjId = req.currentUserId;
+    const userObjId = '62b43a24ba416653fc32121d';
     const posts = await postService.findPostsByUser({ userObjId });
     res.status(200).json({
       status: 'success',

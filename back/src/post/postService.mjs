@@ -161,9 +161,23 @@ class postService {
   }
 
   static async findPostsByUser({ userObjId }) {
+    console.log(userObjId);
     const userBelongings = await User.getPostByUser({ userObjId });
+    console.log(userBelongings);
     const post = userBelongings.posts.length == 0 ? '작성한 내역이 없습니다' : userBelongings.posts;
-    return post;
+    const refinedPosts = post.map((each) => {
+      return {
+        category: each.category,
+        authorName: each.authorObjId.nickname,
+        authorPic: each.authorObjId.profilePicture,
+        title: each.title,
+        content: each.content,
+        likeCount: each.likeCount,
+        postId: each.postId,
+        createdAt: each.createdAt,
+      };
+    });
+    return refinedPosts;
   }
 }
 
