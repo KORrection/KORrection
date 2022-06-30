@@ -68,19 +68,19 @@ class userService {
   }
 
   static async findPostsByUser({ userObjId }) {
-    const userBelongings = await User.sortPostByUser({ userObjId });
+    const userBelongings = await User.getPostByUser({ userObjId });
     const post = userBelongings.posts.length == 0 ? '작성한 내역이 없습니다' : userBelongings.posts;
     return post;
   }
 
   static async findCommentsByUser({ userObjId }) {
-    const userBelongings = await User.sortCommentsByUser({ userObjId });
+    const userBelongings = await User.getCommentsByUser({ userObjId });
     const comments = userBelongings.comments.length == 0 ? '작성한 내역이 없습니다' : userBelongings.comments;
     return comments;
   }
 
   static async findUpvotesByUser({ userObjId }) {
-    const userBelongings = await User.sortUpvotesByUser({ userObjId });
+    const userBelongings = await User.getUpvotesByUser({ userObjId });
     const upvotes = userBelongings.upvotes;
     const refinedUpvotes = upvotes.map((upvote) => {
       return {
