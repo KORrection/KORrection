@@ -9,9 +9,7 @@ import { swaggerUi, specs } from './swagger.js';
 import { userRouter } from './user/userRouter.mjs';
 import { postRouter } from './post/postRouter.mjs';
 import { gecClientRouter } from './gecClient/gecClientRouter.mjs';
-
 import { quizRouter } from './quiz/quizRouter.mjs';
-
 import { commentRouter } from './comment/commentRouter.mjs';
 import { login_required } from './middleware/login_required.mjs';
 
