@@ -9,7 +9,7 @@ import { swaggerUi, specs } from './swagger.js';
 import { userRouter } from './user/userRouter.mjs';
 import { postRouter } from './post/postRouter.mjs';
 import { gecClientRouter } from './gecClient/gecClientRouter.mjs';
-import { gecRouter } from './gec/gecRouter.mjs';
+
 import { quizRouter } from './quiz/quizRouter.mjs';
 
 import { commentRouter } from './comment/commentRouter.mjs';
@@ -52,7 +52,7 @@ app.use('/uploads', express.static('uploads'));
 app.get('/', (req, res) => {
   res.send('안녕하세요, 16팀 레이서 프로젝트 API 입니다.');
 });
-app.use(gecRouter);
+
 app.use(quizRouter);
 app.use(userRouter);
 app.use('/board', login_required, postRouter);

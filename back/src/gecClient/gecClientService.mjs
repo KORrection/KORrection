@@ -28,7 +28,7 @@ class gecClientService {
       taskId: task.taskId,
       sentences,
     };
-    //console.log(flaskRequest);
+
     await axios.post(process.env.FLASK_URL, flaskRequest, {
       headers: {
         'Content-Type': 'application/json',

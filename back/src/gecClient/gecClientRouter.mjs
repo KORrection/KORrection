@@ -21,10 +21,10 @@ gecClientRouter.get('/gec', login_required, async (req, res, next) => {
 // * POST : 분석 작업 요청. return taskId
 gecClientRouter.post(
   '/gec/corrections',
-  /*login_required,*/ async (req, res, next) => {
+  login_required, async (req, res, next) => {
     try {
-      //const userObjId = req.currentUserId;
-      const userObjId = '62b4245773fd451e9640600c';
+      const userObjId = req.currentUserId;
+      //const userObjId = '62b4245773fd451e9640600c';
       const { sentences } = req.body;
       const task = await gecClientService.requestCorrection({ userObjId, sentences });
       res.status(200).json({
@@ -40,10 +40,10 @@ gecClientRouter.post(
 // * GET : 작업 status 확인 ( inprogress || completed )
 gecClientRouter.get(
   '/gec/corrections/:taskId',
-  /*login_required,*/ async (req, res, next) => {
+  login_required, async (req, res, next) => {
     try {
-      //const userObjId = req.currentUserId;
-      const userObjId = '62b4245773fd451e9640600c';
+      const userObjId = req.currentUserId;
+      //const userObjId = '62b4245773fd451e9640600c';
       const { taskId } = req.params;
       const { status, result } = await gecClientService.checkTaskProgress({ userObjId, taskId });
       res.status(200).json({
