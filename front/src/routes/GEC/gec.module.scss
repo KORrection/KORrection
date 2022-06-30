@@ -30,24 +30,39 @@
       }
     }
 
-    .textContainer {
-      position: relative;
-      width: 100%;
-      height: calc(100% - 75px);
+    .gecForm {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      height: calc(100% - 60px);
 
-      .grammarlyText {
+      .textContainer {
+        position: relative;
         width: 100%;
         height: 100%;
-        padding: 20px;
-        resize: none;
-        border: 1px solid colors.$GRAYE;
-        border-radius: 10px;
+
+        .grammarlyText {
+          width: 100%;
+          height: 100%;
+          padding: 20px;
+          resize: none;
+          border: 1px solid colors.$GRAYE;
+          border-radius: 10px;
+
+          &:focus {
+            box-shadow: 0 1px 4px colors.$BOX_SHADOW;
+          }
+        }
+
+        .textLength {
+          position: absolute;
+          right: 20px;
+          bottom: 20px;
+        }
       }
 
-      .textLength {
-        position: absolute;
-        right: 20px;
-        bottom: 20px;
+      button {
+        margin-top: 10px;
       }
     }
   }

@@ -1,0 +1,49 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
+
+.pageContainer {
+  .titleBox {
+    @include flexbox.flexbox(center, end);
+    flex-direction: column;
+    width: calc(100% + 40px);
+    height: 300px;
+    padding: 5%;
+    margin: -20px 0 20px -20px;
+    background: colors.$SIGNATURE_GREEN;
+    background: linear-gradient(90deg, rgba(colors.$GRADIENT_BLUE, 0.3), rgba(colors.$SIGNATURE_GREEN, 0.3));
+    transition: 200ms;
+
+    h1 {
+      margin: 0 0 20px;
+      font-size: 26px;
+      font-weight: 600;
+      text-align: center;
+      word-break: keep-all;
+      transition: 200ms;
+    }
+
+    p {
+      font-size: 20px;
+      line-height: 25px;
+      text-align: right;
+      transition: 200ms;
+    }
+  }
+
+  section {
+    .componentsContainer {
+      @include flexbox.flexbox(between, center);
+      padding: 0 2px;
+    }
+  }
+}
+
+@include responsive.after(LD) {
+  .pageContainer {
+    section {
+      width: 1200px;
+      margin: auto;
+    }
+  }
+}

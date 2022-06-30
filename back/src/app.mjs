@@ -8,14 +8,28 @@ import cookieParser from 'cookie-parser';
 import { swaggerUi, specs } from './swagger.js';
 import { userRouter } from './user/userRouter.mjs';
 import { postRouter } from './post/postRouter.mjs';
+import { gecClientRouter } from './gecClient/gecClientRouter.mjs';
+
+import { quizRouter } from './quiz/quizRouter.mjs';
+
 import { commentRouter } from './comment/commentRouter.mjs';
+import { login_required } from './middleware/login_required.mjs';
 
 dotenv.config();
 const app = express();
 passportConfig();
 
 // CORS 에러 방지
-app.use(cors());
+const corsConfig = {
+  origin: true,
+  credentials: true,
+};
+
+app.use(cors(corsConfig));
+app.options('*', cors(corsConfig));
+
+// app.use(cors({ origin: true, credentials: true }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -39,8 +53,10 @@ app.get('/', (req, res) => {
   res.send('안녕하세요, 16팀 레이서 프로젝트 API 입니다.');
 });
 
+app.use(quizRouter);
 app.use(userRouter);
-app.use('/board', postRouter);
-app.use('/board/comments', commentRouter);
+app.use('/board', login_required, postRouter);
+app.use('/board/comments', login_required, commentRouter);
+app.use(gecClientRouter);
 
 export { app };

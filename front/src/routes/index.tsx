@@ -6,6 +6,9 @@ import GNB from './_shared/GNB';
 import GEC from './GEC';
 import Quiz from './Quiz';
 import Board from './Board';
+import Post from './Post';
+import Write from './Write';
+import Profile from './Profile';
 
 const App = () => {
   return (
@@ -17,6 +20,9 @@ const App = () => {
           <Route path='gec' element={<GEC />} />
           <Route path='quiz' element={<Quiz />} />
           <Route path='board' element={<Board />} />
+          <Route path='board/:postId' element={<Post />} />
+          <Route path='board/write' element={<Write />} />
+          <Route path='profile' element={<Profile />} />
         </Routes>
       </main>
     </div>

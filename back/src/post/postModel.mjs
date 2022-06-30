@@ -1,34 +1,32 @@
-// * (3) database layer (model)
 import { PostModel } from './postSchema.mjs';
 
 class Post {
-  static async createPost({ category, author, title, content }) {
-    const newPost = await PostModel.create({ category, author, title, content });
+  static async createPost({ category, authorObjId, title, content }) {
+    const newPost = await PostModel.create({ category, authorObjId, title, content });
     return newPost;
   }
   static async findAll() {
-    return await PostModel.find({});
+    return await PostModel.find({}).populate('authorObjId');
   }
 
-  static async findPost({ postId }) {
-    return await PostModel.findOne({ postId });
+  static async findPostById({ postId }) {
+    return await PostModel.findOne({ postId })
+      .populate({ path: 'comments', populate: { path: 'authorObjId', select: ['nickname', 'profilePicture'] } })
+      .populate({ path: 'authorObjId', select: ['nickname', 'profilePicture'] });
   }
 
-  static async updatePost({ postId, category, title, content }) {
-    return await PostModel.findOneAndUpdate({ postId }, { $set: { category, title, content } }, { new: true });
+  static async updatePost({ postId, updates }, session) {
+    if (session !== undefined) {
+      return await PostModel.findOneAndUpdate({ postId }, { $inc: updates }, { new: true }).session(session);
+    }
+    return await PostModel.findOneAndUpdate({ postId }, { $set: updates }, { new: true });
   }
 
-  static async deletePost({ postId }) {
+  static async deletePost({ postId }, { session }) {
+    if (session !== undefined) {
+      return await PostModel.deleteOne({ postId }).session(session);
+    }
     return await PostModel.deleteOne({ postId });
   }
-
-  static async likePost({ postId }) {
-    return await PostModel.findOneAndUpdate({ postId }, { $set: { $inc: { likeCount: 1 } } }, { new: true });
-  }
-
-  static async undoLikePost({ postId }) {
-    return await PostModel.findOneAndUpdate({ postId }, { $set: { $inc: { likeCount: -1 } } }, { new: true });
-  }
 }
-
 export { Post };

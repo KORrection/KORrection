@@ -37,7 +37,7 @@ userRouter.get('/google/callback/', passport.authenticate('google', { session: f
 userRouter.get('/logout', (req, res) => {
   req.logout();
   res.clearCookie('token');
-  res.redirect('http://localhost:3000');
+  res.redirect(process.env.MAIN_URL);
 });
 /**
  * @swagger
@@ -47,6 +47,7 @@ userRouter.get('/logout', (req, res) => {
  *    tags: [Users]
  *    summary: 로그아웃
  */
+
 userRouter.get('/users', login_required, async function (req, res, next) {
   try {
     // 전체 사용자 목록을 얻음
@@ -56,6 +57,7 @@ userRouter.get('/users', login_required, async function (req, res, next) {
     next(error);
   }
 });
+
 /**
  * @swagger
  * paths:
@@ -64,16 +66,16 @@ userRouter.get('/users', login_required, async function (req, res, next) {
  *    tags: [Users]
  *    summary: 전체 사용자 목록
  */
-userRouter.put('/users/:id', async function (req, res, next) {
+userRouter.put('/users', login_required, async function (req, res, next) {
   try {
-    const user_id = req.params.id;
+    const userId = req.body._id;
 
     const nickname = req.body.nickname ?? null;
     const description = req.body.description ?? null;
 
     const toUpdate = { nickname, description };
 
-    const updatedUser = await userService.setUser({ user_id, toUpdate });
+    const updatedUser = await userService.setUser({ userId, toUpdate });
 
     if (updatedUser.errorMessage) {
       throw new Error(updatedUser.errorMessage);
@@ -107,20 +109,19 @@ userRouter.put('/users/:id', async function (req, res, next) {
  *            application/json:
  */
 
-userRouter.post('/profile/:id', upload.single('image'), async (req, res, next) => {
+userRouter.post('/profile', login_required, upload.single('image'), async (req, res, next) => {
   try {
-    const user_id = req.params.id;
+    const userId = req.body._id;
 
     const profilePicture = req.file.key ?? null;
     const toUpdate = { profilePicture };
 
-    const updatedUser = await userService.fileUpload({ user_id, toUpdate });
+    const updatedUser = await userService.updateProfilePhotoUrl({ userId, toUpdate });
 
     if (updatedUser.errorMessage) {
       throw new Error(updatedUser.errorMessage);
     }
-    res.status(200).json(updatedUser);
-    console.log(updatedUser);
+    res.status(200).json(req.file.location);
   } catch (error) {
     next(error);
   }
@@ -146,5 +147,44 @@ userRouter.post('/profile/:id', upload.single('image'), async (req, res, next) =
  *          content:
  *            application/json:
  */
+
+userRouter.get('/users/my/posts', login_required, async (req, res, next) => {
+  try {
+    const userObjId = req.currentUserId;
+    const posts = await userService.findPostsByUser({ userObjId });
+    res.status(200).json({
+      status: 'success',
+      payload: { posts },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+userRouter.get('/users/my/comments', login_required, async (req, res, next) => {
+  try {
+    const userObjId = req.currentUserId;
+    const comments = await userService.findCommentsByUser({ userObjId });
+    res.status(200).json({
+      status: 'success',
+      payload: { comments },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+userRouter.get('/users/my/upvotes', login_required, async (req, res, next) => {
+  try {
+    const userObjId = req.currentUserId;
+    const Upvotes = await userService.findUpvotesByUser({ userObjId });
+    res.status(200).json({
+      status: 'success',
+      payload: { Upvotes },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
 export { userRouter };

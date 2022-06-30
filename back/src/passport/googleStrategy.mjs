@@ -23,7 +23,7 @@ export default () => {
         } else {
           const newUser = await User.create({
             email,
-            Id: profile.id,
+            // socialId: profile.id, 나중에 소셜 로그인을 더 추가하면 비교값이 되는 변수
             nickname: 'null',
             profilePicture: 'null',
             description: 'null',

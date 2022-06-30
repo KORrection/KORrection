@@ -1,0 +1,67 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/responsive';
+
+.editorContainer {
+  h1,
+  h2,
+  h3 {
+    font-weight: bold;
+  }
+
+  h1 {
+    font-size: 32px;
+    line-height: 38px;
+  }
+
+  h2 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  h3 {
+    font-size: 19px;
+    line-height: 25px;
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 10px;
+
+    button {
+      height: 40px;
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 10px;
+      transition: 300ms;
+
+      &:hover {
+        background-color: colors.$MAIN_BORDER;
+      }
+    }
+  }
+
+  .editor {
+    height: calc(100vh - 300px);
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 22px;
+    border: 1px solid colors.$MAIN_BORDER;
+    transition: padding 100ms;
+
+    &:hover {
+      cursor: text;
+    }
+  }
+}
+
+@include responsive.after(684px) {
+  .editorContainer {
+    .editor {
+      height: calc(100vh - 260px);
+      padding: 20px;
+    }
+  }
+}

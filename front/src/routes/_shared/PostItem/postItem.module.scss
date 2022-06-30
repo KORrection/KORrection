@@ -1,0 +1,54 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
+
+.postCard {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid colors.$MAIN_BORDER;
+  border-radius: 20px;
+
+  + .postCard {
+    margin-top: 10px;
+  }
+
+  dl {
+    @include flexbox.flexbox(between, center);
+    width: 100%;
+
+    .leftContainer {
+      width: 80%;
+      padding-right: 10px;
+      text-align: left;
+    }
+
+    .rightContainer {
+      width: 20%;
+      text-align: right;
+    }
+
+    .subText {
+      overflow: hidden;
+      font-size: 15px;
+      color: colors.$GRAYA;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .mainText {
+      margin-top: 5px;
+      overflow: hidden;
+      font-size: 18px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  dt {
+    display: none;
+  }
+}

@@ -1,8 +1,5 @@
-// * (1) http req, res handler layer
-
 import { Router } from 'express';
 import { postService } from './postService.mjs';
-//import { loginRequired } from '../middlewares/loginRequired';
 
 const postRouter = Router();
 /**
@@ -51,29 +48,23 @@ const postRouter = Router();
  *                          properties:
  *                              postId:
  *                                  type: string
+ *                              authorName:
+ *                                  type: string
+ *                              title:
+ *                                  type: string
+ *                              content:
+ *                                  type: string
+ *                              createdAt:
+ *                                  type: date
  */
-// postRouter.post('/posts', async (req, res, next) => {
-//   try {
-//     const { userId } = res.locals; // TODO: check whether the userId is in email-format or not
-//     const { category, title, content } = req.body;
-//     const post = await postService.createPost({ userId, category, title, content });
-//     res.status(201).json({
-//       status: 'success',
-//       payload: { postId: post.postId },
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
 postRouter.post('/posts', async (req, res, next) => {
   try {
-    const userId = 'test@gmail.com';
+    const userId = req.currentUserId;
     const { category, title, content } = req.body;
-    const post = await postService.createPost({ userId, category, title, content });
+    const { post, authorName } = await postService.createPost({ userId, category, title, content });
     res.status(201).json({
       status: 'success',
-      payload: { postId: post.postId },
+      payload: { postId: post.postId, authorName, title: post.title, content: post.content, createdAt: post.createdAt },
     });
   } catch (err) {
     next(err);
@@ -107,10 +98,6 @@ postRouter.post('/posts', async (req, res, next) => {
  */
 postRouter.get('/', async (req, res, next) => {
   try {
-    if (req.query.write) {
-      res.redirect('post/edit');
-      return;
-    }
     const posts = await postService.findAll();
     res.status(200).json({
       status: 'success',
@@ -147,22 +134,23 @@ postRouter.get('/', async (req, res, next) => {
  *                      payload:
  *                          type: object
  *                          properties:
- *                              $ref: '#/definitions/Post'
+ *                              post:
+ *                                type: object
+ *                              authorName:
+ *                                type: string
+ *                              comments:
+ *                                type: object
  */
+// ** get a post with comment belongings.
 postRouter.get('/posts/:postId', async (req, res, next) => {
   try {
+    const userId = req.currentUserId;
     const { postId } = req.params;
-    if (req.query.edit) {
-      res.redirect(`post/edit/${postId}`);
-      return;
-    }
-
-    const post = await postService.findPost({ postId });
+    const { post, authorName, authorPic, comments, isAuthor } = await postService.findPostById({ postId, userId });
     res.status(200).json({
       status: 'success',
-      payload: post,
+      payload: { post, authorName, authorPic, comments, isAuthor },
     });
-    //? res.redirect(`view/${postId}`)}
   } catch (err) {
     next(err);
   }
@@ -179,7 +167,7 @@ postRouter.get('/posts/:postId', async (req, res, next) => {
  *      security:
  *	      - jwt: []
  *      parameters:
- *        - name: id
+ *        - name: postId
  *          in: path
  *          type: string
  *          description: post의 고유 id
@@ -261,7 +249,7 @@ postRouter.delete('/posts/:postId', async (req, res, next) => {
 /**
  * @swagger
  * paths:
- *  /board/likes/{postId}:
+ *  /board/{postId}/upvote:
  *    put:
  *      tags: [Post]
  *      summary: like the Post(좋아요)
@@ -289,13 +277,14 @@ postRouter.delete('/posts/:postId', async (req, res, next) => {
  *                              likeCount:
  *                                  type: number
  */
-postRouter.put('/likes/:postId', async (req, res, next) => {
+postRouter.put('/posts/:postId/upvotes', async (req, res, next) => {
   try {
+    const userObjId = req.currentUserId;
     const { postId } = req.params;
-    const post = await postService.likePost({ postId });
+    const post = await postService.upvotePost({ userObjId, postId });
     res.status(200).json({
       status: 'success',
-      payload: { likeCount: post.likeCount },
+      payload: { postId, likeCount: post.likeCount },
     });
   } catch (err) {
     next(err);
@@ -334,13 +323,14 @@ postRouter.put('/likes/:postId', async (req, res, next) => {
  *                              likeCount:
  *                                  type: number
  */
-postRouter.put('/de-likes/:postId', async (req, res, next) => {
+postRouter.put('/posts/:postId/devotes', async (req, res, next) => {
   try {
+    const userObjId = req.currentUserId;
     const { postId } = req.params;
-    const post = await postService.undoLikePost({ postId });
+    const post = await postService.devotePost({ userObjId, postId });
     res.status(200).json({
       status: 'success',
-      payload: { likecount: post.likeCount },
+      payload: { postId, likecount: post.likeCount },
     });
   } catch (err) {
     next(err);

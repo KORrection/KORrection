@@ -1,19 +1,40 @@
 import { Comment } from './commentModel.mjs';
-// import { Post } from '../post/postModel.mjs';
+import { User } from '../user/userModel.mjs';
 
 class commentService {
-  static async createComment({ userId, parentPostId, commentBody }) {
+  static async createComment({ userId, parentPostId, parentPostObjId, commentBody }) {
     if (!commentBody) {
       throw new Error('댓글 내용을 입력하세요.');
     }
-    const author = userId.substring(0, userId.indexOf('@')); // ! assume that userId = email
-    const comment = await Comment.createComment({ author, parentPostId, commentBody });
-    return comment;
+    const user = await User.findById({ userId });
+    const authorObjId = user._id;
+    const comment = await Comment.createComment({ authorObjId, parentPostId, parentPostObjId, commentBody });
+    const refinedComment = {
+      _id: comment.id,
+      author: user.nickname,
+      authorPic: user.profilePicture,
+      commentId: comment.commentId,
+      commentBody: comment.commentBody,
+      isAuthor: true,
+      createdAt: comment.createdAt,
+    };
+    return refinedComment;
   }
 
-  static async getComments({ parentPostId }) {
-    const comments = await Comment.getComments({ parentPostId });
-    return comments;
+  static async getCommentsByPostId({ parentPostId, userId }) {
+    const comments = await Comment.getCommentsByPostId({ parentPostId });
+    const refinedComments = comments.map((comment) => {
+      return {
+        _id: comment._id,
+        author: comment.authorObjId.nickname,
+        authorPic: comment.authorObjId.profilePicture,
+        commentId: comment.commentId,
+        commentBody: comment.commentBody,
+        createdAt: comment.createdAt,
+        isAuthor: comment.authorObjId._id == userId ? true : false,
+      };
+    });
+    return refinedComments;
   }
 
   static async updateComment({ commentId, commentBody }) {
@@ -27,10 +48,10 @@ class commentService {
   static async deleteComment({ commentId }) {
     const doc = await Comment.deleteComment({ commentId });
     if (doc.acknowledged && doc.deletedCount == 1) {
-      //console.log('Delete successfully');
+      console.log('Delete successfully');
       return { isDeleted: true, message: '댓글이 삭제되었습니다.' };
     } else {
-      //console.log("Comment doesn't exist or already deleted");
+      console.log("Comment doesn't exist or already deleted");
       throw new Error('없는 댓글입니다.');
     }
   }
