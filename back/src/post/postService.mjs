@@ -107,7 +107,7 @@ class postService {
     const post = await Post.findPostById({ postId });
     const postObjId = post._id;
     const voteRecord = await PostVote.findPostVote({ userObjId, postObjId });
-    if (voteRecord) {
+    if (voteRecord !== null) {
       throw new Error('좋아요는 한 번만 가능합니다.');
     }
 
@@ -132,6 +132,9 @@ class postService {
     let updatedPost;
     let voteDoc;
     const post = await Post.findPostById({ postId });
+    if (post.likeCount < 1) {
+      throw new Error('게시물의 좋아요 수가 0입니다.');
+    }
     const postObjId = post._id;
     const voteRecord = await PostVote.findPostVote({ userObjId, postObjId });
     if (voteRecord == undefined) {

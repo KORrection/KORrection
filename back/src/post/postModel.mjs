@@ -17,7 +17,7 @@ class Post {
 
   static async updatePost({ postId, updates }, session) {
     if (session !== undefined) {
-      return await PostModel.findOneAndUpdate({ postId }, { $inc: updates }, { new: true }).session(session);
+      return await PostModel.findOneAndUpdate({ postId }, { $inc: updates }, { new: true, session });
     }
     return await PostModel.findOneAndUpdate({ postId }, { $set: updates }, { new: true });
   }
