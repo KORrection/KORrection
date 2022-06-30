@@ -11,7 +11,9 @@ const Home = () => {
         <h1>당신의 올바른 한국어를 위하여, 코렉션!</h1>
         <p>For the Correct Korean, KORrection!</p>
         <Link to='/gec'>
-          <button type='button'>코렉션 사용하기</button>
+          <button type='button' className={styles.gecButton}>
+            <span>코렉션 사용하기</span>
+          </button>
         </Link>
       </div>
       <section className={styles.container}>

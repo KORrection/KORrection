@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from 'react';
 
 import { ArrowRight, Comment, Document } from 'assets/svgs';
 import styles from './gec.module.scss';
+import Button from 'routes/_shared/Button';
 
 const GEC = () => {
   const [textValue, setTextValue] = useState('');
@@ -17,19 +18,24 @@ const GEC = () => {
           <Comment />
           <h2>Document</h2>
         </div>
-        <div className={styles.textContainer}>
-          <textarea
-            className={styles.grammarlyText}
-            placeholder='내용을 입력해주세요'
-            maxLength={500}
-            value={textValue}
-            onChange={handleValueChange}
-          />
-          <div className={styles.textLength}>
-            <span>{textValue.length}</span>
-            <span> / 500</span>
+        <form className={styles.gecForm}>
+          <div className={styles.textContainer}>
+            <textarea
+              className={styles.grammarlyText}
+              placeholder='내용을 입력해주세요'
+              maxLength={500}
+              value={textValue}
+              onChange={handleValueChange}
+            />
+            <div className={styles.textLength}>
+              <span>{textValue.length}</span>
+              <span> / 500</span>
+            </div>
           </div>
-        </div>
+          <Button type='submit' size='large'>
+            save
+          </Button>
+        </form>
       </div>
       <div className={styles.container}>
         <div className={styles.title}>
