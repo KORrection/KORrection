@@ -1,15 +1,69 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
-import { ArrowRight, Comment, Document } from 'assets/svgs';
-import styles from './gec.module.scss';
+import { userLoginState } from 'states/user';
+import { getApi, postApi } from 'services/axios';
+import { SERVER_URL } from 'constants/index';
+
+import { Comment, Document } from 'assets/svgs';
 import Button from 'routes/_shared/Button';
+import Suggestion from './Suggestion';
+import styles from './gec.module.scss';
 
 const GEC = () => {
+  const isLoggedIn = useRecoilValue(userLoginState);
+
   const [textValue, setTextValue] = useState('');
+  const [taskId, setTaskId] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [results, setResults] = useState([]);
 
   const handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     setTextValue(e.currentTarget.value);
   };
+
+  const handleGecSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    postApi(`gec/corrections`, {
+      sentences: textValue,
+    })
+      .then((res) => setTaskId(res.data.payload.taskId))
+      .catch(() => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (taskId !== '') {
+      const getTaskInterval = setInterval(() => {
+        getApi(`gec/corrections/${taskId}`)
+          .then((res) => {
+            const { status, result } = res.data.payload;
+
+            if (status === 'Completed') {
+              setResults(result);
+              setTaskId('');
+              setIsLoading(false);
+
+              clearInterval(getTaskInterval);
+            } else if (status === 'InProgress') {
+              console.log('is in progress...');
+            }
+          })
+          .catch(() => {
+            setIsLoading(false);
+          });
+      }, 3000);
+    }
+  }, [taskId]);
+
+  if (!isLoggedIn) {
+    window.location.href = `${SERVER_URL}/google`;
+
+    return <div>로그인이 필요한 서비스입니다..</div>;
+  }
 
   return (
     <section className={styles.pageContainer}>
@@ -18,7 +72,7 @@ const GEC = () => {
           <Comment />
           <h2>Document</h2>
         </div>
-        <form className={styles.gecForm}>
+        <form className={styles.gecForm} onSubmit={handleGecSubmit}>
           <div className={styles.textContainer}>
             <textarea
               className={styles.grammarlyText}
@@ -33,7 +87,7 @@ const GEC = () => {
             </div>
           </div>
           <Button type='submit' size='large'>
-            save
+            {isLoading ? '로딩중' : 'save'}
           </Button>
         </form>
       </div>
@@ -43,10 +97,11 @@ const GEC = () => {
           <h2>All Suggestions</h2>
         </div>
         <ul>
-          <li className={styles.suggestionCard}>
-            <mark className={styles.wrong}>틀린 내용</mark> <ArrowRight />{' '}
-            <mark className={styles.right}>맞는 내용</mark>
-          </li>
+          {results.map((result, i) => {
+            const key = `gec-${i}`;
+
+            return <Suggestion key={key} result={result} />;
+          })}
         </ul>
       </div>
     </section>

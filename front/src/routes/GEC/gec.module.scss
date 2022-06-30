@@ -48,6 +48,8 @@
           resize: none;
           border: 1px solid colors.$GRAYE;
           border-radius: 10px;
+          box-shadow: 0;
+          transition: 300ms;
 
           &:focus {
             box-shadow: 0 1px 4px colors.$BOX_SHADOW;
@@ -67,7 +69,7 @@
     }
   }
 
-  ul {
+  .suggestionWrapper {
     .suggestionCard {
       @include flexbox.flexbox(start, center);
       width: 100%;
@@ -76,6 +78,10 @@
       word-break: keep-all;
       border: 1px solid colors.$MAIN_BORDER;
       border-radius: 10px;
+
+      + .suggestionCard {
+        margin-top: 10px;
+      }
 
       .wrong {
         margin-right: 5px;

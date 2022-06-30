@@ -27,19 +27,28 @@ const Post = () => {
 
   const [post, setPost] = useState<IPost | null>(POST_INITIAL_STATE);
   const [author, setAuthor] = useState(AUTHOR_INITIAL_STATE);
-  const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
-  const [comments, setComments] = useState<IComment[]>(COMMENT_INITIAL_STATE);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [comments, setComments] = useState(COMMENT_INITIAL_STATE);
   const [commentInput, setCommentInput] = useState('');
+  const [isLiked, setIsLiked] = useState<boolean | null>(null);
 
   useMount(() => {
     getApi(`board/posts/${params.postId}`)
       .then((res) => {
-        const { authorName, authorPic, post: newPost, isAuthor, comments: newComments } = res.data.payload;
+        const {
+          authorName,
+          authorPic,
+          post: newPost,
+          isAuthor,
+          comments: newComments,
+          isLike: newIsLiked,
+        } = res.data.payload;
 
-        setEditorState(convertHtmlToDraft(newPost.content));
-        setPost(newPost);
         setAuthor({ authorName, authorPic, isAuthor });
+        setPost(newPost);
+        setEditorState(convertHtmlToDraft(newPost.content));
         setComments(newComments);
+        setIsLiked(newIsLiked);
       })
       // eslint-disable-next-line no-console
       .catch((err) => console.error(err));
@@ -74,7 +83,7 @@ const Post = () => {
     });
   };
 
-  if (!post) {
+  if (!post || isLiked === null) {
     return null;
   }
 
@@ -86,6 +95,7 @@ const Post = () => {
         author={author}
         editorState={editorState}
         setEditorState={setEditorState}
+        isLiked={isLiked}
       />
       {comments.map((comment) => (
         <CommentBubble key={comment.commentId} comment={comment} />

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
@@ -19,15 +19,17 @@ interface IProps {
   author: IAuthor;
   editorState: EditorState;
   setEditorState: Dispatch<SetStateAction<EditorState>>;
+  isLiked: boolean;
 }
 
-const PostBubble = ({ post, setPost, author, editorState, setEditorState }: IProps) => {
+const PostBubble = ({ post, setPost, author, editorState, setEditorState, isLiked: isLikedPost }: IProps) => {
   const params = useParams();
   const navigate = useNavigate();
 
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(post.title);
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(isLikedPost);
+  const [likeCount, setLikeCount] = useState(post.likeCount);
 
   const handlePostSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -62,23 +64,15 @@ const PostBubble = ({ post, setPost, author, editorState, setEditorState }: IPro
 
   const handleFavouriteClick = () => {
     if (isLiked) {
-      putApi(`board/posts/${params.postId}/devotes`)
-        .then((res) => {
-          setIsLiked(false);
-          console.log(res, 'devotes!!');
-        })
-        .catch((err) => {
-          console.log(err, 'devote 실패');
-        });
+      putApi(`board/posts/${params.postId}/devotes`).then(() => {
+        setIsLiked(false);
+        setLikeCount((prev) => prev - 1);
+      });
     } else {
-      putApi(`board/posts/${params.postId}/upvotes`)
-        .then((res) => {
-          setIsLiked(true);
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      putApi(`board/posts/${params.postId}/upvotes`).then(() => {
+        setIsLiked(true);
+        setLikeCount((prev) => prev + 1);
+      });
     }
   };
 
@@ -129,7 +123,7 @@ const PostBubble = ({ post, setPost, author, editorState, setEditorState }: IPro
               ) : (
                 <Favourite onClick={handleFavouriteClick} />
               )}
-              <span>{post.likeCount}</span>
+              <span>{likeCount}</span>
             </div>
             {author.isAuthor && (
               <div className={styles.buttonWrapper}>
