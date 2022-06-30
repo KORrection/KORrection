@@ -61,14 +61,25 @@ const PostBubble = ({ post, setPost, author, editorState, setEditorState }: IPro
   };
 
   const handleFavouriteClick = () => {
-    putApi(`board/posts/${params.postId}/upvotes`)
-      .then((res) => {
-        setIsLiked((prev) => !prev);
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (isLiked) {
+      putApi(`board/posts/${params.postId}/devotes`)
+        .then((res) => {
+          setIsLiked(false);
+          console.log(res, 'devotes!!');
+        })
+        .catch((err) => {
+          console.log(err, 'devote 실패');
+        });
+    } else {
+      putApi(`board/posts/${params.postId}/upvotes`)
+        .then((res) => {
+          setIsLiked(true);
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const handleDeleteClick = () => {
