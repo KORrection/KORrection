@@ -1,0 +1,200 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
+
+.postContainer {
+  @include flexbox.flexbox(center, start);
+  width: 100%;
+  height: 100%;
+  margin-bottom: 20px;
+
+  .authorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+    margin-right: 30px;
+
+    img {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+      border-radius: 50%;
+      object-fit: none;
+      object-position: center;
+    }
+  }
+
+  .editorWrapper {
+    display: flex;
+    flex-direction: column;
+
+    .titleContainer {
+      display: flex;
+      height: 40px;
+      margin-bottom: 15px;
+
+      input {
+        width: 100%;
+        padding: 0 15px;
+        margin-left: 10px;
+        border: 1px solid colors.$MAIN_BORDER;
+        border-radius: 10px;
+      }
+    }
+  }
+
+  .commentInputWrapper {
+    width: 100%;
+    margin-left: 8px;
+    text-align: right;
+
+    .commentInput {
+      width: 100%;
+      height: 100px;
+      padding: 20px;
+      margin-bottom: 5px;
+      resize: none;
+      border: 1px solid colors.$GRAYE;
+      border-radius: 10px;
+    }
+  }
+
+  .speechBubble {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 90%;
+    min-height: 90px;
+    padding: 15px 20px;
+    background: colors.$BUBBLE_GRAY;
+    border-radius: 10px;
+
+    .subTitleContainer {
+      @include flexbox.flexbox(between, center);
+
+      .categoryContainer {
+        display: flex;
+        align-items: center;
+
+        .category {
+          font-size: 15px;
+          color: colors.$GRAYA;
+        }
+
+        svg {
+          margin: 0 2px 0 8px;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+
+      button {
+        &:hover {
+          background-color: colors.$GRAYE;
+        }
+      }
+    }
+
+    .title {
+      padding-bottom: 5px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-size: 18px;
+      border-bottom: 1px solid colors.$GRADIENT_BLUE;
+    }
+
+    .content {
+      p {
+        line-height: 20px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-weight: bold;
+      }
+
+      h1 {
+        font-size: 32px;
+        line-height: 38px;
+      }
+
+      h2 {
+        font-size: 24px;
+        line-height: 30px;
+      }
+
+      h3 {
+        font-size: 19px;
+        line-height: 25px;
+      }
+
+      strong {
+        font-weight: bold;
+      }
+
+      em {
+        font-style: italic;
+      }
+
+      ul,
+      ol {
+        display: block;
+        padding-left: 20px;
+        margin: 15px 0;
+        list-style: disc outside none;
+      }
+
+      ol {
+        list-style-type: decimal;
+
+        li {
+          list-style: decimal;
+        }
+      }
+
+      ul {
+        list-style-type: disc;
+
+        li {
+          list-style: disc;
+        }
+      }
+    }
+
+    time {
+      font-size: 15px;
+      color: colors.$GRAYA;
+    }
+  }
+
+  .speechBubble::after {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    width: 0;
+    height: 0;
+    margin-top: -12.5px;
+    margin-left: -25px;
+    content: '';
+    border: 25px solid transparent;
+    border-top: 0;
+    border-right-color: colors.$BUBBLE_GRAY;
+    border-left: 0;
+  }
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    + button {
+      margin-left: 10px;
+    }
+  }
+}

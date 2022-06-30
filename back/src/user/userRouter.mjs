@@ -37,7 +37,7 @@ userRouter.get('/google/callback/', passport.authenticate('google', { session: f
 userRouter.get('/logout', (req, res) => {
   req.logout();
   res.clearCookie('token');
-  res.redirect('http://localhost:3000');
+  res.redirect(process.env.MAIN_URL);
 });
 /**
  * @swagger
@@ -47,6 +47,7 @@ userRouter.get('/logout', (req, res) => {
  *    tags: [Users]
  *    summary: 로그아웃
  */
+
 userRouter.get('/users', login_required, async function (req, res, next) {
   try {
     // 전체 사용자 목록을 얻음
@@ -115,7 +116,7 @@ userRouter.post('/profile', login_required, upload.single('image'), async (req, 
     const profilePicture = req.file.key ?? null;
     const toUpdate = { profilePicture };
 
-    const updatedUser = await userService.fileUpload({ userId, toUpdate });
+    const updatedUser = await userService.updateProfilePhotoUrl({ userId, toUpdate });
 
     if (updatedUser.errorMessage) {
       throw new Error(updatedUser.errorMessage);

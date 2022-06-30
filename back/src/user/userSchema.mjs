@@ -7,9 +7,6 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    // Id: {
-    //   type: String,
-    // },
     nickname: {
       type: String,
     },

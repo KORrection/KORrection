@@ -9,8 +9,7 @@ const quizRouter = Router();
 
 quizRouter.get('/quiz', login_required, async function (req, res, next) {
   try {
-    const users = await userService.getUser();
-    res.status(200).send(users);
+    
   } catch (error) {
     next(error);
   }

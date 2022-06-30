@@ -4,22 +4,24 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 
-import { deleteApi, putApi } from 'services';
+import { deleteApi, putApi } from 'services/axios';
 import { IAuthor, IPost } from 'types/board';
+import { IMAGE_ON_ERROR_URL } from 'constants/index';
 
 import { Favourite } from 'assets/svgs';
 import Button from 'routes/_shared/Button';
 import TextEditor from 'routes/_shared/TextEditor';
-import styles from './post.module.scss';
+import styles from './speechBubble.module.scss';
 
 interface IProps {
   post: IPost;
+  setPost: Dispatch<SetStateAction<IPost | null>>;
   author: IAuthor;
   editorState: EditorState;
   setEditorState: Dispatch<SetStateAction<EditorState>>;
 }
 
-const PostBubble = ({ post, author, editorState, setEditorState }: IProps) => {
+const PostBubble = ({ post, setPost, author, editorState, setEditorState }: IProps) => {
   const params = useParams();
   const navigate = useNavigate();
 
@@ -36,9 +38,17 @@ const PostBubble = ({ post, author, editorState, setEditorState }: IProps) => {
       category: post.category,
       title,
       content,
-    }).then(() => {
+    }).then((res) => {
+      const { content: newContent, title: newTitle } = res.data.payload;
+
+      setPost((prev) => {
+        if (prev) {
+          return { ...prev, title: newTitle, content: newContent };
+        }
+        return null;
+      });
+      setTitle(newTitle);
       setIsEditing(false);
-      navigate(`/board/${params.postId}`);
     });
   };
 
@@ -51,14 +61,25 @@ const PostBubble = ({ post, author, editorState, setEditorState }: IProps) => {
   };
 
   const handleFavouriteClick = () => {
-    putApi(`board/posts/${params.postId}/upvotes`)
-      .then((res) => {
-        setIsLiked((prev) => !prev);
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (isLiked) {
+      putApi(`board/posts/${params.postId}/devotes`)
+        .then((res) => {
+          setIsLiked(false);
+          console.log(res, 'devotes!!');
+        })
+        .catch((err) => {
+          console.log(err, 'devote 실패');
+        });
+    } else {
+      putApi(`board/posts/${params.postId}/upvotes`)
+        .then((res) => {
+          setIsLiked(true);
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const handleDeleteClick = () => {
@@ -77,7 +98,7 @@ const PostBubble = ({ post, author, editorState, setEditorState }: IProps) => {
           alt='authorProfileImg'
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = 'https://www.yokogawa.com/public/img/default_image.png';
+            e.currentTarget.src = IMAGE_ON_ERROR_URL;
           }}
         />
         <p>{author.authorName}</p>

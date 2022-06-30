@@ -34,16 +34,87 @@
       transition: 200ms;
     }
 
-    button {
-      padding: 10px 30px;
+    .gecButton {
+      position: relative;
+      display: inline-block;
+      min-width: 150px;
+      min-height: 50px;
+      padding: 0;
       font-size: 18px;
-      background-color: colors.$WHITE;
-      border-radius: 10px;
-      transition: 300ms;
+      line-height: 42px;
+      color: colors.$GRAY2;
+      text-decoration: none;
+      background: linear-gradient(90deg, rgba(colors.$GRADIENT_BLUE, 0.3), rgba(colors.$SYSTEM_BLUE, 0.3));
+      border-radius: 5px;
+      box-shadow: 7px 7px 20px 0 colors.$SUB_BOX_SHADOW, 4px 4px 5px 0 colors.$SUB_BOX_SHADOW;
+      transition: all 0.3s ease;
+
+      &::before,
+      &::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        content: '';
+        background: colors.$SYSTEM_BLUE;
+        transition: all 0.3s ease;
+      }
+
+      &::before {
+        width: 2px;
+        height: 0%;
+      }
+
+      &::after {
+        width: 0%;
+        height: 2px;
+      }
 
       &:hover {
-        font-weight: 600;
-        background-color: rgba(colors.$GRADIENT_BLUE, 0.5);
+        background: rgba(colors.$WHITE, 0.2);
+        box-shadow: none;
+
+        &::before {
+          height: 100%;
+        }
+
+        &::after {
+          width: 100%;
+        }
+      }
+
+      span {
+        display: block;
+        width: 100%;
+
+        &::before,
+        &::after {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          content: '';
+          background: colors.$SYSTEM_BLUE;
+          transition: all 0.3s ease;
+        }
+
+        &::before {
+          width: 2px;
+          height: 0%;
+        }
+
+        &::after {
+          width: 0%;
+          height: 2px;
+        }
+
+        &:hover {
+          &::before {
+            height: 100%;
+          }
+
+          &::after {
+            width: 100%;
+          }
+        }
       }
     }
   }
@@ -146,7 +217,7 @@
         font-size: 32px;
       }
 
-      button {
+      .gecButton {
         padding: 15px 35px;
         font-size: 24px;
       }
