@@ -13,6 +13,7 @@ import { gecClientRouter } from './gecClient/gecClientRouter.mjs';
 import { quizRouter } from './quiz/quizRouter.mjs';
 
 import { commentRouter } from './comment/commentRouter.mjs';
+import { postVoteRouter } from './postVote/postVoteRouter.mjs';
 import { login_required } from './middleware/login_required.mjs';
 
 dotenv.config();
@@ -55,8 +56,8 @@ app.get('/', (req, res) => {
 
 app.use(quizRouter);
 app.use(userRouter);
-app.use('/board', login_required, postRouter);
-app.use('/board/comments', login_required, commentRouter);
-app.use(gecClientRouter);
+app.use(login_required, postRouter);
+app.use(login_required, commentRouter);
+app.use(login_required, postVoteRouter);
 
 export { app };

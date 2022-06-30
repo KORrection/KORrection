@@ -1,6 +1,6 @@
 import 'dotenv/config';
-import mongoose from 'mongoose';
 import { app } from './src/app.mjs';
+import { gracefulShutdown } from './src/utils/serverShutdown.mjs';
 
 const PORT = process.env.SERVER_PORT || 5001;
 
@@ -10,33 +10,15 @@ const server = app.listen(PORT, () => {
 
 process.on('SIGINT', () => {
   console.log('SIGINT received.');
-  server.close(() => {
-    console.log('server is closed.');
-    mongoose.connection.close(false, () => {
-      console.log('Mongoose connection is disconnected. ');
-      process.exit(0);
-    });
-  });
+  gracefulShutdown(server, 0);
 });
 
 process.on('SIGTERM', () => {
   console.log('SIGTERM received.');
-  server.close(() => {
-    console.log('server is closed.');
-    mongoose.connection.close(false, () => {
-      console.log('Mongoose connection is disconnected. ');
-      process.exit(0);
-    });
-  });
+  gracefulShutdown(server, 0);
 });
 
 process.on('uncaughtException', () => {
   console.log('uncaughtException occurs.');
-  server.close(() => {
-    console.log('server is closed.');
-    mongoose.connection.close(false, () => {
-      console.log('Mongoose connection is disconnected. ');
-      process.exit(1);
-    });
-  });
+  gracefulShutdown(server, 1);
 });

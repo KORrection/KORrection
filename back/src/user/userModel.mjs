@@ -28,12 +28,18 @@ class User {
   }
 
   static async getPostByUser({ userObjId }) {
-    const userAndPosts = await UserModel.findOne({ _id: userObjId }).populate('posts');
+    const userAndPosts = await UserModel.findOne({ _id: userObjId }).populate({
+      path: 'posts',
+      populate: { path: 'authorObjId', select: ['nickname', 'profilePicture'] },
+    });
     return userAndPosts;
   }
 
   static async getCommentsByUser({ userObjId }) {
-    const userAndComments = await UserModel.findOne({ _id: userObjId }).populate('comments');
+    const userAndComments = await UserModel.findOne({ _id: userObjId }).populate({
+      path: 'comments',
+      populate: { path: 'authorObjId', select: ['nickname', 'profilePicture'] },
+    });
     return userAndComments;
   }
 
