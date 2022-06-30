@@ -22,7 +22,7 @@ class gecClientService {
     if (!sentences) {
       throw new Error('내용을 입력해 주세요.');
     }
-    const task = await gecClient.createTask({ userObjId });
+    const task = await gecClient.createTask({ userObjId, sentences });
     sentences = sentences.split('.');
     const flaskRequest = {
       taskId: task.taskId,
@@ -59,25 +59,3 @@ class gecClientService {
 }
 
 export { gecClientService };
-
-// ! belows are just a memo
-// * status : inprogess / completed
-// return { ‘taskId’ : taskId, ‘status’ : ‘InProgress’, ‘sentences’ : [‘’]}, 200
-
-// * body 받아오기
-// req.body = {
-//   sentences: 'sentence1. sentence2. sentence3',
-// };
-
-// * post 요청 시 보낼 body
-// const POST = {
-//   taskId: '~~',
-//   paragraph: [sentence1, sentence2, sentence3],
-// };
-
-// * get 요청 시 받는 값
-// const taskWork = {
-//   taskId: '~~',
-//   status: 'completed',
-//   result: [ [ s1, s2, s3] , [s1, s2, s3] ],
-// };
