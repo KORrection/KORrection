@@ -40,8 +40,9 @@ class postService {
     if (!postAndComments) {
       throw new Error('게시물이 없습니다');
     }
+    const postObjId = postAndComments._id;
     const post = {
-      _id: postAndComments._id,
+      _id: postObjId,
       category: postAndComments.category,
       title: postAndComments.title,
       content: postAndComments.content,
@@ -64,7 +65,9 @@ class postService {
       };
     });
     const isAuthor = postAndComments.authorObjId._id == userId ? true : false;
-    return { post, authorName, authorPic, comments: refinedComments, isAuthor };
+    const voteRecord = await PostVote.findPostVote({ userObjId: userId, postObjId });
+    const isLike = voteRecord == undefined ? false : true;
+    return { post, authorName, authorPic, comments: refinedComments, isAuthor, isLike };
   }
 
   static async updatePost({ postId, category, title, content }) {

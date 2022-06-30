@@ -29,8 +29,7 @@ const validateParentPost = async (req, res, next) => {
 const validateUserId = async (req, res, next) => {
   try {
     const userId = req.query.user;
-    // const userObjId = req.currentUserId;
-    const userObjId = '62b43a24ba416653fc32121d';
+    const userObjId = req.currentUserId;
 
     if (userId !== userObjId) {
       throw new Error('접속된 유저와 검색 대상 유저가 일치하지 않습니다.');
@@ -50,8 +49,7 @@ const getCommentsMiddleware = async (req, res, next) => {
 
     if (req.query.user && !req.query.pId) {
       const userId = req.query.user;
-      // const userObjId = req.currentUserId;
-      const userObjId = '62b43a24ba416653fc32121d';
+      const userObjId = req.currentUserId;
       if (userId !== userObjId) {
         throw new Error('접속된 유저와 검색 대상 유저가 일치하지 않습니다.');
       }
@@ -61,8 +59,7 @@ const getCommentsMiddleware = async (req, res, next) => {
     }
 
     if (!req.query.user && req.query.pId) {
-      // const userId = req.currentUserId;
-      const userId = '62b43a24ba416653fc32121d';
+      const userId = req.currentUserId;
       const post = await Post.findPostById({ postId: req.query.pId });
       const condition = { userId, parentPostId: post.postId, parentPostObjId: post._id };
       res.locals.condition = condition;

@@ -147,10 +147,13 @@ postRouter.get('/board/posts/:postId', async (req, res, next) => {
   try {
     const userId = req.currentUserId;
     const { postId } = req.params;
-    const { post, authorName, authorPic, comments, isAuthor } = await postService.findPostById({ postId, userId });
+    const { post, authorName, authorPic, comments, isAuthor, isLike } = await postService.findPostById({
+      postId,
+      userId,
+    });
     res.status(200).json({
       status: 'success',
-      payload: { post, authorName, authorPic, comments, isAuthor },
+      payload: { post, authorName, authorPic, comments, isAuthor, isLike },
     });
   } catch (err) {
     next(err);
@@ -342,8 +345,7 @@ postRouter.put('/board/posts/:postId/devotes', async (req, res, next) => {
 // /posts?user={userId}
 postRouter.get('/board/posts', validateUserId, async (req, res, next) => {
   try {
-    // const userObjId = req.currentUserId;
-    const userObjId = '62b43a24ba416653fc32121d';
+    const userObjId = req.currentUserId;
     const posts = await postService.findPostsByUser({ userObjId });
     res.status(200).json({
       status: 'success',

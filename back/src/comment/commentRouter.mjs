@@ -2,12 +2,7 @@
 
 import { Router } from 'express';
 import { commentService } from './commentService.mjs';
-import {
-  checkPostId,
-  validateParentPost,
-  validateUserId,
-  getCommentsMiddleware,
-} from '../middleware/boardValidator.mjs';
+import { checkPostId, validateParentPost, getCommentsMiddleware } from '../middleware/boardValidator.mjs';
 
 const commentRouter = Router();
 /**
