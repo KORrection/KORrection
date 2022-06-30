@@ -7,6 +7,7 @@ import { SERVER_URL } from 'constants/index';
 
 import { Comment, Document } from 'assets/svgs';
 import Button from 'routes/_shared/Button';
+import LoadingSpinner from 'routes/_shared/LoadingSpinner';
 import Suggestion from './Suggestion';
 import styles from './gec.module.scss';
 
@@ -87,7 +88,7 @@ const GEC = () => {
             </div>
           </div>
           <Button type='submit' size='large'>
-            {isLoading ? '로딩중' : 'save'}
+            {isLoading ? <LoadingSpinner width='25px' height='25px' /> : 'save'}
           </Button>
         </form>
       </div>

@@ -6,7 +6,7 @@ import { EditorState } from 'draft-js';
 
 import { getApi, postApi } from 'services/axios';
 import { userLoginState } from 'states/user';
-import { IComment, IPost } from 'types/board';
+import { IPost } from 'types/board';
 import { convertHtmlToDraft } from 'utils/convertPost';
 import { SERVER_URL } from 'constants/index';
 

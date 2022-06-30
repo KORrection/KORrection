@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
