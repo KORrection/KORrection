@@ -1,0 +1,20 @@
+@use '/src/styles/constants/colors';
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  display: inline-block;
+  border: 3px solid colors.$MAIN_BORDER;
+  border-top-color: colors.$GRADIENT_BLUE;
+  border-radius: 50%;
+  animation: spin 1s ease-in-out infinite;
+}

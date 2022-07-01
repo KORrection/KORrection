@@ -7,7 +7,7 @@ const signToken = (req, res) => {
       res.status(500);
     } else {
       res.cookie('token', token);
-      res.redirect('https://kdt-ai4-team16.elicecoding.com/'); // 나중에 프론트에서 호출하게되면 뺄예정
+      res.redirect(process.env.MAIN_URL); // 나중에 프론트에서 호출하게되면 뺄예정
     }
   });
 };
