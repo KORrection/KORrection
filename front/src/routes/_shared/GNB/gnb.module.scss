@@ -32,6 +32,11 @@
 
     .profileButton {
       @include flexbox.flexbox(center, center);
+      transition: 200ms;
+
+      &:hover {
+        transform: translateY(-5px);
+      }
     }
 
     ul {
@@ -86,6 +91,14 @@
       &.isActive {
         font-weight: 600;
         color: colors.$SIGNATURE_GREEN;
+      }
+
+      p {
+        transition: 200ms;
+
+        &:hover {
+          transform: translateY(-5px);
+        }
       }
     }
   }

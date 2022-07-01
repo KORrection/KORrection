@@ -1,0 +1,18 @@
+.pageContainer {
+  width: 100%;
+  height: calc(100vh - 100px);
+
+  .userPicture {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    object-fit: none;
+    object-position: center;
+  }
+
+  // .imgSelectInput {
+  //   display: none;
+
+  // }
+}
