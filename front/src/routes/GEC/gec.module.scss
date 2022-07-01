@@ -75,29 +75,37 @@
     }
 
     .suggestionCard {
-      @include flexbox.flexbox(start, center);
-      width: 100%;
-      height: 100px;
-      padding: 20px;
-      word-break: keep-all;
-      border: 1px solid colors.$MAIN_BORDER;
-      border-radius: 10px;
-
       + .suggestionCard {
         margin-top: 10px;
       }
 
-      .wrong {
-        margin-right: 5px;
-        color: colors.$SYSTEM_RED;
-        text-decoration: line-through;
-        background-color: inherit;
-      }
+      .suggestionButton {
+        @include flexbox.flexbox(start, center);
+        width: 100%;
+        height: 100px;
+        padding: 20px;
+        font-size: 16px;
+        word-break: keep-all;
+        border: 1px solid colors.$MAIN_BORDER;
+        border-radius: 10px;
+        transition: 200ms;
 
-      .right {
-        margin-left: 5px;
-        color: colors.$SYSTEM_BLUE;
-        background-color: inherit;
+        &:hover {
+          background-color: colors.$GRAYE;
+        }
+
+        .wrong {
+          margin-right: 5px;
+          color: colors.$SYSTEM_RED;
+          text-decoration: line-through;
+          background-color: inherit;
+        }
+
+        .right {
+          margin-left: 5px;
+          color: colors.$SYSTEM_BLUE;
+          background-color: inherit;
+        }
       }
     }
   }
