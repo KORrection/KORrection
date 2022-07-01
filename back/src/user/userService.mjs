@@ -4,19 +4,21 @@ import jwt from 'jsonwebtoken';
 //Token 생성
 
 class userService {
-  static async getUser({ email }) {
-    const user = await User.findByEmail({ email });
+  static async getUser({ userId }) {
+    let user = await User.findById({ userId });
     if (!user) {
       console.log('존재하지 않는 이메일입니다');
     }
-    const id = user.email;
+    const userEmail = user.email;
     const nickname = user.nickname;
     const description = user.description;
+    const profilePicture = user.profilePicture;
 
     const loginUser = {
-      email,
+      userEmail,
       nickname,
       description,
+      profilePicture,
     };
     return loginUser;
   }
