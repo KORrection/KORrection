@@ -4,9 +4,10 @@ import styles from './gec.module.scss';
 
 interface IProps {
   result: string[];
+  originalSentence: string;
 }
 
-const Suggestion = ({ result }: IProps) => {
+const Suggestion = ({ result, originalSentence }: IProps) => {
   return (
     <li className={styles.suggestionWrapper}>
       <ul>
@@ -15,7 +16,8 @@ const Suggestion = ({ result }: IProps) => {
 
           return (
             <li key={key} className={styles.suggestionCard}>
-              <mark className={styles.wrong}>틀린 내용</mark> <ArrowRight /> <mark className={styles.right}>{res}</mark>
+              <mark className={styles.wrong}>{originalSentence}</mark> <ArrowRight />{' '}
+              <mark className={styles.right}>{res}</mark>
             </li>
           );
         })}

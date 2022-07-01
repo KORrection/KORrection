@@ -89,6 +89,9 @@ const Post = () => {
 
   return (
     <div className={styles.pageContainer}>
+      <div className={styles.titleContainer}>
+        <h1>커뮤니티 Community</h1>
+      </div>
       <PostBubble
         post={post}
         setPost={setPost}

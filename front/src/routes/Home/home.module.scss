@@ -1,6 +1,21 @@
+/* stylelint-disable declaration-colon-newline-after */
 @use '/src/styles/constants/colors';
 @use '/src/styles/mixins/flexbox';
 @use '/src/styles/mixins/responsive';
+
+@keyframes backgroundChange {
+  0% {
+    background-position: 0 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
+}
 
 .pageContainer {
   @include flexbox.flexbox(center, center);
@@ -15,8 +30,17 @@
     height: 600px;
     margin-top: -20px;
     background: colors.$SIGNATURE_GREEN;
-    background: linear-gradient(90deg, rgba(colors.$GRADIENT_BLUE, 0.3), rgba(colors.$SIGNATURE_GREEN, 0.3));
+    background: linear-gradient(
+      85deg,
+      colors.$THIRD_BOX_SHADOW,
+      rgba(colors.$SYSTEM_BLUE, 0.3),
+      rgba(colors.$SIGNATURE_GREEN, 0.3),
+      rgba(colors.$GRADIENT_BLUE, 0.3)
+    );
+    background-repeat: no-repeat;
+    background-size: 400% 400%;
     transition: 200ms;
+    animation: backgroundChange 4000ms ease-in-out infinite;
 
     h1 {
       margin: 50px 0 20px;

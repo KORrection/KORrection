@@ -19,6 +19,7 @@ const GEC = () => {
   const [taskId, setTaskId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
+  const [originSentences, setOriginSentences] = useState([]);
 
   const handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     setTextValue(e.currentTarget.value);
@@ -42,12 +43,15 @@ const GEC = () => {
       const getTaskInterval = setInterval(() => {
         getApi(`gec/corrections/${taskId}`)
           .then((res) => {
+            const { asd: originalSentences } = res.data;
             const { status, result } = res.data.payload;
 
             if (status === 'Completed') {
-              setResults(result);
+              const newResult = result.map((duplicateData: string) => [...new Set(duplicateData)]);
+              setResults(newResult);
               setTaskId('');
               setIsLoading(false);
+              setOriginSentences(originalSentences);
 
               clearInterval(getTaskInterval);
             } else if (status === 'InProgress') {
@@ -101,8 +105,13 @@ const GEC = () => {
         <ul>
           {results.map((result, i) => {
             const key = `gec-${i}`;
+            const originalSentence = originSentences[i];
 
-            return <Suggestion key={key} result={result} />;
+            if (originalSentence !== '') {
+              return <Suggestion key={key} result={result} originalSentence={originalSentence} />;
+            }
+
+            return null;
           })}
         </ul>
       </section>
