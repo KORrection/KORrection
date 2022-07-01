@@ -44,9 +44,9 @@ const Profile = () => {
       nickname: userInfo.nickname,
       description: userInfo.description,
     })
-      .then(() => {
-        postApi(`profile`, formData, {}, 'formData');
-      })
+      // .then(() => {
+      //   postApi(`profile`, formData, {}, 'formData');
+      // })
       .then((res) => console.log(res));
   };
 
