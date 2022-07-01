@@ -58,12 +58,12 @@ userRouter.get('/users', login_required, async function (req, res, next) {
   }
 });
 
-userRouter.get('/user/:id', login_required, async function (req,res,next) {
-  try{
+userRouter.get('/user/:id', login_required, async function (req, res, next) {
+  try {
     const userId = req.params.id;
     const user = await userService.getUser({ userId });
-    res.status(200).send({user});
-  } catch (error){
+    res.status(200).send({ user });
+  } catch (error) {
     next(error);
   }
 });

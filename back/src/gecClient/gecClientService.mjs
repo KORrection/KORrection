@@ -22,8 +22,9 @@ class gecClientService {
     if (!sentences) {
       throw new Error('내용을 입력해 주세요.');
     }
-    const task = await gecClient.createTask({ userObjId, sentences });
+
     sentences = sentences.split('.');
+    const task = await gecClient.createTask({ userObjId, sentences });
     const flaskRequest = {
       taskId: task.taskId,
       sentences,
@@ -53,8 +54,9 @@ class gecClientService {
       return { status: 'InProgress', result: '분석이 진행 중입니다.' };
     }
     const result = taskWork.sentences;
+    const asd = await gecClient.findSentencesByTaskId({ taskId }); // asd 수정 요망
     await gecClient.deleteTask({ userObjId, taskId });
-    return { status: 'Completed', result };
+    return { status: 'Completed', result, asd }; // asd 수정 요망
   }
 }
 
