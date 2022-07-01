@@ -1,6 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { useMount } from 'react-use';
 
 import { userLoginState } from 'states/user';
 import { gecTextState } from 'states/gec';
@@ -22,19 +21,6 @@ const GEC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [originSentences, setOriginSentences] = useState([]);
-
-  useMount(async () => {
-    try {
-      const { data } = await getApi(`gec`);
-      const { task, taskId: existTask } = data.payload;
-
-      if (task) {
-        await getApi(`gec/corrections/${existTask}`);
-      }
-    } catch (err) {
-      setTextValue('');
-    }
-  });
 
   const handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     setTextValue(e.currentTarget.value);
