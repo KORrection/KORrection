@@ -19,7 +19,7 @@ const gecClientSchema = new Schema(
       required: true,
     },
     sentences: {
-      type: String,
+      type: Array,
       required: true,
     },
   },
