@@ -61,7 +61,6 @@ userRouter.get('/users', login_required, async function (req, res, next) {
 userRouter.get('/userInfo', login_required, async function (req, res, next) {
   try {
     const userId = req.currentUserId;
-
     const user = await userService.getUser({ userId });
     res.status(200).send({ user });
   } catch (error) {
