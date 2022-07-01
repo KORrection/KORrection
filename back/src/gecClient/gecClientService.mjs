@@ -13,7 +13,8 @@ class gecClientService {
     const taskId = task.taskId;
     return {
       task: true,
-      message: taskId,
+      message: '진행 중인 작업이 있습니다.',
+      taskId,
     };
   }
 
