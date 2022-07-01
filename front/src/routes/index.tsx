@@ -8,6 +8,7 @@ import Board from './Board';
 import Post from './Post';
 import Write from './Write';
 import Profile from './Profile';
+import Footer from './_shared/Footer';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path='profile' element={<Profile />} />
         </Routes>
       </main>
+      <Footer />
     </div>
   );
 };

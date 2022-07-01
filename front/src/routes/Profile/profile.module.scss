@@ -1,18 +1,63 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
+
 .pageContainer {
+  @include flexbox.flexbox(between, center);
+  flex-direction: column;
   width: 100%;
   height: calc(100vh - 100px);
 
-  .userPicture {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 10px;
-    border-radius: 50%;
-    object-fit: none;
-    object-position: center;
+  .imgContainer {
+    @include flexbox.flexbox(center, center);
+    flex-direction: column;
+    width: 100%;
+
+    .userPicture {
+      width: 100px;
+      height: 100px;
+      margin: 30px 0 40px;
+      border-radius: 50%;
+      object-fit: none;
+      object-position: center;
+    }
   }
 
-  // .imgSelectInput {
-  //   display: none;
+  .textInputContainer {
+    margin-bottom: 50px;
 
-  // }
+    .inputLabel {
+      margin-top: 10px;
+    }
+
+    .textInput {
+      height: 50px;
+      padding: 10px 20px;
+      margin: 10px 0;
+      border: 1px solid colors.$GRAYE;
+      border-radius: 10px;
+    }
+  }
+
+  .submitButton {
+    height: 50px;
+    padding: 15px 30px;
+    font-size: 16px;
+    vertical-align: middle;
+    border: 1px solid colors.$GRAYE;
+    border-radius: 10px;
+    transition: 300ms;
+
+    &:hover {
+      color: colors.$GRAY3;
+      background-color: rgba(colors.$SYSTEM_BLUE, 0.5);
+    }
+  }
+}
+
+@include responsive.after( SD) {
+  .pageContainer {
+    width: 768px;
+    margin: auto;
+  }
 }
