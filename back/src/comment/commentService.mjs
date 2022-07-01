@@ -21,8 +21,27 @@ class commentService {
     return refinedComment;
   }
 
-  static async getCommentsByPostId({ parentPostId, userId }) {
-    const comments = await Comment.getCommentsByPostId({ parentPostId });
+  static async getComments({ condition }) {
+    if (condition.parentPostId && condition.parentPostObjId) {
+      const { parentPostId, userId } = condition;
+      const comments = await Comment.getCommentsByPostId({ parentPostId });
+      const refinedComments = comments.map((comment) => {
+        return {
+          _id: comment._id,
+          author: comment.authorObjId.nickname,
+          authorPic: comment.authorObjId.profilePicture,
+          commentId: comment.commentId,
+          commentBody: comment.commentBody,
+          createdAt: comment.createdAt,
+          isAuthor: comment.authorObjId._id == userId ? true : false,
+        };
+      });
+      return refinedComments;
+    }
+
+    const userObjId = condition.userObjId;
+    const userBelongings = await User.getCommentsByUser({ userObjId });
+    const comments = userBelongings.comments.length == 0 ? '작성한 내역이 없습니다' : userBelongings.comments;
     const refinedComments = comments.map((comment) => {
       return {
         _id: comment._id,
@@ -31,7 +50,6 @@ class commentService {
         commentId: comment.commentId,
         commentBody: comment.commentBody,
         createdAt: comment.createdAt,
-        isAuthor: comment.authorObjId._id == userId ? true : false,
       };
     });
     return refinedComments;
@@ -54,11 +72,6 @@ class commentService {
       console.log("Comment doesn't exist or already deleted");
       throw new Error('없는 댓글입니다.');
     }
-  }
-
-  static async pretendToDelCom({ commentId }) {
-    const comment = await Comment.pretendToDelCom({ commentId });
-    return comment;
   }
 }
 

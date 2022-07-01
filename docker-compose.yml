@@ -1,0 +1,42 @@
+# 출처 : https://loy124.tistory.com/360
+# 출처 : https://songjang.tistory.com/29
+
+version: "3"
+services: 
+  nginx:
+    #재시작 정책
+    #no: 어떠한 상황에서도 재시작을 하지 않습니다
+    #always: 항상 재시작
+    #on-failure: 에러코드와 함께 컨테이너가 멈추었을 때만 재시작 
+    #unless-stopped 개발자가 임의로 멈추려고 할때 빼고는 항상 재시작
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./front
+    ports:
+      - "80:80" #'외부'에서 80포트로 접속하면 => '도커 내부'에서 80포트로 연결된다.
+    depends_on:
+      - backend
+    networks:
+      - mern-app
+
+  backend:
+    #container_name: app_backend
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./back # Dockerfile.dev 빌드 경로
+    #코드 수정후 다시 이미지 build없이 코드가 반영 될 수 있게 volume을 사용한다.
+    volumes:
+      - /app/node_modules # 로컬의 ./back/node_modules가 수정되면, 도커의 /app/node_modules에 반영됨!
+      - ./back:/app  # 로컬의 ./back를 도커의 /app에 **매핑(연결)!!**
+    # standard in open : to make container keep alive and listening for request after startup
+    # 출처 : https://morioh.com/p/b8694da8c930
+    stdin_open: true
+    networks:
+      - mern-app
+    ports:
+      - "5001:5001"
+    
+networks:
+  mern-app:
+    driver: bridge

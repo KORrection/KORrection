@@ -18,6 +18,10 @@ const gecClientSchema = new Schema(
       ref: 'User',
       required: true,
     },
+    sentences: {
+      type: Array,
+      required: true,
+    },
   },
   { timestamps: true }
 );
