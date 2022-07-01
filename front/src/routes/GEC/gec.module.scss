@@ -3,10 +3,10 @@
 @use '/src/styles/mixins/responsive';
 
 .pageContainer {
-  @include flexbox.flexbox(center, center);
+  @include flexbox.flexbox(start, center);
   flex-direction: column;
   width: 100%;
-  height: calc(100vh - 100px);
+  height: 100%;
 
   .suggestions {
     height: calc(100vh - 200px);
@@ -23,7 +23,9 @@
 
     .title {
       @include flexbox.flexbox(start, center);
+      padding-bottom: 15px;
       margin-bottom: 15px;
+      border-bottom: 3px solid colors.$SIGNATURE_LIGHT_GREEN;
 
       svg {
         height: 60px;
@@ -74,35 +76,34 @@
   }
 
   .suggestionWrapper {
+    border: 1px solid colors.$MAIN_BORDER;
+    border-radius: 10px;
+
     + .suggestionWrapper {
       margin-top: 10px;
     }
 
-    .suggestionCard {
-      + .suggestionCard {
-        margin-top: 10px;
-      }
+    .wrong {
+      @include flexbox.flexbox(start, center);
+      min-height: 50px;
+      padding: 20px;
+      color: colors.$SYSTEM_RED;
+      background-color: inherit;
+      border-bottom: 1px solid colors.$GRAYA;
+    }
 
+    .suggestionCard {
       .suggestionButton {
-        @include flexbox.flexbox(start, center);
         width: 100%;
-        height: 100px;
+        min-height: 70px;
         padding: 20px;
         font-size: 16px;
+        text-align: left;
         word-break: keep-all;
-        border: 1px solid colors.$MAIN_BORDER;
-        border-radius: 10px;
         transition: 200ms;
 
         &:hover {
           background-color: colors.$GRAYE;
-        }
-
-        .wrong {
-          margin-right: 5px;
-          color: colors.$SYSTEM_RED;
-          text-decoration: line-through;
-          background-color: inherit;
         }
 
         .right {
@@ -111,24 +112,31 @@
           background-color: inherit;
         }
       }
+
+      +.suggestionCard {
+        .suggestionButton {
+          border-top: 1px solid colors.$MAIN_BORDER;
+        }
+      }
     }
   }
 }
 
 @include responsive.after(ML) {
   .pageContainer {
-    @include flexbox.flexbox(start, center);
-    flex-wrap: wrap;
+    @include flexbox.flexbox(center, start);
+    flex-direction: row;
     padding: 10px;
 
     .container {
       width: 50%;
-      height: 100%;
+      height: calc(100vh - 120px);
       padding-right: 3%;
 
       + .container {
-        padding-right: 0;
+        padding: 0 0 0 3%;
         margin-top: 0;
+        border-left: 2px solid colors.$GRAYD;
       }
 
       .gecForm {

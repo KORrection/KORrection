@@ -1,0 +1,37 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
+
+.notFoundcontainer {
+  @include flexbox.flexbox(center, center);
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 200px);
+
+  img {
+    width: 70%;
+    max-width: 600px;
+  }
+
+  a {
+    padding: 10px 20px;
+    color: colors.$BLACK;
+    text-decoration: none;
+    background-color: colors.$GRAYD;
+    border-radius: 10px;
+    transition: 200ms;
+
+    &:hover {
+      background-color: colors.$GRAYE;
+    }
+  }
+}
+
+@include responsive.after(ML) {
+  .notFoundcontainer {
+    a {
+      padding: 15px 25px;
+      font-size: 24px;
+    }
+  }
+}

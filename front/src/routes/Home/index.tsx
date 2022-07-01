@@ -3,7 +3,6 @@ import { cx } from 'styles';
 
 import { BOARD_IMAGE_URL, GEC_IMAGE_URL } from 'constants/index';
 
-import { Default } from 'assets/images';
 import styles from './home.module.scss';
 
 const Home = () => {
@@ -18,7 +17,21 @@ const Home = () => {
           </button>
         </Link>
       </div>
-      <section className={styles.container}>
+      <section className={cx(styles.container, styles.mobileContainer)}>
+        <div className={styles.imgContainer}>
+          <img src={GEC_IMAGE_URL} alt='gecImg' />
+        </div>
+        <div className={styles.textContainer}>
+          <h2>
+            어려웠던 한국어 문법을
+            <br />
+            고쳐보세요!
+          </h2>
+          <p>Fix the ambiguous Korean grammar!</p>
+          <p>Check grammar, spelling, and punctuation.</p>
+        </div>
+      </section>
+      <section className={cx(styles.container, styles.desktopContainer)}>
         <div className={styles.textContainer}>
           <h2>
             어려웠던 한국어 문법을
@@ -32,17 +45,7 @@ const Home = () => {
           <img src={GEC_IMAGE_URL} alt='gecImg' />
         </div>
       </section>
-      <section className={cx(styles.container, styles.secondMobileContainer)}>
-        <div className={styles.textContainer}>
-          <h2>한국어 질문을 해결해 보세요!</h2>
-          <p>Feel free to ask Korean phrases!</p>
-          <p>Fluent friends will answer your questions.</p>
-        </div>
-        <div className={styles.imgContainer}>
-          <img src={BOARD_IMAGE_URL} alt='boardImg' />
-        </div>
-      </section>
-      <section className={cx(styles.container, styles.secondDesktopContainer)}>
+      <section className={cx(styles.container, styles.secondContainer)}>
         <div className={styles.imgContainer}>
           <img src={BOARD_IMAGE_URL} alt='boardImg' />
         </div>

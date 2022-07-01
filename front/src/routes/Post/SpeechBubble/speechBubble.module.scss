@@ -86,9 +86,11 @@
 
         svg {
           margin: 0 2px 0 8px;
+          transition: transform 200ms;
 
           &:hover {
             cursor: pointer;
+            transform: scale(1.1);
           }
         }
       }

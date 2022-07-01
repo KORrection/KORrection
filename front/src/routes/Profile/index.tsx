@@ -1,11 +1,12 @@
 import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import { getApi, postApi, putApi } from 'services/axios';
+import { userLoginState } from 'states/user';
 import { SERVER_URL, IMAGE_ON_ERROR_URL } from 'constants/index';
 
+import LoginRequired from 'routes/_shared/LoginRequired';
 import styles from './profile.module.scss';
-import { userLoginState } from 'states/user';
-import { useRecoilValue } from 'recoil';
 
 interface IResData {
   description: string;
@@ -67,7 +68,7 @@ const Profile = () => {
   if (!isLoggedIn) {
     window.location.href = `${SERVER_URL}/google`;
 
-    return <div>로그인이 필요한 서비스입니다..</div>;
+    return <LoginRequired />;
   }
 
   return (

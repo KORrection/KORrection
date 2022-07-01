@@ -10,6 +10,7 @@ import { SERVER_URL } from 'constants/index';
 import { Comment, Document } from 'assets/svgs';
 import Button from 'routes/_shared/Button';
 import LoadingSpinner from 'routes/_shared/LoadingSpinner';
+import LoginRequired from 'routes/_shared/LoginRequired';
 import Suggestion from './Suggestion';
 import styles from './gec.module.scss';
 
@@ -83,7 +84,7 @@ const GEC = () => {
   if (!isLoggedIn) {
     window.location.href = `${SERVER_URL}/google`;
 
-    return <div>로그인이 필요한 서비스입니다..</div>;
+    return <LoginRequired />;
   }
 
   return (
@@ -118,21 +119,27 @@ const GEC = () => {
           <h2>All Suggestions</h2>
         </div>
         <ul className={styles.suggestions}>
-          {results.map((result, i) => {
-            const key = `gec-${i}`;
-            const originalSentence: string = originSentences[i];
+          {isLoading ? (
+            <LoadingSpinner width='40px' height='40px' />
+          ) : (
+            <>
+              {results.map((result, i) => {
+                const key = `gec-${i}`;
+                const originalSentence: string = originSentences[i];
 
-            if (
-              originalSentence === '\n ' ||
-              originalSentence === '\n' ||
-              originalSentence === ' ' ||
-              originalSentence === ''
-            ) {
-              return null;
-            }
+                if (
+                  originalSentence === '\n ' ||
+                  originalSentence === '\n' ||
+                  originalSentence === ' ' ||
+                  originalSentence === ''
+                ) {
+                  return null;
+                }
 
-            return <Suggestion key={key} result={result} originalSentence={originalSentence} />;
-          })}
+                return <Suggestion key={key} result={result} originalSentence={originalSentence} />;
+              })}
+            </>
+          )}
         </ul>
       </section>
     </div>
