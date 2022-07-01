@@ -118,11 +118,11 @@ userRouter.put('/users', login_required, async function (req, res, next) {
  *            application/json:
  */
 
-userRouter.post('/profile', login_required, upload.single('image'), async (req, res, next) => {
+userRouter.post('/profile', login_required, upload.single('profilePicture'), async (req, res, next) => {
   try {
     const userId = req.currentUserId;
 
-    const profilePicture = req.file.key ?? null;
+    const profilePicture = req.file.location ?? null;
     const toUpdate = { profilePicture };
 
     const updatedUser = await userService.updateProfilePhotoUrl({ userId, toUpdate });

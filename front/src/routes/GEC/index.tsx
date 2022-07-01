@@ -11,6 +11,7 @@ import Button from 'routes/_shared/Button';
 import LoadingSpinner from 'routes/_shared/LoadingSpinner';
 import Suggestion from './Suggestion';
 import styles from './gec.module.scss';
+import { useMount } from 'react-use';
 
 const GEC = () => {
   const isLoggedIn = useRecoilValue(userLoginState);
@@ -20,6 +21,10 @@ const GEC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [originSentences, setOriginSentences] = useState([]);
+
+  useMount(() => {
+    getApi(`gec`).then((res) => console.log(res));
+  });
 
   const handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     setTextValue(e.currentTarget.value);

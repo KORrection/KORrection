@@ -10,8 +10,8 @@ import { SERVER_URL } from 'constants/index';
 import { LogoImage, User } from 'assets/svgs';
 import styles from './gnb.module.scss';
 
-const navData = ['문법 검사기', '퀴즈', '커뮤니티'];
-const navURI = ['gec', 'quiz', 'board'];
+const navData = ['문법 검사기', '커뮤니티'];
+const navURI = ['gec', 'board'];
 
 const GNB = () => {
   const [isLoggedIn] = useRecoilState(userLoginState);

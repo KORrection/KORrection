@@ -8,8 +8,8 @@ export const getApi = (endpoint: string, config?: object) =>
     withCredentials: true,
   });
 
-export const postApi = (endpoint: string, data: object, config?: object, headerInfo?: string) => {
-  const bodyData = JSON.stringify(data);
+export const postApi = (endpoint: string, data: any, config?: object, headerInfo?: string) => {
+  let bodyData = data;
 
   let header;
 
@@ -19,6 +19,7 @@ export const postApi = (endpoint: string, data: object, config?: object, headerI
         'Content-Type': 'application/json',
       },
     };
+    bodyData = JSON.stringify(data);
   }
 
   return axios.post(`${SERVER_URL}/${endpoint}`, bodyData, {

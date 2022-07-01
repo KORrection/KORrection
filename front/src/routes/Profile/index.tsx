@@ -44,9 +44,9 @@ const Profile = () => {
       nickname: userInfo.nickname,
       description: userInfo.description,
     })
-      // .then(() => {
-      //   postApi(`profile`, formData, {}, 'formData');
-      // })
+      .then(() => {
+        postApi(`profile`, formData, {}, 'formData');
+      })
       .then((res) => console.log(res));
   };
 
@@ -68,29 +68,45 @@ const Profile = () => {
     <>
       {userInfo && (
         <form className={styles.pageContainer} onSubmit={handleInfoSubmit} encType='multipart/form-data'>
-          <img
-            src={userInfo.profilePicture}
-            alt='userInfo'
-            className={styles.userPicture}
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = IMAGE_ON_ERROR_URL;
-            }}
-          />
-          <input type='file' accept='image/*' className={styles.imgSelectInput} onChange={handleFileChange} />
-          <p>닉네임</p>
-          <input
-            type='text'
-            value={userInfo.nickname}
-            onChange={(e) => handleValueChange('nickname', e.currentTarget.value)}
-          />
-          <p>소개</p>
-          <input
-            type='text'
-            value={userInfo.description}
-            onChange={(e) => handleValueChange('description', e.currentTarget.value)}
-          />
-          <button type='submit'>변경</button>
+          <div className={styles.imgContainer}>
+            <img
+              src={userInfo.profilePicture}
+              alt='userInfo'
+              className={styles.userPicture}
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = IMAGE_ON_ERROR_URL;
+              }}
+            />
+            <input type='file' accept='image/*' className={styles.imgSelectInput} onChange={handleFileChange} />
+          </div>
+          <div className={styles.textInputContainer}>
+            <div>
+              <p className={styles.inputLabel}>이메일</p>
+              <input type='text' value={userInfo.userEmail} disabled className={styles.textInput} />
+            </div>
+            <div>
+              <p className={styles.inputLabel}>닉네임</p>
+              <input
+                type='text'
+                value={userInfo.nickname}
+                onChange={(e) => handleValueChange('nickname', e.currentTarget.value)}
+                className={styles.textInput}
+              />
+            </div>
+            <div>
+              <p className={styles.inputLabel}>소개</p>
+              <input
+                type='text'
+                value={userInfo.description}
+                onChange={(e) => handleValueChange('description', e.currentTarget.value)}
+                className={styles.textInput}
+              />
+            </div>
+          </div>
+          <button type='submit' className={styles.submitButton}>
+            회원정보 변경
+          </button>
         </form>
       )}
       <div />

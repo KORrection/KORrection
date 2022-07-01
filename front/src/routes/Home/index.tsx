@@ -50,16 +50,6 @@ const Home = () => {
           <p>Fluent friends will answer your questions.</p>
         </div>
       </section>
-      <section className={styles.container}>
-        <div className={styles.textContainer}>
-          <h2>매일 매일 한국어 퀴즈를 풀어보세요!</h2>
-          <p>Have your Korean Quiz Time EVERYDAY!</p>
-          <p>Helpful for skill up your Korean fluency.</p>
-        </div>
-        <div className={styles.imgContainer}>
-          <img src={Default} alt='defaultImg' />
-        </div>
-      </section>
     </div>
   );
 };
