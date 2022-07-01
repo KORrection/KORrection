@@ -52,11 +52,15 @@ app.get('/', (req, res) => {
   res.send('안녕하세요, 16팀 레이서 프로젝트 API 입니다.');
 });
 
-app.use(quizRouter);
-app.use(userRouter);
-app.use(gecClientRouter);
-app.use(login_required, postRouter);
-app.use(login_required, commentRouter);
-app.use(login_required, postVoteRouter);
+const router = express.Router();
+
+router.use(quizRouter);
+router.use(userRouter);
+router.use(gecClientRouter);
+router.use(login_required, postRouter);
+router.use(login_required, commentRouter);
+router.use(login_required, postVoteRouter);
+
+app.use('/api', router);
 
 export { app };
