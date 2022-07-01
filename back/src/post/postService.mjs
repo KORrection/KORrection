@@ -2,7 +2,7 @@
 import { Post } from './postModel.mjs';
 import { User } from '../user/userModel.mjs';
 import { Comment } from '../comment/commentModel.mjs';
-import { PostVote } from './postVoteModel.mjs';
+import { PostVote } from '../postVote/postVoteModel.mjs';
 import mongoose from 'mongoose';
 
 class postService {
@@ -40,8 +40,9 @@ class postService {
     if (!postAndComments) {
       throw new Error('게시물이 없습니다');
     }
+    const postObjId = postAndComments._id;
     const post = {
-      _id: postAndComments._id,
+      _id: postObjId,
       category: postAndComments.category,
       title: postAndComments.title,
       content: postAndComments.content,
@@ -64,7 +65,9 @@ class postService {
       };
     });
     const isAuthor = postAndComments.authorObjId._id == userId ? true : false;
-    return { post, authorName, authorPic, comments: refinedComments, isAuthor };
+    const voteRecord = await PostVote.findPostVote({ userObjId: userId, postObjId });
+    const isLike = voteRecord == undefined ? false : true;
+    return { post, authorName, authorPic, comments: refinedComments, isAuthor, isLike };
   }
 
   static async updatePost({ postId, category, title, content }) {
@@ -104,7 +107,7 @@ class postService {
     const post = await Post.findPostById({ postId });
     const postObjId = post._id;
     const voteRecord = await PostVote.findPostVote({ userObjId, postObjId });
-    if (voteRecord) {
+    if (voteRecord !== null) {
       throw new Error('좋아요는 한 번만 가능합니다.');
     }
 
@@ -129,6 +132,9 @@ class postService {
     let updatedPost;
     let voteDoc;
     const post = await Post.findPostById({ postId });
+    if (post.likeCount < 1) {
+      throw new Error('게시물의 좋아요 수가 0입니다.');
+    }
     const postObjId = post._id;
     const voteRecord = await PostVote.findPostVote({ userObjId, postObjId });
     if (voteRecord == undefined) {
@@ -158,6 +164,26 @@ class postService {
       console.log("Vote record doesn't exist or already deleted");
       throw new Error('좋아요한 내역이 없습니다');
     }
+  }
+
+  static async findPostsByUser({ userObjId }) {
+    console.log(userObjId);
+    const userBelongings = await User.getPostByUser({ userObjId });
+    console.log(userBelongings);
+    const post = userBelongings.posts.length == 0 ? '작성한 내역이 없습니다' : userBelongings.posts;
+    const refinedPosts = post.map((each) => {
+      return {
+        category: each.category,
+        authorName: each.authorObjId.nickname,
+        authorPic: each.authorObjId.profilePicture,
+        title: each.title,
+        content: each.content,
+        likeCount: each.likeCount,
+        postId: each.postId,
+        createdAt: each.createdAt,
+      };
+    });
+    return refinedPosts;
   }
 }
 

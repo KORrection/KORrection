@@ -6,7 +6,7 @@ class PostVote {
   }
 
   static async createPostVote({ userObjId, postObjId }, session) {
-    return await PVoteModel.create({ userObjId, postObjId }).session(session);
+    return await PVoteModel.create([{ userObjId, postObjId }], { session });
   }
 
   static async deletePostVote({ postVoteId }, session) {
