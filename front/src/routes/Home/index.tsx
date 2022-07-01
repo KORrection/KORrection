@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
+import { cx } from 'styles';
+
+import { BOARD_IMAGE_URL, GEC_IMAGE_URL } from 'constants/index';
 
 import { Default } from 'assets/images';
 import styles from './home.module.scss';
-import { cx } from 'styles';
 
 const Home = () => {
   return (
@@ -27,7 +29,7 @@ const Home = () => {
           <p>Check grammar, spelling, and punctuation.</p>
         </div>
         <div className={styles.imgContainer}>
-          <img src={Default} alt='defaultImg' />
+          <img src={GEC_IMAGE_URL} alt='gecImg' />
         </div>
       </section>
       <section className={cx(styles.container, styles.secondMobileContainer)}>
@@ -37,12 +39,12 @@ const Home = () => {
           <p>Fluent friends will answer your questions.</p>
         </div>
         <div className={styles.imgContainer}>
-          <img src={Default} alt='defaultImg' />
+          <img src={BOARD_IMAGE_URL} alt='boardImg' />
         </div>
       </section>
       <section className={cx(styles.container, styles.secondDesktopContainer)}>
         <div className={styles.imgContainer}>
-          <img src={Default} alt='defaultImg' />
+          <img src={BOARD_IMAGE_URL} alt='boardImg' />
         </div>
         <div className={styles.textContainer}>
           <h2>한국어 질문을 해결해 보세요!</h2>

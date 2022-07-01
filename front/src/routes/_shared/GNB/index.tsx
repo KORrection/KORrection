@@ -59,7 +59,7 @@ const GNB = () => {
                   <User />
                 </button>
                 {isOpened && (
-                  <ul>
+                  <ul className={styles.dropDownMenu}>
                     <li>
                       <Link to='/profile' onClick={handleListClick}>
                         <p>마이 페이지</p>

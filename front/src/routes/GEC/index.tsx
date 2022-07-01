@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { useMount } from 'react-use';
 
 import { userLoginState } from 'states/user';
 import { gecTextState } from 'states/gec';
@@ -11,19 +12,27 @@ import Button from 'routes/_shared/Button';
 import LoadingSpinner from 'routes/_shared/LoadingSpinner';
 import Suggestion from './Suggestion';
 import styles from './gec.module.scss';
-import { useMount } from 'react-use';
 
 const GEC = () => {
   const isLoggedIn = useRecoilValue(userLoginState);
-
   const [textValue, setTextValue] = useRecoilState(gecTextState);
+
   const [taskId, setTaskId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [originSentences, setOriginSentences] = useState([]);
 
-  useMount(() => {
-    getApi(`gec`).then((res) => console.log(res));
+  useMount(async () => {
+    try {
+      const { data } = await getApi(`gec`);
+      const { task, taskId: existTask } = data.payload;
+
+      if (task) {
+        await getApi(`gec/corrections/${existTask}`);
+      }
+    } catch (err) {
+      setTextValue('');
+    }
   });
 
   const handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
@@ -53,6 +62,7 @@ const GEC = () => {
 
             if (status === 'Completed') {
               const newResult = result.map((duplicateData: string) => [...new Set(duplicateData)]);
+
               setResults(newResult);
               setTaskId('');
               setIsLoading(false);
@@ -98,7 +108,7 @@ const GEC = () => {
             </div>
           </div>
           <Button type='submit' size='large'>
-            {isLoading ? <LoadingSpinner width='25px' height='25px' /> : 'save'}
+            {isLoading ? <LoadingSpinner width='25px' height='25px' /> : 'GO!'}
           </Button>
         </form>
       </section>
@@ -107,16 +117,21 @@ const GEC = () => {
           <Document />
           <h2>All Suggestions</h2>
         </div>
-        <ul>
+        <ul className={styles.suggestions}>
           {results.map((result, i) => {
             const key = `gec-${i}`;
-            const originalSentence = originSentences[i];
+            const originalSentence: string = originSentences[i];
 
-            if (originalSentence !== '') {
-              return <Suggestion key={key} result={result} originalSentence={originalSentence} />;
+            if (
+              originalSentence === '\n ' ||
+              originalSentence === '\n' ||
+              originalSentence === ' ' ||
+              originalSentence === ''
+            ) {
+              return null;
             }
 
-            return null;
+            return <Suggestion key={key} result={result} originalSentence={originalSentence} />;
           })}
         </ul>
       </section>

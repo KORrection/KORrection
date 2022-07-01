@@ -34,20 +34,26 @@ const Profile = () => {
     });
   }, []);
 
-  const handleInfoSubmit = (e: FormEvent) => {
+  const handleInfoSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const formData = new FormData();
     if (image) Array.from(image).forEach((i) => formData.append('profilePicture', i));
 
-    putApi(`users`, {
+    const {
+      data: { nickname, description },
+    } = await putApi(`users`, {
       nickname: userInfo.nickname,
       description: userInfo.description,
-    })
-      .then(() => {
-        postApi(`profile`, formData, {}, 'formData');
-      })
-      .then((res) => console.log(res));
+    });
+
+    setUserInfo((prev) => ({ ...prev, nickname, description }));
+
+    if (image !== undefined) {
+      const { data: profilePicture } = await postApi(`profile`, formData, {}, 'formData');
+
+      setUserInfo((prev) => ({ ...prev, profilePicture }));
+    }
   };
 
   const handleValueChange = (name: string, value: string) => {
