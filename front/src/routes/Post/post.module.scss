@@ -3,8 +3,32 @@
 @use '/src/styles/mixins/responsive';
 
 .pageContainer {
+  width: 100%;
+
+  .titleContainer {
+    @include flexbox.flexbox(center, end);
+    flex-direction: column;
+    width: calc(100% + 40px);
+    height: 150px;
+    padding: 5%;
+    margin: -20px 0 40px -20px;
+    background: colors.$SIGNATURE_GREEN;
+    background: linear-gradient(90deg, rgba(colors.$GRADIENT_BLUE, 0.3), rgba(colors.$SIGNATURE_GREEN, 0.3));
+    transition: 200ms;
+
+    h1 {
+      font-size: 26px;
+      font-weight: 600;
+      text-align: center;
+      word-break: keep-all;
+      transition: 200ms;
+    }
+  }
+
   .commentInputWrapper {
+    padding-top: 30px;
     text-align: right;
+    border-top: 1.2px solid colors.$GRAYA;
 
     .commentInput {
       width: 100%;
@@ -20,7 +44,9 @@
 
 @include responsive.after(LD) {
   .pageContainer {
-    width: 1200px;
-    margin: auto;
+    .commentInputWrapper {
+      width: 1200px;
+      margin: 20px auto 0;
+    }
   }
 }

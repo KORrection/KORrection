@@ -58,7 +58,7 @@ userRouter.get('/users', login_required, async function (req, res, next) {
   }
 });
 
-userRouter.get('/user/:id', login_required, async function (req, res, next) {
+userRouter.get('/userInfo', login_required, async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     const user = await userService.getUser({ userId });
@@ -77,7 +77,7 @@ userRouter.get('/user/:id', login_required, async function (req, res, next) {
  */
 userRouter.put('/users', login_required, async function (req, res, next) {
   try {
-    const userId = req.body._id;
+    const userId = req.currentUserId;
 
     const nickname = req.body.nickname ?? null;
     const description = req.body.description ?? null;
@@ -120,7 +120,7 @@ userRouter.put('/users', login_required, async function (req, res, next) {
 
 userRouter.post('/profile', login_required, upload.single('image'), async (req, res, next) => {
   try {
-    const userId = req.body._id;
+    const userId = req.currentUserId;
 
     const profilePicture = req.file.key ?? null;
     const toUpdate = { profilePicture };
