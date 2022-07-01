@@ -8,8 +8,8 @@ interface IProps {
 
 const Suggestion = ({ result }: IProps) => {
   return (
-    <li>
-      <ul className={styles.suggestionWrapper}>
+    <li className={styles.suggestionWrapper}>
+      <ul>
         {result.map((res, i) => {
           const key = `suggestion-card-${i}`;
 

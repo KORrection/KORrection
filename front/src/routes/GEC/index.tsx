@@ -1,7 +1,8 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { userLoginState } from 'states/user';
+import { gecTextState } from 'states/gec';
 import { getApi, postApi } from 'services/axios';
 import { SERVER_URL } from 'constants/index';
 
@@ -14,7 +15,7 @@ import styles from './gec.module.scss';
 const GEC = () => {
   const isLoggedIn = useRecoilValue(userLoginState);
 
-  const [textValue, setTextValue] = useState('');
+  const [textValue, setTextValue] = useRecoilState(gecTextState);
   const [taskId, setTaskId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
@@ -50,13 +51,13 @@ const GEC = () => {
 
               clearInterval(getTaskInterval);
             } else if (status === 'InProgress') {
-              console.log('is in progress...');
+              setIsLoading(true);
             }
           })
           .catch(() => {
             setIsLoading(false);
           });
-      }, 3000);
+      }, 2000);
     }
   }, [taskId]);
 
@@ -67,8 +68,8 @@ const GEC = () => {
   }
 
   return (
-    <section className={styles.pageContainer}>
-      <div className={styles.container}>
+    <div className={styles.pageContainer}>
+      <section className={styles.container}>
         <div className={styles.title}>
           <Comment />
           <h2>Document</h2>
@@ -91,8 +92,8 @@ const GEC = () => {
             {isLoading ? <LoadingSpinner width='25px' height='25px' /> : 'save'}
           </Button>
         </form>
-      </div>
-      <div className={styles.container}>
+      </section>
+      <section className={styles.container}>
         <div className={styles.title}>
           <Document />
           <h2>All Suggestions</h2>
@@ -104,8 +105,8 @@ const GEC = () => {
             return <Suggestion key={key} result={result} />;
           })}
         </ul>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 
