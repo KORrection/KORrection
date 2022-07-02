@@ -80,12 +80,15 @@ class postService {
   }
 
   static async deletePost({ postId }) {
+    const post = Post.findPostById({ postId });
+    const postObjId = post._id;
     const session = await mongoose.startSession();
     session.startTransaction();
     let postDoc;
 
     try {
       await Comment.deleteCommentsByPostId({ postId }, { session });
+      await PostVote.deleteAllPostVote({ postObjId }, { session });
       postDoc = await Post.deletePost({ postId }, { session });
       await session.commitTransaction();
     } catch (error) {
