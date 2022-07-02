@@ -90,8 +90,6 @@ class postService {
     try {
       await Comment.deleteCommentsByPostId({ postId }, { session });
       const abc = await PostVote.deleteAllPostVote({ postObjId }, { session });
-      console.log(postObjId);
-      console.log('abc:', abc);
       postDoc = await Post.deletePost({ postId }, { session });
       await session.commitTransaction();
     } catch (error) {
@@ -173,10 +171,7 @@ class postService {
   }
 
   static async findPostsByUser({ userObjId }) {
-    console.log(userObjId);
     const userBelongings = await User.getPostByUser({ userObjId });
-    console.log('userBelongings:', userBelongings);
-    // const post = userBelongings.posts.length == 0 ? '작성한 내역이 없습니다' : userBelongings.posts;
     const post = userBelongings.posts;
     if (!post) {
       return {};

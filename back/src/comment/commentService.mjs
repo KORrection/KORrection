@@ -44,7 +44,7 @@ class commentService {
 
     const userObjId = condition.userObjId;
     const userBelongings = await User.getCommentsByUser({ userObjId });
-    const comments = userBelongings.comments.length == 0 ? '작성한 내역이 없습니다' : userBelongings.comments;
+    const comments = userBelongings.comments;
     if (!comments) {
       return {};
     }
