@@ -12,7 +12,8 @@ class gecClient {
   static async deleteTask({ userObjId, taskId }) {
     return await gecClientModel.deleteOne({ userObjId, taskId });
   }
-  static async findSentencesByTaskId({ taskId }) {
+
+  static async findTaskByTaskId({ taskId }) {
     return await gecClientModel.findOne({ taskId });
   }
 }
