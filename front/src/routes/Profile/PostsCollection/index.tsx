@@ -71,7 +71,8 @@ const PostsCollection = () => {
             <Link to='/profile'>회원정보 수정</Link>
           </li>
           <li>
-            <Link to='/profile/posts'>글 모아보기</Link>
+            {/* <Link to='/profile/posts'>글 모아보기</Link> */}
+            <Link to='/board'>글 모아보기</Link>
           </li>
         </ul>
       </aside>
