@@ -1,7 +1,27 @@
 @use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
 
 .footer {
+  @include flexbox.flexbox(center, center);
+  flex-wrap: wrap;
+  gap: 20px;
   width: 100%;
-  height: 50px;
-  background-color: colors.$GRAY6;
+  padding: 20px;
+  margin-top: 10px;
+  font-size: 18px;
+  color: colors.$GRAYE;
+  background-color: rgba(colors.$GRAY3, 0.8);
+
+  a {
+    color: colors.$GRAYE;
+    text-decoration: underline;
+  }
+}
+
+@include responsive.after(ML) {
+  .footer {
+    @include flexbox.flexbox(between, center);
+    height: 70px;
+  }
 }

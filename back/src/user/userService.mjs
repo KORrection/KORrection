@@ -1,18 +1,19 @@
 import { User } from './userModel.mjs';
-import jwt from 'jsonwebtoken';
 
 class userService {
   static async getUser({ userId }) {
-    let user = await User.findById({ userId });
+    const user = await User.findById({ userId });
     if (!user) {
       console.log('존재하지 않는 이메일입니다');
     }
+    const userObjId = userId;
     const userEmail = user.email;
     const nickname = user.nickname;
     const description = user.description;
     const profilePicture = user.profilePicture;
 
     const loginUser = {
+      userObjId,
       userEmail,
       nickname,
       description,

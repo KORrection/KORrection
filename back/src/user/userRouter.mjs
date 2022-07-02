@@ -136,7 +136,6 @@ userRouter.post('/profile', login_required, upload.single('profilePicture'), asy
   }
 });
 
-
 /**
  * @swagger
  * paths:

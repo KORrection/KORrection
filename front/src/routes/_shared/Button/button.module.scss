@@ -4,7 +4,7 @@
 .button {
   white-space: nowrap;
   background-color: colors.$WHITE;
-  border: 1px solid colors.$SUB_BORDER;
+  box-shadow: 0 1px 4px colors.$SUB_BOX_SHADOW;
   transition: 200ms;
 
   &.primary {
@@ -25,5 +25,9 @@
     padding: 0 24px;
     font-size: 15px;
     border-radius: 10px;
+  }
+
+  &:hover {
+    background-color: colors.$THIRD_BOX_SHADOW;
   }
 }

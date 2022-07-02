@@ -11,6 +11,7 @@ import { SERVER_URL } from 'constants/index';
 import DropDown from 'routes/_shared/DropDown';
 import PostItem from 'routes/_shared/PostItem';
 import Button from 'routes/_shared/Button';
+import LoginRequired from 'routes/_shared/LoginRequired';
 import styles from './board.module.scss';
 
 const DROPDOWN_CATEGORIES = ['전체', '자유', '한국어 질문'];
@@ -23,15 +24,12 @@ const Board = () => {
   const [currentCategory, setCurrentCategory] = useState('전체');
 
   useMount(() => {
-    getApi('board')
-      .then((res) => {
-        const newPosts = res.data.payload.posts;
+    getApi('board').then((res) => {
+      const newPosts = res.data.payload.posts;
 
-        setPosts(newPosts);
-        setFilteredPosts(newPosts);
-      })
-      // eslint-disable-next-line no-console
-      .catch((err) => console.error(err));
+      setPosts(newPosts);
+      setFilteredPosts(newPosts);
+    });
   });
 
   useEffect(() => {
@@ -50,7 +48,7 @@ const Board = () => {
   if (!isLoggedIn) {
     window.location.href = `${SERVER_URL}/google`;
 
-    return <div>로그인이 필요한 서비스입니다..</div>;
+    return <LoginRequired />;
   }
 
   return (

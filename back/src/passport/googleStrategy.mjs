@@ -11,7 +11,7 @@ export default () => {
       {
         clientID: process.env.GOOGLE_ID,
         clientSecret: process.env.GOOGLE_SECRET,
-        callbackURL: 'https://kdt-ai4-team16.elicecoding.com/api/google/callback',
+        callbackURL: process.env.GOOGLE_CALLBACK_URL,
       },
       async (accessToken, refreshToken, profile, done) => {
         const email = profile.emails[0].value;
@@ -23,10 +23,10 @@ export default () => {
         } else {
           const newUser = await User.create({
             email,
-            // socialId: profile.id, 나중에 소셜 로그인을 더 추가하면 비교값이 되는 변수
             nickname: 'null',
             profilePicture: 'null',
             description: 'null',
+            // socialId: profile.id, 나중에 소셜 로그인을 더 추가하면 비교값이 되는 변수
           });
           return done(null, newUser);
         }

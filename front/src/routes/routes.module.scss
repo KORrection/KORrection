@@ -1,12 +1,11 @@
 @use '/src/styles/constants/colors';
 @use '/src/styles/mixins/flexbox';
-@use '/src/styles/mixins/responsive';
 
 .container {
+  @include flexbox.flexbox(center, center);
   flex-direction: column;
   width: 100%;
   min-height: 100vh;
-  @include flexbox.flexbox(center, center);
 }
 
 .app {

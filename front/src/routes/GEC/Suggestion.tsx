@@ -1,5 +1,5 @@
-import { ArrowRight } from 'assets/svgs';
 import { useRecoilState } from 'recoil';
+
 import { gecTextState } from 'states/gec';
 
 import styles from './gec.module.scss';
@@ -13,13 +13,20 @@ const Suggestion = ({ result, originalSentence }: IProps) => {
   const [gecState, setGecState] = useRecoilState(gecTextState);
 
   const handleSuggestionClick = (original: string, suggestion: string) => {
-    const newGecState = gecState.replace(original, suggestion);
+    const lastString = suggestion[suggestion.length - 1];
+    let newSuggestion = suggestion;
 
+    if (lastString === '.') {
+      newSuggestion = suggestion.substring(0, suggestion.length - 1);
+    }
+
+    const newGecState = gecState.replace(original, newSuggestion);
     setGecState(newGecState);
   };
 
   return (
     <li className={styles.suggestionWrapper}>
+      <mark className={styles.wrong}>{originalSentence}</mark>
       <ul>
         {result.map((res, i) => {
           const key = `suggestion-card-${i}`;
@@ -31,7 +38,6 @@ const Suggestion = ({ result, originalSentence }: IProps) => {
                 className={styles.suggestionButton}
                 onClick={() => handleSuggestionClick(originalSentence, res)}
               >
-                <mark className={styles.wrong}>{originalSentence}</mark> <ArrowRight />{' '}
                 <mark className={styles.right}>{res}</mark>
               </button>
             </li>
