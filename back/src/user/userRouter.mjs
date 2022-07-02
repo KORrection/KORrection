@@ -4,6 +4,7 @@ import Auth from '../passport/token.mjs';
 import { login_required } from '../middleware/login_required.mjs';
 import { userService } from './userService.mjs';
 import upload from '../utils/upload.mjs';
+import { server } from '../utils/constants.mjs';
 
 const userRouter = Router();
 
@@ -37,7 +38,7 @@ userRouter.get('/google/callback/', passport.authenticate('google', { session: f
 userRouter.get('/logout', (req, res) => {
   req.logout();
   res.clearCookie('token');
-  res.redirect(process.env.MAIN_URL);
+  res.redirect(server.MAIN_URL);
 });
 /**
  * @swagger
