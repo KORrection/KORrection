@@ -4,6 +4,9 @@ class postVoteService {
   static async findUpvotesByUser({ userObjId }) {
     const userBelongings = await User.getUpvotesByUser({ userObjId });
     const upvotes = userBelongings.upvotes;
+    if(!upvotes){
+      return {};
+    }
     const refinedUpvotes = upvotes.map((upvote) => {
       return {
         postId: upvote.postObjId.postId,
@@ -15,8 +18,7 @@ class postVoteService {
         createdAt: upvote.postObjId.createdAt,
       };
     });
-    const result = refinedUpvotes.length == 0 ? '좋아요 한 내역이 없습니다' : refinedUpvotes;
-    return result;
+    return refinedUpvotes;
   }
 }
 
