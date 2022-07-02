@@ -16,11 +16,11 @@ const Suggestion = ({ result, originalSentence }: IProps) => {
     const lastString = suggestion[suggestion.length - 1];
     let newSuggestion = suggestion;
 
-    if (lastString !== '.' && lastString !== '!' && lastString !== '?') {
-      newSuggestion = `${suggestion}.`;
+    if (lastString === '.') {
+      newSuggestion = suggestion.substring(0, suggestion.length - 1);
     }
 
-    const newGecState = gecState.replace(`${original}.`, newSuggestion);
+    const newGecState = gecState.replace(original, newSuggestion);
     setGecState(newGecState);
   };
 

@@ -47,66 +47,10 @@
 
   section {
     width: 100%;
-    max-width: 600px;
-  }
+    margin-top: 20px;
 
-  .editForm {
-    @include flexbox.flexbox(between, center);
-    flex-direction: column;
-    width: 100%;
-    max-width: 600px;
-    height: 100%;
-
-    .imgContainer {
-      @include flexbox.flexbox(center, center);
-      flex-direction: column;
-      width: 100%;
-
-      .userPicture {
-        width: 100px;
-        height: 100px;
-        margin: 30px 0;
-        border-radius: 50%;
-        box-shadow: 0 0 16px 0 rgba(0, 0, 0, 8%);
-        object-fit: cover;
-        object-position: center;
-      }
-
-      input {
-        width: 180px;
-        font-size: 14px;
-      }
-    }
-
-    .textInputContainer {
-      margin: 30px 0 40px;
-
-      .inputLabel {
-        margin-top: 10px;
-      }
-
-      .textInput {
-        height: 50px;
-        padding: 10px 20px;
-        margin: 10px 0;
-        border: 1px solid colors.$GRAYE;
-        border-radius: 10px;
-      }
-    }
-
-    .submitButton {
-      height: 50px;
-      padding: 15px 30px;
-      font-size: 16px;
-      vertical-align: middle;
-      border: 1px solid colors.$GRAYE;
-      border-radius: 10px;
-      transition: 300ms;
-
-      &:hover {
-        color: colors.$GRAY3;
-        background-color: rgba(colors.$SYSTEM_BLUE, 0.5);
-      }
+    .myPostsUl {
+      margin-top: 20px;
     }
   }
 }
@@ -121,9 +65,9 @@
 
 @include responsive.after(SD) {
   .pageContainer {
-    .editForm {
-      max-width: 768px;
-      margin: auto;
+    section {
+      max-width: 600px;
+      margin-top: 0;
     }
   }
 }
