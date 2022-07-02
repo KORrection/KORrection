@@ -82,7 +82,7 @@ class postService {
   static async deletePost({ postId }) {
     const post = await Post.findPostById({ postId });
     const postObjId = post._id;
-    
+
     const session = await mongoose.startSession();
     session.startTransaction();
     let postDoc;
@@ -91,7 +91,7 @@ class postService {
       await Comment.deleteCommentsByPostId({ postId }, { session });
       const abc = await PostVote.deleteAllPostVote({ postObjId }, { session });
       console.log(postObjId);
-      console.log('abc:',abc);
+      console.log('abc:', abc);
       postDoc = await Post.deletePost({ postId }, { session });
       await session.commitTransaction();
     } catch (error) {
@@ -178,8 +178,8 @@ class postService {
     console.log('userBelongings:', userBelongings);
     // const post = userBelongings.posts.length == 0 ? '작성한 내역이 없습니다' : userBelongings.posts;
     const post = userBelongings.posts;
-    if(!post){
-	return {};
+    if (!post) {
+      return {};
     }
     const refinedPosts = post.map((each) => {
       return {

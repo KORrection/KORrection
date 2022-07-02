@@ -14,7 +14,7 @@ class PostVote {
   }
 
   static async deleteAllPostVote({ postObjId }, { session }) {
-    return await PVoteModel.deleteMany({postObjId}).session(session);
+    return await PVoteModel.deleteMany({ postObjId }).session(session);
   }
 }
 

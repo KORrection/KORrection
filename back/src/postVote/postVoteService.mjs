@@ -4,7 +4,7 @@ class postVoteService {
   static async findUpvotesByUser({ userObjId }) {
     const userBelongings = await User.getUpvotesByUser({ userObjId });
     const upvotes = userBelongings.upvotes;
-    if(!upvotes){
+    if (!upvotes) {
       return {};
     }
     const refinedUpvotes = upvotes.map((upvote) => {

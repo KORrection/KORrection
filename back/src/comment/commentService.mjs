@@ -25,7 +25,7 @@ class commentService {
     if (condition.parentPostId && condition.parentPostObjId) {
       const { parentPostId, userId } = condition;
       const comments = await Comment.getCommentsByPostId({ parentPostId });
-      if(!comments){
+      if (!comments) {
         return {};
       }
       const refinedComments = comments.map((comment) => {
@@ -45,6 +45,9 @@ class commentService {
     const userObjId = condition.userObjId;
     const userBelongings = await User.getCommentsByUser({ userObjId });
     const comments = userBelongings.comments.length == 0 ? '작성한 내역이 없습니다' : userBelongings.comments;
+    if (!comments) {
+      return {};
+    }
     const refinedComments = comments.map((comment) => {
       return {
         _id: comment._id,
