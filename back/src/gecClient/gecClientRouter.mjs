@@ -39,12 +39,11 @@ gecClientRouter.get('/gec/corrections/:taskId', login_required, async (req, res,
     const userObjId = req.currentUserId;
 
     const { taskId } = req.params;
-    const { status, result, asd } = await gecClientService.checkTaskProgress({ userObjId, taskId });
+    const { status, result, originals } = await gecClientService.checkTaskProgress({ userObjId, taskId });
 
     res.status(200).json({
       status: 'success',
-      payload: { status, result },
-      asd: asd.sentences, // asd 변수 수정 요망
+      payload: { status, originals, result },
     });
   } catch (err) {
     next(err);

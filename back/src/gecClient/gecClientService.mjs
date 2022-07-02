@@ -51,13 +51,14 @@ class gecClientService {
       })
       .then((res) => res.data);
 
-    if (taskWork.status == 'InProgress') {
+    if (taskWork.status === 'InProgress') {
       return { status: 'InProgress', result: '분석이 진행 중입니다.' };
     }
     const result = taskWork.sentences;
-    const asd = await gecClient.findSentencesByTaskId({ taskId }); // asd 수정 요망
+    const originalData = await gecClient.findTaskByTaskId({ taskId });
+    const originals = originalData.sentences;
     await gecClient.deleteTask({ userObjId, taskId });
-    return { status: 'Completed', result, asd }; // asd 수정 요망
+    return { status: 'Completed', result, originals };
   }
 }
 
