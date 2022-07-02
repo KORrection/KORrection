@@ -1,11 +1,28 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import { cx } from 'styles';
 
+import { currentUserState, userLoginState } from 'states/user';
 import { BOARD_IMAGE_URL, GEC_IMAGE_URL } from 'constants/index';
+import { getApi } from 'services/axios';
 
 import styles from './home.module.scss';
 
 const Home = () => {
+  const [isLoggedIn] = useRecoilState(userLoginState);
+  const [userInfo, setUserInfo] = useRecoilState(currentUserState);
+
+  useEffect(() => {
+    if (isLoggedIn && userInfo.userEmail === '') {
+      getApi('userInfo').then((res) => {
+        const { user } = res.data;
+
+        setUserInfo(user);
+      });
+    }
+  }, [isLoggedIn, setUserInfo, userInfo.userEmail]);
+
   return (
     <div className={styles.pageContainer}>
       <div className={styles.indexBox}>

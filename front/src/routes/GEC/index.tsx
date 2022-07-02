@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useMount } from 'react-use';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { userLoginState } from 'states/user';
@@ -22,6 +23,36 @@ const GEC = () => {
   const [results, setResults] = useState([]);
   const [originSentences, setOriginSentences] = useState([]);
 
+  useMount(async () => {
+    try {
+      const { data } = await getApi(`gec`);
+      const { task, taskId: existTask } = data.payload;
+
+      if (task) {
+        setIsLoading(true);
+        const { data: getData } = await getApi(`gec/corrections/${existTask}`);
+        const { status, result, originals } = getData.payload;
+        setIsLoading(false);
+
+        if (status === 'Completed') {
+          const newResult = result.map((duplicateData: string) => [...new Set(duplicateData)]);
+
+          setResults(newResult);
+          setTaskId('');
+          setIsLoading(false);
+          setOriginSentences(originals);
+        } else if (status === 'InProgress') {
+          setIsLoading(true);
+        }
+      }
+      if (!task) {
+        setTextValue('');
+      }
+    } catch (err) {
+      setTextValue('');
+    }
+  });
+
   const handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     setTextValue(e.currentTarget.value);
   };
@@ -44,8 +75,7 @@ const GEC = () => {
       const getTaskInterval = setInterval(() => {
         getApi(`gec/corrections/${taskId}`)
           .then((res) => {
-            const { asd: originalSentences } = res.data;
-            const { status, result } = res.data.payload;
+            const { status, result, originals } = res.data.payload;
 
             if (status === 'Completed') {
               const newResult = result.map((duplicateData: string) => [...new Set(duplicateData)]);
@@ -53,7 +83,7 @@ const GEC = () => {
               setResults(newResult);
               setTaskId('');
               setIsLoading(false);
-              setOriginSentences(originalSentences);
+              setOriginSentences(originals);
 
               clearInterval(getTaskInterval);
             } else if (status === 'InProgress') {
