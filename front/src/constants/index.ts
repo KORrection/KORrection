@@ -7,6 +7,7 @@ const BACKEND_PORT_NUMBER = '5001';
   return `http://${window.location.hostname}/api`;
 })(); */
 export const SERVER_URL = `https://${window.location.hostname}/api`;
+
 export const IMAGE_ON_ERROR_URL = 'https://www.yokogawa.com/public/img/default_image.png';
 
 export const GEC_IMAGE_URL = 'https://blog.kakaocdn.net/dn/9QJ09/btrGhyPKh5R/c55Ucjn6VOWQkyo1hg4H51/img.gif';
