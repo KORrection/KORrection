@@ -11,7 +11,7 @@ export default () => {
       {
         clientID: process.env.GOOGLE_ID,
         clientSecret: process.env.GOOGLE_SECRET,
-        callbackURL: 'https://kdt-ai4-team16.elicecoding.com/api/google/callback',
+        callbackURL: process.env.GOOGLE_CALLBACK_URL,
       },
       async (accessToken, refreshToken, profile, done) => {
         const email = profile.emails[0].value;
