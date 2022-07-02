@@ -6,7 +6,7 @@
   @include flexbox.flexbox(between, center);
   flex-direction: column;
   width: 100%;
-  height: calc(100vh - 100px);
+  height: 100%;
 
   .imgContainer {
     @include flexbox.flexbox(center, center);
@@ -16,15 +16,21 @@
     .userPicture {
       width: 100px;
       height: 100px;
-      margin: 30px 0 40px;
+      margin: 30px 0;
       border-radius: 50%;
-      object-fit: none;
+      box-shadow: 0 0 16px 0 rgba(0, 0, 0, 8%);
+      object-fit: cover;
       object-position: center;
+    }
+
+    input {
+      width: 180px;
+      font-size: 14px;
     }
   }
 
   .textInputContainer {
-    margin-bottom: 50px;
+    margin: 30px 0 40px;
 
     .inputLabel {
       margin-top: 10px;

@@ -10,10 +10,11 @@ import { IPost } from 'types/board';
 import { convertHtmlToDraft } from 'utils/convertPost';
 import { SERVER_URL } from 'constants/index';
 
-import styles from './post.module.scss';
+import Button from 'routes/_shared/Button';
+import LoginRequired from 'routes/_shared/LoginRequired';
 import PostBubble from './SpeechBubble/PostBubble';
 import CommentBubble from './SpeechBubble/CommentBubble';
-import Button from 'routes/_shared/Button';
+import styles from './post.module.scss';
 
 const POST_INITIAL_STATE = null;
 const AUTHOR_INITIAL_STATE = { authorName: '', authorPic: '', isAuthor: false };
@@ -33,31 +34,28 @@ const Post = () => {
   const [isLiked, setIsLiked] = useState<boolean | null>(null);
 
   useMount(() => {
-    getApi(`board/posts/${params.postId}`)
-      .then((res) => {
-        const {
-          authorName,
-          authorPic,
-          post: newPost,
-          isAuthor,
-          comments: newComments,
-          isLike: newIsLiked,
-        } = res.data.payload;
+    getApi(`board/posts/${params.postId}`).then((res) => {
+      const {
+        authorName,
+        authorPic,
+        post: newPost,
+        isAuthor,
+        comments: newComments,
+        isLike: newIsLiked,
+      } = res.data.payload;
 
-        setAuthor({ authorName, authorPic, isAuthor });
-        setPost(newPost);
-        setEditorState(convertHtmlToDraft(newPost.content));
-        setComments(newComments);
-        setIsLiked(newIsLiked);
-      })
-      // eslint-disable-next-line no-console
-      .catch((err) => console.error(err));
+      setAuthor({ authorName, authorPic, isAuthor });
+      setPost(newPost);
+      setEditorState(convertHtmlToDraft(newPost.content));
+      setComments(newComments);
+      setIsLiked(newIsLiked);
+    });
   });
 
   if (!isLoggedIn) {
     window.location.href = `${SERVER_URL}/google`;
 
-    return <div>로그인이 필요한 서비스입니다..</div>;
+    return <LoginRequired />;
   }
 
   const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {

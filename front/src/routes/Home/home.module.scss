@@ -149,6 +149,7 @@
     width: 100%;
     max-width: 1000px;
     height: 500px;
+    margin-top: 50px;
     transition: 200ms;
 
     .textContainer {
@@ -177,26 +178,16 @@
       transition: 200ms;
 
       img {
+        width: 100%;
+        height: 100%;
         border-radius: 20px;
         box-shadow: 0 1px 4px colors.$BOX_SHADOW;
       }
     }
   }
 
-  .secondDesktopContainer {
+  .desktopContainer {
     display: none;
-  }
-
-  .secondMobileContainer {
-    .imgContainer {
-      box-shadow: 30px -35px 35px 0 colors.$SECOND_BOX_SHADOW;
-    }
-  }
-
-  .container:last-child {
-    .imgContainer {
-      box-shadow: 30px -35px 35px 0 colors.$THIRD_BOX_SHADOW;
-    }
   }
 }
 
@@ -206,13 +197,18 @@
       flex-wrap: nowrap;
       justify-content: space-between;
       height: 600px;
+      margin-top: 0;
     }
 
-    .secondMobileContainer {
+    .mobileContainer {
       display: none;
     }
 
-    .secondDesktopContainer {
+    .desktopContainer {
+      display: flex;
+    }
+
+    .secondContainer {
       display: flex;
 
       .imgContainer {
@@ -272,15 +268,9 @@
       }
     }
 
-    .secondDesktopContainer {
+    .secondContainer {
       .imgContainer {
         box-shadow: -40px -50px 40px 0 colors.$SECOND_BOX_SHADOW;
-      }
-    }
-
-    .container:last-child {
-      .imgContainer {
-        box-shadow: 40px -50px 40px 0 colors.$THIRD_BOX_SHADOW;
       }
     }
   }

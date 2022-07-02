@@ -28,9 +28,7 @@ const Write = () => {
       category: currentCategory,
       title,
       content,
-    })
-      .then(() => navigate('/board'))
-      .catch((err) => console.error(err));
+    }).then(() => navigate('/board'));
   };
 
   const handleInputChange = (e: FormEvent<HTMLInputElement>) => {

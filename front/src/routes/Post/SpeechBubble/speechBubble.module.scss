@@ -20,8 +20,9 @@
       height: 40px;
       margin-bottom: 10px;
       border-radius: 50%;
-      object-fit: none;
+      object-fit: cover;
       object-position: center;
+      box-shadow: 0 0 16px 0 rgba(0, 0, 0, 8%);
     }
   }
 
@@ -85,9 +86,11 @@
 
         svg {
           margin: 0 2px 0 8px;
+          transition: transform 200ms;
 
           &:hover {
             cursor: pointer;
+            transform: scale(1.1);
           }
         }
       }
