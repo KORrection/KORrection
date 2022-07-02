@@ -24,8 +24,7 @@ const App = () => {
           <Route path='board/:postId' element={<Post />} />
           <Route path='board/write' element={<Write />} />
           <Route path='profile' element={<Profile />} />
-          {/* <Route path='profile/posts' element={<PostsCollection />} /> */}
-          <Route path='board' element={<PostsCollection />} />
+          <Route path='profile/posts' element={<PostsCollection />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </main>
