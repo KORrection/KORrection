@@ -9,22 +9,18 @@ import { SERVER_URL } from 'constants/index';
 import { Comment, Document } from 'assets/svgs';
 import Button from 'routes/_shared/Button';
 import LoadingSpinner from 'routes/_shared/LoadingSpinner';
+import LoginRequired from 'routes/_shared/LoginRequired';
 import Suggestion from './Suggestion';
 import styles from './gec.module.scss';
-import { useMount } from 'react-use';
 
 const GEC = () => {
   const isLoggedIn = useRecoilValue(userLoginState);
-
   const [textValue, setTextValue] = useRecoilState(gecTextState);
+
   const [taskId, setTaskId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [originSentences, setOriginSentences] = useState([]);
-
-  useMount(() => {
-    getApi(`gec`).then((res) => console.log(res));
-  });
 
   const handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     setTextValue(e.currentTarget.value);
@@ -53,6 +49,7 @@ const GEC = () => {
 
             if (status === 'Completed') {
               const newResult = result.map((duplicateData: string) => [...new Set(duplicateData)]);
+
               setResults(newResult);
               setTaskId('');
               setIsLoading(false);
@@ -73,7 +70,7 @@ const GEC = () => {
   if (!isLoggedIn) {
     window.location.href = `${SERVER_URL}/google`;
 
-    return <div>로그인이 필요한 서비스입니다..</div>;
+    return <LoginRequired />;
   }
 
   return (
@@ -98,7 +95,7 @@ const GEC = () => {
             </div>
           </div>
           <Button type='submit' size='large'>
-            {isLoading ? <LoadingSpinner width='25px' height='25px' /> : 'save'}
+            {isLoading ? <LoadingSpinner width='25px' height='25px' /> : 'GO!'}
           </Button>
         </form>
       </section>
@@ -107,17 +104,28 @@ const GEC = () => {
           <Document />
           <h2>All Suggestions</h2>
         </div>
-        <ul>
-          {results.map((result, i) => {
-            const key = `gec-${i}`;
-            const originalSentence = originSentences[i];
+        <ul className={styles.suggestions}>
+          {isLoading ? (
+            <LoadingSpinner width='40px' height='40px' />
+          ) : (
+            <>
+              {results.map((result, i) => {
+                const key = `gec-${i}`;
+                const originalSentence: string = originSentences[i];
 
-            if (originalSentence !== '') {
-              return <Suggestion key={key} result={result} originalSentence={originalSentence} />;
-            }
+                if (
+                  originalSentence === '\n ' ||
+                  originalSentence === '\n' ||
+                  originalSentence === ' ' ||
+                  originalSentence === ''
+                ) {
+                  return null;
+                }
 
-            return null;
-          })}
+                return <Suggestion key={key} result={result} originalSentence={originalSentence} />;
+              })}
+            </>
+          )}
         </ul>
       </section>
     </div>

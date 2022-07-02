@@ -1,11 +1,12 @@
 import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import { getApi, postApi, putApi } from 'services/axios';
+import { userLoginState } from 'states/user';
 import { SERVER_URL, IMAGE_ON_ERROR_URL } from 'constants/index';
 
+import LoginRequired from 'routes/_shared/LoginRequired';
 import styles from './profile.module.scss';
-import { userLoginState } from 'states/user';
-import { useRecoilValue } from 'recoil';
 
 interface IResData {
   description: string;
@@ -34,20 +35,26 @@ const Profile = () => {
     });
   }, []);
 
-  const handleInfoSubmit = (e: FormEvent) => {
+  const handleInfoSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const formData = new FormData();
     if (image) Array.from(image).forEach((i) => formData.append('profilePicture', i));
 
-    putApi(`users`, {
+    const {
+      data: { nickname, description },
+    } = await putApi(`users`, {
       nickname: userInfo.nickname,
       description: userInfo.description,
-    })
-      .then(() => {
-        postApi(`profile`, formData, {}, 'formData');
-      })
-      .then((res) => console.log(res));
+    });
+
+    setUserInfo((prev) => ({ ...prev, nickname, description }));
+
+    if (image !== undefined) {
+      const { data: profilePicture } = await postApi(`profile`, formData, {}, 'formData');
+
+      setUserInfo((prev) => ({ ...prev, profilePicture }));
+    }
   };
 
   const handleValueChange = (name: string, value: string) => {
@@ -61,7 +68,7 @@ const Profile = () => {
   if (!isLoggedIn) {
     window.location.href = `${SERVER_URL}/google`;
 
-    return <div>로그인이 필요한 서비스입니다..</div>;
+    return <LoginRequired />;
   }
 
   return (
