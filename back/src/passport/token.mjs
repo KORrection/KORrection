@@ -7,7 +7,7 @@ const signToken = (req, res) => {
       res.status(500);
     } else {
       res.cookie('token', token);
-      res.redirect(process.env.MAIN_URL);
+      res.redirect('http://localhost:3000');
     }
   });
 };

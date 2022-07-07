@@ -16,6 +16,7 @@ import { login_required } from './middleware/login_required.mjs';
 
 dotenv.config();
 const app = express();
+
 passportConfig();
 
 // CORS 에러 방지
@@ -61,6 +62,6 @@ router.use(login_required, postRouter);
 router.use(login_required, commentRouter);
 router.use(login_required, postVoteRouter);
 
-app.use('/api', router);
+app.use('/', router);
 
 export { app };

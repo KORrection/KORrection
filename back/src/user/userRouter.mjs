@@ -3,7 +3,7 @@ import passport from 'passport';
 import Auth from '../passport/token.mjs';
 import { login_required } from '../middleware/login_required.mjs';
 import { userService } from './userService.mjs';
-import upload from '../utils/upload.mjs';
+// import upload from '../utils/upload.mjs';
 
 const userRouter = Router();
 
@@ -37,7 +37,7 @@ userRouter.get('/google/callback/', passport.authenticate('google', { session: f
 userRouter.get('/logout', (req, res) => {
   req.logout();
   res.clearCookie('token');
-  res.redirect(process.env.MAIN_URL);
+  res.redirect('http://localhost:3000');
 });
 /**
  * @swagger
@@ -118,23 +118,23 @@ userRouter.put('/users', login_required, async function (req, res, next) {
  *            application/json:
  */
 
-userRouter.post('/profile', login_required, upload.single('profilePicture'), async (req, res, next) => {
-  try {
-    const userId = req.currentUserId;
+// userRouter.post('/profile', login_required, upload.single('profilePicture'), async (req, res, next) => {
+//   try {
+//     const userId = req.currentUserId;
 
-    const profilePicture = req.file.location ?? null;
-    const toUpdate = { profilePicture };
+//     const profilePicture = req.file.location ?? null;
+//     const toUpdate = { profilePicture };
 
-    const updatedUser = await userService.updateProfilePhotoUrl({ userId, toUpdate });
+//     const updatedUser = await userService.updateProfilePhotoUrl({ userId, toUpdate });
 
-    if (updatedUser.errorMessage) {
-      throw new Error(updatedUser.errorMessage);
-    }
-    res.status(200).json(req.file.location);
-  } catch (error) {
-    next(error);
-  }
-});
+//     if (updatedUser.errorMessage) {
+//       throw new Error(updatedUser.errorMessage);
+//     }
+//     res.status(200).json(req.file.location);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 /**
  * @swagger
