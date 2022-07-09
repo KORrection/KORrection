@@ -10,17 +10,9 @@ export class quizService {
     session.startTransaction();
 
     try {
-      if (questions.length <= idx) {
-        await session.abortTransaction();
-        session.endSession();
-
-        return {
-          status: 400,
-          message: '400 Error: 퀴즈 배열 데이터의 길이보다 크거나 같은 인덱스는 가질 수 없습니다.',
-        };
-      }
+      idx = idx % questions.length;
       if (userQuiz === null) {
-        userQuiz = await Quiz.create({ userId });
+        userQuiz = await Quiz.create({ userId, idx });
       } else {
         const updates = { userId, idx };
         userQuiz = await Quiz.update({ userId, updates }, session);
