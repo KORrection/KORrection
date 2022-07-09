@@ -1,4 +1,5 @@
-import { model, Schema } from mongoose;
+import pkg from "mongoose";
+const { model, Schema } = pkg;
 
 const quizSchema = new Schema({
     idx: {type: Number, default: 0, required: false},

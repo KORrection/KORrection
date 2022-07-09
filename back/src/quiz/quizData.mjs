@@ -18,3 +18,29 @@ const questions = [
 ];
 
 export { questions };
+
+/**
+ * @swagger
+ * tags:
+ *  name: Quiz
+ *  description: Quiz data
+ * definitions:
+ *  Quiz: 
+ *      type: object
+ *      properties:
+ *          text:
+ *              type: string
+ *              description: 퀴즈 질문 텍스트
+ *          answer:
+ *              type: array
+ *              items: 
+ *                  type: object
+ *                  properties:
+ *                      correct:
+ *                          type: boolean
+ *                          description: 선택지 텍스트의 정답 여부
+ *                      text:
+ *                          type: string
+ *                          description: 선택지 텍스트
+ *          
+ */
