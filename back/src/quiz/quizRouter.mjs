@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { login_required } from '../middleware/login_required.mjs';
-import { quizService } from "./quizService.mjs";
-import { questions } from "./quizData.mjs";
+import { quizService } from './quizService.mjs';
+import { questions } from './quizData.mjs';
 
 const quizRouter = Router();
 /**
@@ -32,19 +32,19 @@ const quizRouter = Router();
  *                          items:
  *                              $ref: '#/definitions/Quiz'
  */
-quizRouter.get("/quizzes", async function(req, res, next) {
-    try{
-        if(questions.length > 0){    
-            res.status(200).json({
-                status: "success",
-                payload: questions,
-            });
-        } else {
-            throw new Error("퀴즈 배열 데이터가 없습니다.");
-        }
-    } catch(err) {
-        next(err);
+quizRouter.get('/quizzes', async function (req, res, next) {
+  try {
+    if (questions.length > 0) {
+      res.status(200).json({
+        status: 'success',
+        payload: questions,
+      });
+    } else {
+      throw new Error('퀴즈 배열 데이터가 없습니다.');
     }
+  } catch (err) {
+    next(err);
+  }
 });
 
 /**
@@ -53,7 +53,7 @@ quizRouter.get("/quizzes", async function(req, res, next) {
  *  /quiz:
  *    get:
  *      tags: [Quiz]
- *      summary: get user quiz 
+ *      summary: get user quiz
  *      security:
  *	      - jwt: []
  *      responses:
@@ -71,17 +71,17 @@ quizRouter.get("/quizzes", async function(req, res, next) {
  *                      payload:
  *                          $ref: '#/definitions/Quiz'
  */
-quizRouter.get("/quiz", login_required, async function (req, res, next) {
+quizRouter.get('/quiz', login_required, async function (req, res, next) {
   try {
-    userId = req.currentUserId;
+    const userId = req.currentUserId;
     const userQuiz = await quizService.getQuiz({ userId });
-    if(userQuiz.status >= 400){
-        throw new Error(userQuiz.message);
+    if (userQuiz.status >= 400) {
+      throw new Error(userQuiz.message);
     }
     res.status(200).json({
-        status: "success",
-        idx: userQuiz.idx,
-        payload: userQuiz.payload,
+      status: 'success',
+      idx: userQuiz.idx,
+      payload: userQuiz.payload,
     });
   } catch (err) {
     next(err);
@@ -94,7 +94,7 @@ quizRouter.get("/quiz", login_required, async function (req, res, next) {
  *  /quiz:
  *    put:
  *      tags: [Quiz]
- *      summary: update user quiz 
+ *      summary: update user quiz
  *      security:
  *	      - jwt: []
  *      responses:
@@ -112,21 +112,21 @@ quizRouter.get("/quiz", login_required, async function (req, res, next) {
  *                      payload:
  *                          $ref: '#/definitions/Quiz'
  */
-quizRouter.put("/quiz", login_required, async function (req, res, next) {
-    try{
-        userId = req.currentUserId;
-        const { idx } = req.body;
-        const userQuiz = await quizService.addOrSetQuiz({ userId, idx });
-        if(userQuiz.status >= 400){
-            throw new Error(userQuiz.message);
-        }
-        res.status(201).json({
-            status: "success",
-            payload: userQuiz.payload,
-        });
-    } catch(err) {
-        next(err);
+quizRouter.put('/quiz', login_required, async function (req, res, next) {
+  try {
+    const userId = req.currentUserId;
+    const { idx } = req.body;
+    const userQuiz = await quizService.addOrSetQuiz({ userId, idx });
+    if (userQuiz.status >= 400) {
+      throw new Error(userQuiz.message);
     }
+    res.status(201).json({
+      status: 'success',
+      payload: userQuiz.payload,
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 export { quizRouter };

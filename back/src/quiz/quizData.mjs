@@ -22,7 +22,7 @@ export { questions };
 /**
  * @swagger
  * definitions:
- *  Quiz: 
+ *  Quiz:
  *      type: object
  *      properties:
  *          text:
@@ -30,7 +30,7 @@ export { questions };
  *              description: 퀴즈 질문 텍스트
  *          answer:
  *              type: array
- *              items: 
+ *              items:
  *                  type: object
  *                  properties:
  *                      correct:
@@ -39,5 +39,5 @@ export { questions };
  *                      text:
  *                          type: string
  *                          description: 선택지 텍스트
- *          
+ *
  */
