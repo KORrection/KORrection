@@ -21,9 +21,6 @@ export { questions };
 
 /**
  * @swagger
- * tags:
- *  name: Quiz
- *  description: Quiz data
  * definitions:
  *  Quiz: 
  *      type: object

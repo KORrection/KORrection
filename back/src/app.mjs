@@ -58,10 +58,11 @@ const router = express.Router();
 //router.use(quizRouter);
 router.use(userRouter);
 router.use(gecClientRouter);
+router.use(quizRouter);
 router.use(login_required, postRouter);
 router.use(login_required, commentRouter);
 router.use(login_required, postVoteRouter);
-router.use(login_required, quizRouter);
+
 
 app.use('/', router);
 

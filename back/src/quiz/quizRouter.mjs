@@ -4,7 +4,12 @@ import { quizService } from "./quizService.mjs";
 import { questions } from "./quizData.mjs";
 
 const quizRouter = Router();
-
+/**
+ * @swagger
+ * tags:
+ *  name: Quiz
+ *  description: 유저마다 QUiz 진행사항을 저장하는 Quiz API
+ */
 /**
  * @swagger
  * paths:
