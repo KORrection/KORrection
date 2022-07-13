@@ -9,7 +9,9 @@
 | 인공지능 | 김민지 |
 | 인공지능 | 김영곤 |
 
-서비스 설명
+# 서비스 시연 영상
+
+[![엘리스 AI트랙 4기 - 맞춤법 교정 사이트 KORrection](http://img.youtube.com/vi/ClMCHVtFSps/0.jpg)](https://www.youtube.com/watch?v=ClMCHVtFSps)
 
 기획 의도
 
