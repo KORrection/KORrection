@@ -18,7 +18,7 @@ process.on('SIGTERM', () => {
   gracefulShutdown(server, 0);
 });
 
-process.on('uncaughtException', () => {
-  console.log('uncaughtException occurs.');
+process.on('uncaughtException', (err) => {
+  console.log('uncaughtException occurs.', err);
   gracefulShutdown(server, 1);
 });
