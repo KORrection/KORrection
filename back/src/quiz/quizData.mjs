@@ -1,7 +1,7 @@
 const questions = [
   {
     text: `'잇달았다'와 '잇따랐다' 어떤 것이 맞는 말일까요?`,
-    answers: [
+    answer: [
       { text: '화물칸을 객차 뒤에 잇달았다.', correct: true },
       { text: '화물칸을 객차 뒤에 잇따랐다.', correct: false },
     ],
@@ -9,7 +9,7 @@ const questions = [
   },
   {
     text: `왠만하면? 웬만하면? 무엇이 맞을까요?`,
-    answers: [
+    answer: [
       { text: '왠만하면?', correct: false },
       { text: '웬만하면', correct: true },
     ],
