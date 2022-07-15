@@ -11,7 +11,7 @@ const PostItem = ({ post }: IProps) => {
   const navigate = useNavigate();
 
   const handleBtnClick = () => {
-    navigate(`${post.postId}`);
+    navigate(`/board/${post.postId}`);
   };
 
   return (
