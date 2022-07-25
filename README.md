@@ -58,11 +58,11 @@ npm start
 
 | 이름 | 역할 |
 | --- | --- |
-| 김민지 | Data preprocessing, AI modeling, 중간발표 담당 |
+| 김민지 | Data preprocessing, AI modeling |
 | 김영곤 | Data preprocessing, AI modeling, Ai model serving, Quiz API |
 | 노서현 | 프론트엔드(전범위) |
 | 박건태 | 백엔드(Login, User API, gec-flask API), 배포 |
-| 심은지 | 백엔드(Post API, Comment API, Vote API, User-board API, gecClient API), Notion 구축, 최종발표 담당 |
+| 심은지 | 백엔드(Post API, Comment API, Vote API, User-board API, gecClient API), Notion 구축 |
 
 ## 서비스 소개
 
