@@ -9,6 +9,7 @@ import Post from './Post';
 import Write from './Write';
 import Profile from './Profile';
 import PostsCollection from './Profile/PostsCollection';
+import Quiz from './Quiz';
 import NotFound from './NotFound';
 import Footer from './_shared/Footer';
 
@@ -25,6 +26,7 @@ const App = () => {
           <Route path='board/write' element={<Write />} />
           <Route path='profile' element={<Profile />} />
           <Route path='profile/posts' element={<PostsCollection />} />
+          <Route path='quiz' element={<Quiz />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </main>

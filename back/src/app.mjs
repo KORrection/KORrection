@@ -12,7 +12,7 @@ import { gecClientRouter } from './gecClient/gecClientRouter.mjs';
 import { commentRouter } from './comment/commentRouter.mjs';
 import { postVoteRouter } from './postVote/postVoteRouter.mjs';
 import { login_required } from './middleware/login_required.mjs';
-// import { quizRouter } from './quiz/quizRouter.mjs';
+import { quizRouter } from './quiz/quizRouter.mjs';
 
 dotenv.config();
 const app = express();
@@ -58,9 +58,11 @@ const router = express.Router();
 //router.use(quizRouter);
 router.use(userRouter);
 router.use(gecClientRouter);
+router.use(quizRouter);
 router.use(login_required, postRouter);
 router.use(login_required, commentRouter);
 router.use(login_required, postVoteRouter);
+
 
 app.use('/', router);
 

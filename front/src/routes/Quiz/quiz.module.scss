@@ -1,0 +1,111 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
+
+.pageContainer {
+  .titleBox {
+    @include flexbox.flexbox(center, end);
+    flex-direction: column;
+    width: calc(100% + 40px);
+    height: 300px;
+    padding: 5%;
+    margin: -20px 0 20px -20px;
+    background: colors.$SIGNATURE_GREEN;
+    background: linear-gradient(90deg, rgba(colors.$GRADIENT_BLUE, 0.3), rgba(colors.$SIGNATURE_GREEN, 0.3));
+    transition: 200ms;
+
+    h1 {
+      margin: 0 0 20px;
+      font-size: 26px;
+      font-weight: 600;
+      text-align: center;
+      word-break: keep-all;
+      transition: 200ms;
+    }
+
+    p {
+      font-size: 20px;
+      line-height: 25px;
+      text-align: right;
+      transition: 200ms;
+    }
+  }
+
+  .quizContainer {
+    @include flexbox.flexbox(center, center);
+    flex-direction: column;
+    width: 100%;
+    min-height: 600px;
+    padding: 100px 40px;
+    border: 1px solid colors.$MAIN_BORDER;
+    border-radius: 10px;
+
+    h2 {
+      margin-bottom: 40px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .question {
+      margin-bottom: 50px;
+      font-size: 22px;
+      font-weight: bold;
+      color: colors.$SIGNATURE_GREEN;
+    }
+
+    .answer {
+      min-height: 60px;
+      padding: 15px 30px;
+      font-size: 16px;
+      border: 1px solid colors.$MAIN_BORDER;
+      border-radius: 10px;
+      transition: all 200ms;
+
+      + .answer {
+        margin-top: 15px;
+      }
+
+      &:hover {
+        background-color: colors.$GRAYE;
+      }
+    }
+
+    .isSelected {
+      display: block !important;
+      pointer-events: none;
+    }
+
+    .correct {
+      background-color: colors.$SIGNATURE_LIGHT_GREEN;
+    }
+
+    .commentary {
+      display: none;
+      margin-top: 40px;
+      font-size: 16px;
+      line-height: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 30px;
+      font-size: 15px;
+      border: 1px solid colors.$MAIN_BORDER;
+      border-radius: 10px;
+      transition: all 300ms;
+
+      &:hover {
+        background-color: colors.$THIRD_BOX_SHADOW;
+      }
+    }
+  }
+}
+
+@include responsive.after(SD) {
+  .pageContainer {
+    .quizContainer {
+      width: 768px;
+      margin: auto;
+    }
+  }
+}
