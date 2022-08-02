@@ -5,3 +5,5 @@ export { ReactComponent as ArrowRight } from './arrow-right.svg';
 export { ReactComponent as ArrowDown } from './arrow-down.svg';
 export { ReactComponent as Favourite } from './favourite.svg';
 export { ReactComponent as User } from './user.svg';
+export { ReactComponent as Hamburger } from './hamburger.svg';
+export { ReactComponent as Close } from './close.svg';

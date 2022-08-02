@@ -1,5 +1,6 @@
 @use '/src/styles/constants/colors';
 @use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
 
 .container {
   @include flexbox.flexbox(between, center);
@@ -15,98 +16,151 @@
     height: 34px;
   }
 
-  .select {
-    position: relative;
+  .mobileMenu {
+    display: block;
+  }
 
-    .selected {
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 48px;
-      text-align: center;
-      cursor: pointer;
-      -webkit-box-pack: justify;
-      -webkit-box-align: center;
-    }
-
-    .profileButton {
-      @include flexbox.flexbox(center, center);
-      transition: 200ms;
-
-      &:hover {
-        transform: translateY(-5px);
-      }
-    }
+  .mobileGNB {
+    @include flexbox.flexbox(center, center);
+    position: absolute;
+    top: 60px;
+    left: 0;
+    z-index: 1;
+    flex-direction: column;
+    width: 100%;
+    border-top: 1px solid colors.$GRAYE;
 
     ul {
-      position: absolute;
-      top: 45px;
-      right: -10px;
-      z-index: 4;
-      width: 100px;
-      height: auto;
-      padding-left: 0;
-      overflow-y: auto;
-      cursor: pointer;
-      background: colors.$WHITE;
-      border-radius: 10px;
-      box-shadow: 0 1px 4px colors.$BOX_SHADOW;
-      opacity: 0;
-      transition: all 0.2s ease-out;
+      width: 100%;
+      background-color: colors.$WHITE;
 
-      li {
-        text-align: center;
+      .mobileNavItem {
+        width: 100%;
+        height: 50px;
 
         &:hover {
           background-color: #f5f5f5;
         }
+
+        p {
+          font-size: 18px;
+          line-height: 50px;
+          color: colors.$BLACK;
+          text-align: center;
+          text-decoration: none;
+        }
       }
     }
   }
 
-  .isOpened {
-    ul {
-      display: block;
-      opacity: 1;
-    }
+  .desktopGNB {
+    display: none;
   }
+}
 
-  ul {
-    @include flexbox.flexbox(center, center);
-    width: 100%;
-    height: 60px;
+@include responsive.after(ML) {
+  .container {
+    .mobileMenu {
+      display: none;
+    }
 
-    .navItem {
-      .dropDownMenu {
-        li {
-          p {
-            font-size: 16px;
+    .mobileGNB {
+      display: none;
+    }
+
+    .desktopGNB {
+      display: block;
+
+      .navItemContainer {
+        @include flexbox.flexbox(center, center);
+        width: 100%;
+        height: 60px;
+
+        .navItem {
+          + .navItem {
+            margin-left: 24px;
+          }
+
+          a {
+            padding: 4px 14px;
+            font-size: 18px;
+            color: colors.$GRAY2;
+            user-select: none;
+
+            &.isActive {
+              font-weight: 600;
+              color: colors.$SIGNATURE_GREEN;
+            }
+
+            p {
+              transition: 200ms;
+
+              &:hover {
+                transform: translateY(-4px);
+              }
+            }
+          }
+
+          .isOpened {
+            .dropDownMenu {
+              display: block;
+              opacity: 1;
+            }
+          }
+
+          .dropDownMenu {
+            position: absolute;
+            top: 45px;
+            right: -10px;
+            z-index: 4;
+            width: 100px;
+            height: auto;
+            padding-left: 0;
+            overflow-y: auto;
+            cursor: pointer;
+            background: colors.$WHITE;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px colors.$BOX_SHADOW;
+            opacity: 0;
+            transition: all 0.2s ease-out;
+
+            li {
+              text-align: center;
+
+              &:hover {
+                background-color: #f5f5f5;
+              }
+
+              p {
+                font-size: 16px;
+              }
+            }
           }
         }
       }
 
-      + .navItem {
-        margin-left: 24px;
-      }
-    }
+      .select {
+        position: relative;
 
-    a {
-      padding: 4px 14px;
-      font-size: 18px;
-      color: colors.$GRAY2;
-      user-select: none;
+        .selected {
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 48px;
+          text-align: center;
+          cursor: pointer;
+          -webkit-box-pack: justify;
+          -webkit-box-align: center;
+        }
 
-      &.isActive {
-        font-weight: 600;
-        color: colors.$SIGNATURE_GREEN;
-      }
+        .profileButton {
+          @include flexbox.flexbox(center, center);
+          transition: 200ms;
 
-      p {
-        transition: 200ms;
-
-        &:hover {
-          transform: translateY(-5px);
+          &:hover {
+            transform: translateY(-4px);
+          }
         }
       }
     }
