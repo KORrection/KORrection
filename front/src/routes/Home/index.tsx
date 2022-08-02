@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import { cx } from 'styles';
 
 import { currentUserState, userLoginState } from 'states/user';
-import { BOARD_IMAGE_URL, GEC_IMAGE_URL } from 'constants/index';
+import { BOARD_IMAGE_URL, GEC_IMAGE_URL, QUIZ_IMAGE_URL } from 'constants/index';
 import { getApi } from 'services/axios';
 
 import styles from './home.module.scss';
@@ -64,12 +64,32 @@ const Home = () => {
       </section>
       <section className={cx(styles.container, styles.secondContainer)}>
         <div className={styles.imgContainer}>
+          <img src={QUIZ_IMAGE_URL} alt='quizImg' />
+        </div>
+        <div className={styles.textContainer}>
+          <h2>매일 매일 한국어 퀴즈를 풀어보세요!</h2>
+          <p>Have your Korean Quiz Time EVERYDAY!</p>
+          <p>Helpful for skill up your Korean fluency.</p>
+        </div>
+      </section>
+      <section className={cx(styles.container, styles.mobileContainer)}>
+        <div className={styles.imgContainer}>
           <img src={BOARD_IMAGE_URL} alt='boardImg' />
         </div>
         <div className={styles.textContainer}>
           <h2>한국어 질문을 해결해 보세요!</h2>
           <p>Feel free to ask Korean phrases!</p>
           <p>Fluent friends will answer your questions.</p>
+        </div>
+      </section>
+      <section className={cx(styles.container, styles.desktopContainer)}>
+        <div className={styles.textContainer}>
+          <h2>한국어 질문을 해결해 보세요!</h2>
+          <p>Feel free to ask Korean phrases!</p>
+          <p>Fluent friends will answer your questions.</p>
+        </div>
+        <div className={styles.imgContainer}>
+          <img src={BOARD_IMAGE_URL} alt='boardImg' />
         </div>
       </section>
     </div>
