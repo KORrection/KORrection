@@ -78,6 +78,19 @@ const GNB = () => {
                 </NavLink>
               </li>
             ))}
+            {isLoggedIn ? (
+              <li className={styles.mobileNavItem}>
+                <a href={`${SERVER_URL}/logout`} onClick={handleListClick}>
+                  <p>로그아웃</p>
+                </a>
+              </li>
+            ) : (
+              <li className={styles.mobileNavItem}>
+                <a href={`${SERVER_URL}/google`}>
+                  <p>로그인</p>
+                </a>
+              </li>
+            )}
           </ul>
         </nav>
       )}
