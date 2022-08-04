@@ -8,23 +8,26 @@ export const getApi = (endpoint: string, config?: object) =>
     withCredentials: true,
   });
 
-export const postApi = (endpoint: string, data: any, config?: object, headerInfo?: string) => {
-  let bodyData = data;
-
-  let header;
-
-  if (headerInfo !== 'formData') {
-    header = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    bodyData = JSON.stringify(data);
-  }
+export const postApi = (endpoint: string, data: object, config?: object) => {
+  const bodyData = JSON.stringify(data);
 
   return axios.post(`${SERVER_URL}/${endpoint}`, bodyData, {
     ...config,
-    ...header,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    withCredentials: true,
+  });
+};
+
+export const formPostApi = (endpoint: string, data: FormData, config?: object) => {
+  const bodyData = data;
+
+  return axios.post(`${SERVER_URL}/${endpoint}`, bodyData, {
+    ...config,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
     withCredentials: true,
   });
 };

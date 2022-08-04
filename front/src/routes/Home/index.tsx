@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import { cx } from 'styles';
 
 import { currentUserState, userLoginState } from 'states/user';
-import { BOARD_IMAGE_URL, GEC_IMAGE_URL, QUIZ_IMAGE_URL } from 'constants/index';
+import { BOARD_IMAGE_URL, GEC_IMAGE_URL, QUIZ_IMAGE_URL } from 'constants/imageUrl';
 import { getApi } from 'services/axios';
 
 import styles from './home.module.scss';

@@ -1,8 +1,8 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { IMAGE_ON_ERROR_URL } from 'constants/index';
-import { postApi, putApi } from 'services/axios';
+import { IMAGE_ON_ERROR_URL } from 'constants/imageUrl';
+import { formPostApi, putApi } from 'services/axios';
 import { currentUserState } from 'states/user';
 
 import styles from './profile.module.scss';
@@ -12,25 +12,27 @@ const ProfileEditForm = () => {
 
   const [image, setImage] = useState<FileList>();
 
-  const handleInfoSubmit = async (e: FormEvent) => {
+  const handleInfoSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     const formData = new FormData();
     if (image) Array.from(image).forEach((i) => formData.append('profilePicture', i));
 
-    const {
-      data: { nickname, description },
-    } = await putApi(`users`, {
+    putApi(`users`, {
       nickname: userInfo.nickname,
       description: userInfo.description,
+    }).then((res) => {
+      const { nickname, description } = res.data;
+
+      setUserInfo((prev) => ({ ...prev, nickname, description }));
     });
 
-    setUserInfo((prev) => ({ ...prev, nickname, description }));
-
     if (image !== undefined) {
-      const { data: profilePicture } = await postApi(`profile`, formData, {}, 'formData');
+      formPostApi(`profile`, formData).then((res) => {
+        const { data: profilePicture } = res;
 
-      setUserInfo((prev) => ({ ...prev, profilePicture }));
+        setUserInfo((prev) => ({ ...prev, profilePicture }));
+      });
     }
   };
 

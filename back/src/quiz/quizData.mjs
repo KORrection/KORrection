@@ -10,7 +10,7 @@ const questions = [
   {
     text: `왠만하면? 웬만하면? 무엇이 맞을까요?`,
     answer: [
-      { text: '왠만하면?', correct: false },
+      { text: '왠만하면', correct: false },
       { text: '웬만하면', correct: true },
     ],
     Commentary: `‘왜’의 형태가 나타나는 단어는 ‘왠지’처럼 까닭을 나타내는 단어 ‘왜’와 의미적으로 관련이 있습니다. 반면에 ‘웬만하다’처럼 단어 ‘왜’와 의미적으로 관련이 없는 경우에는 대부분 ‘웬’으로 표기합니다.`,
