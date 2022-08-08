@@ -18,7 +18,7 @@ const Write = () => {
 
   const [currentCategory, setCurrentCategory] = useState('자유');
   const [title, setTitle] = useState('');
-  const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
