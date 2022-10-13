@@ -1,5 +1,9 @@
 # KORrection - 맞춤법 교정 서비스
 
+## Live Demo 🚀 -> http://korrection.hopto.org/
+
+> 현재 라이브 데모에서 인공지능 서버는 동작하지 않습니다.
+
 ## 프로젝트 실행
 
 - clone repository
