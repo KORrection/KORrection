@@ -14,6 +14,9 @@ import { postVoteRouter } from './postVote/postVoteRouter.mjs';
 import { login_required } from './middleware/login_required.mjs';
 import { quizRouter } from './quiz/quizRouter.mjs';
 
+process.env.NODE_ENV =
+  process.env.NODE_ENV && process.env.NODE_ENV.trim().toLowerCase() == 'production' ? 'production' : 'development';
+
 dotenv.config();
 const app = express();
 
@@ -55,7 +58,6 @@ app.get('/', (req, res) => {
 
 const router = express.Router();
 
-//router.use(quizRouter);
 router.use(userRouter);
 router.use(gecClientRouter);
 router.use(quizRouter);
@@ -63,7 +65,10 @@ router.use(login_required, postRouter);
 router.use(login_required, commentRouter);
 router.use(login_required, postVoteRouter);
 
-
-app.use('/', router);
+if (process.env.NODE_ENV === 'development') {
+  app.use('/', router);
+} else {
+  app.use('/api', router);
+}
 
 export { app };
