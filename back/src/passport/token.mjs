@@ -1,4 +1,3 @@
-import { User } from '../user/userModel.mjs';
 import jwt from 'jsonwebtoken';
 
 const signToken = (req, res) => {
@@ -7,7 +6,7 @@ const signToken = (req, res) => {
       res.status(500);
     } else {
       res.cookie('token', token);
-      res.redirect('http://localhost:3000');
+      res.redirect(process.env.MAIN_URL);
     }
   });
 };

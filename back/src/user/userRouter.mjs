@@ -37,7 +37,7 @@ userRouter.get('/google/callback/', passport.authenticate('google', { session: f
 userRouter.get('/logout', (req, res) => {
   req.logout();
   res.clearCookie('token');
-  res.redirect('http://localhost:3000');
+  res.redirect(process.env.MAIN_URL);
 });
 /**
  * @swagger

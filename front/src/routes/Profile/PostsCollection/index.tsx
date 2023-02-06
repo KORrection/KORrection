@@ -54,7 +54,7 @@ const PostsCollection = () => {
   });
 
   useEffect(() => {
-    if (myPosts !== []) {
+    if (myPosts.length !== 0) {
       if (dropdownSelect === '내가 쓴 글') {
         setPosts(myPosts);
       } else if (dropdownSelect === '좋아요한 글') {
