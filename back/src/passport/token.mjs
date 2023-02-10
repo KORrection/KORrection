@@ -1,4 +1,3 @@
-import { User } from '../user/userModel.mjs';
 import jwt from 'jsonwebtoken';
 
 const signToken = (req, res) => {

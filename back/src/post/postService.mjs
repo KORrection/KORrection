@@ -80,15 +80,16 @@ class postService {
   }
 
   static async deletePost({ postId }) {
-    const post = Post.findPostById({ postId });
+    const post = await Post.findPostById({ postId });
     const postObjId = post._id;
+
     const session = await mongoose.startSession();
     session.startTransaction();
     let postDoc;
 
     try {
       await Comment.deleteCommentsByPostId({ postId }, { session });
-      await PostVote.deleteAllPostVote({ postObjId }, { session });
+      const abc = await PostVote.deleteAllPostVote({ postObjId }, { session });
       postDoc = await Post.deletePost({ postId }, { session });
       await session.commitTransaction();
     } catch (error) {
@@ -170,10 +171,11 @@ class postService {
   }
 
   static async findPostsByUser({ userObjId }) {
-    console.log(userObjId);
     const userBelongings = await User.getPostByUser({ userObjId });
-    console.log(userBelongings);
-    const post = userBelongings.posts.length == 0 ? '작성한 내역이 없습니다' : userBelongings.posts;
+    const post = userBelongings.posts;
+    if (!post) {
+      return {};
+    }
     const refinedPosts = post.map((each) => {
       return {
         category: each.category,

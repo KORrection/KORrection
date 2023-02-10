@@ -6,7 +6,7 @@ import { stateToHTML } from 'draft-js-export-html';
 
 import { deleteApi, putApi } from 'services/axios';
 import { IAuthor, IPost } from 'types/board';
-import { IMAGE_ON_ERROR_URL } from 'constants/index';
+import { IMAGE_ON_ERROR_URL } from 'constants/imageUrl';
 
 import { Favourite } from 'assets/svgs';
 import Button from 'routes/_shared/Button';

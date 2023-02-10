@@ -24,10 +24,12 @@ export default () => {
         } else {
           const newUser = await User.create({
             email,
+            nickname: 'Anonymous',
+            profilePicture: `https://team16-s3-bucket.s3.ap-northeast-2.amazonaws.com/profile/${
+              Math.floor(Math.random() * 4) + 1
+            }.png`,
+            description: '자신을 소개해줄 메세지를 작성해주세요!',
             // socialId: profile.id, 나중에 소셜 로그인을 더 추가하면 비교값이 되는 변수
-            nickname: 'null',
-            profilePicture: 'null',
-            description: 'null',
           });
           return done(null, newUser);
         }

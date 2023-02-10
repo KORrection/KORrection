@@ -196,8 +196,15 @@
     .container {
       flex-wrap: nowrap;
       justify-content: space-between;
-      height: 600px;
+      height: 500px;
       margin-top: 0;
+
+      .imgContainer {
+        img {
+          width: auto;
+          height: 190px;
+        }
+      }
     }
 
     .mobileContainer {
@@ -217,6 +224,14 @@
 
       .textContainer {
         align-items: flex-end;
+
+        h2 {
+          text-align: right;
+        }
+
+        p {
+          text-align: right;
+        }
       }
     }
   }
@@ -263,6 +278,7 @@
         box-shadow: 40px -50px 40px 0 colors.$FIRST_BOX_SHADOW;
 
         img {
+          width: auto;
           height: 210px;
         }
       }
@@ -279,10 +295,12 @@
 @include responsive.after(MD) {
   .pageContainer {
     .container {
+      height: 600px;
       margin-top: 50px;
 
       .imgContainer {
         img {
+          width: auto;
           height: 250px;
         }
       }

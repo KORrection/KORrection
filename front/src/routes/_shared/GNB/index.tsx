@@ -1,33 +1,33 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { useOnClickOutside } from 'hooks';
 import { cx } from 'styles';
 
+import { useOnClickOutside } from 'hooks';
 import { userLoginState } from 'states/user';
 import { SERVER_URL } from 'constants/index';
+import { navData, navURI } from 'constants/gnb';
 
+import MobileGNB from './MobileGNB';
 import { LogoImage, User } from 'assets/svgs';
 import styles from './gnb.module.scss';
-
-const navData = ['문법 검사기', '커뮤니티'];
-const navURI = ['gec', 'board'];
 
 const GNB = () => {
   const [isLoggedIn] = useRecoilState(userLoginState);
 
-  const [isOpened, setIsOpened] = useState(false);
+  const [isMobileOpened, setIsMobileOpened] = useState(false);
+  const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
-  const handleVisibleOptions = () => {
-    setIsOpened((prev) => !prev);
+  const handleMenuClick = () => {
+    setIsDropdownOpened((prev) => !prev);
   };
 
   const handleListClick = () => {
-    setIsOpened(false);
+    setIsDropdownOpened(false);
   };
 
   const handleOnClose = () => {
-    setIsOpened(false);
+    setIsDropdownOpened(false);
   };
 
   const profileRef = useOnClickOutside(handleOnClose);
@@ -39,8 +39,9 @@ const GNB = () => {
           <LogoImage className={styles.logoImage} />
         </NavLink>
       </div>
-      <nav>
-        <ul>
+      <MobileGNB isMobileOpened={isMobileOpened} setIsMobileOpened={setIsMobileOpened} />
+      <nav className={styles.desktopGNB}>
+        <ul className={styles.navItemContainer}>
           {navURI.map((item, i) => (
             <li key={item} className={styles.navItem}>
               <NavLink to={item} className={({ isActive }) => cx({ [styles.isActive]: isActive })}>
@@ -50,15 +51,11 @@ const GNB = () => {
           ))}
           <li className={styles.navItem}>
             {isLoggedIn ? (
-              <div className={cx(styles.select, { [styles.isOpened]: isOpened })} ref={profileRef}>
-                <button
-                  type='button'
-                  className={cx(styles.profileButton, styles.selected)}
-                  onClick={handleVisibleOptions}
-                >
+              <div className={cx(styles.select, { [styles.isOpened]: isDropdownOpened })} ref={profileRef}>
+                <button type='button' className={cx(styles.profileButton, styles.selected)} onClick={handleMenuClick}>
                   <User />
                 </button>
-                {isOpened && (
+                {isDropdownOpened && (
                   <ul className={styles.dropDownMenu}>
                     <li>
                       <Link to='/profile' onClick={handleListClick}>

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { deleteApi, putApi } from 'services/axios';
 import { IComment } from 'types/board';
-import { IMAGE_ON_ERROR_URL } from 'constants/index';
+import { IMAGE_ON_ERROR_URL } from 'constants/imageUrl';
 
 import Button from 'routes/_shared/Button';
 import styles from './speechBubble.module.scss';
