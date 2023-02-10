@@ -2,7 +2,6 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { User } from '../user/userModel.mjs';
 import dotenv from 'dotenv';
-import { server } from '../utils/constants.mjs';
 
 dotenv.config();
 
@@ -12,11 +11,11 @@ export default () => {
       {
         clientID: process.env.GOOGLE_ID,
         clientSecret: process.env.GOOGLE_SECRET,
-        callbackURL: server.GOOGLE_CALLBACK_URL,
+        callbackURL: process.env.GOOGLE_CALLBACK_URL,
       },
       async (accessToken, refreshToken, profile, done) => {
         const email = profile.emails[0].value;
-
+        const nickname = profile.displayName;
         const currentUser = await User.findByEmail({ email });
 
         if (currentUser) {
@@ -24,7 +23,7 @@ export default () => {
         } else {
           const newUser = await User.create({
             email,
-            nickname: 'Anonymous',
+            nickname,
             profilePicture: `https://team16-s3-bucket.s3.ap-northeast-2.amazonaws.com/profile/${
               Math.floor(Math.random() * 4) + 1
             }.png`,
