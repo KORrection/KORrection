@@ -1,14 +1,14 @@
-name: OCI CI/CD Test
+name: backend CD
 on:
   push:
     branches: [ "master" ]
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       
-      - name: execute remot ssh
+      - name: execute remote ssh
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_SSH_HOST }}
@@ -23,4 +23,4 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             npm install
-            pm2 restart back-server
+            pm2 delete 0
