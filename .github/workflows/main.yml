@@ -19,4 +19,8 @@ jobs:
           script: |
             whoami
             cd ../../usr/KORrection/back
-            git pull origin master
+            sudo git pull origin master
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            npm install
+            pm2 --name back-server start npm -- build
