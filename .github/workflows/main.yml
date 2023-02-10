@@ -7,7 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
+        with:
+            path: korrection
+            
       - name: execute remote ssh
         uses: appleboy/ssh-action@master
         with:
@@ -18,9 +20,4 @@ jobs:
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
             whoami
-            cd back
-            git pull origin main
-            export NVM_DIR=~/.nvm
-            source ~/.nvm/nvm.sh
-            npm install
-            pm2 --name back-server start npm -- build
+            cd korrection/back
