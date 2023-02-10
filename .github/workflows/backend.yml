@@ -1,6 +1,8 @@
 name: backend CD
 on:
   push:
+    paths:
+      - "back"
     branches: [ "master" ]
 jobs:
   deploy:
@@ -8,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
             
-      - name: execute remote ssh
+      - name: execute remote ssh & deploy backend server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_SSH_HOST }}
@@ -23,4 +25,4 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             yarn install
-            pm2 --name back-server start yarn -- build
+            pm2 restart back-server
