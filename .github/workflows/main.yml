@@ -7,8 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-            path: korrection
             
       - name: execute remote ssh
         uses: appleboy/ssh-action@master
@@ -20,4 +18,5 @@ jobs:
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
             whoami
-            cd korrection/back
+            cd ../../usr/KORrection/back
+            git pull origin master
