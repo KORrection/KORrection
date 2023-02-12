@@ -9,6 +9,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3.3.0
+      
       - uses: dorny/paths-filter@v2.11.1
         id: changes
         with:
@@ -17,8 +19,6 @@ jobs:
               - 'back/**'
             front:
               - 'front/**'
-
-      - uses: actions/checkout@v3.3.0
 
       - name: execute remote ssh & deploy backend server
         if: steps.changes.outputs.back == 'true'
