@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 
-import styles from './routes.module.scss';
 import GNB from './_shared/GNB';
 import Home from './Home';
 import GEC from './GEC';
@@ -12,6 +11,7 @@ import PostsCollection from './Profile/PostsCollection';
 import Quiz from './Quiz';
 import NotFound from './NotFound';
 import Footer from './_shared/Footer';
+import styles from './routes.module.scss';
 
 const App = () => {
   return (
