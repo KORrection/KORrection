@@ -1,0 +1,29 @@
+name: frontend CD
+on:
+  push:
+    paths:
+      - "front"
+    branches: [ "master" ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+            
+      - name: execute remote ssh & deploy frontend server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_SSH_HOST }}
+          username: ${{ secrets.REMOTE_SSH_USERNAME }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          passphrase: ${{ secrets.REMOTE_SSH_PASSPHRASE }}
+          port: ${{ secrets.REMOTE_SSH_PORT }}
+          script: |
+            whoami
+            cd ../../usr/KORrection/front
+            sudo git pull origin master
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            yarn install
+            yarn build
+            sudo systemctl reload nginx
