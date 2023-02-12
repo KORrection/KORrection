@@ -2,14 +2,18 @@ name: backend CD
 on:
   push:
     paths:
-      - "back"
-    branches: [ "master" ]
+      - 'back'
+    branches: ['master']
+  pull_request:
+    paths:
+      - 'back'
+    branches: ['master']
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-            
+
       - name: execute remote ssh & deploy backend server
         uses: appleboy/ssh-action@master
         with:
