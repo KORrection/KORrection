@@ -6,6 +6,7 @@ import { userLoginState } from 'states/user';
 import { gecTextState } from 'states/gec';
 import { getApi, postApi } from 'services/axios';
 import { SERVER_URL } from 'constants/index';
+import tempGecApi from 'services/gec';
 
 import { Comment, Document } from 'assets/svgs';
 import Button from 'routes/_shared/Button';
@@ -20,22 +21,23 @@ const GEC = () => {
 
   const [taskId, setTaskId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState([]);
-  const [originSentences, setOriginSentences] = useState([]);
+  const [results, setResults] = useState<string[][]>([]);
+  const [originSentences, setOriginSentences] = useState<string[]>([]);
 
   useMount(async () => {
     try {
-      const { data } = await getApi(`gec`);
-      const { task, taskId: existTask } = data.payload;
+      const { data } = await tempGecApi.checkIsInProgress();
+      const { task, taskId: existTaskId } = data.payload;
 
       if (task) {
         setIsLoading(true);
-        const { data: getData } = await getApi(`gec/corrections/${existTask}`);
+        const { data: getData } = await tempGecApi.getCorrectionResult();
+
         const { status, result, originals } = getData.payload;
         setIsLoading(false);
 
         if (status === 'Completed') {
-          const newResult = result.map((duplicateData: string) => [...new Set(duplicateData)]);
+          const newResult = result.map((duplicateData) => [...new Set(duplicateData)]);
 
           setResults(newResult);
           setTaskId('');
@@ -53,32 +55,33 @@ const GEC = () => {
     }
   });
 
-  const handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    setTextValue(e.currentTarget.value);
-  };
+  // const handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
+  //   setTextValue(e.currentTarget.value);
+  // };
 
   const handleGecSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    // setIsLoading(true);
 
-    postApi(`gec/corrections`, {
-      sentences: textValue,
-    })
-      .then((res) => setTaskId(res.data.payload.taskId))
-      .catch(() => {
-        setIsLoading(false);
-      });
+    // postApi(`gec/corrections`, {
+    //   sentences: textValue,
+    // })
+    //   .then((res) => setTaskId(res.data.payload.taskId))
+    //   .catch(() => {
+    //     setIsLoading(false);
+    //   });
   };
 
   useEffect(() => {
     if (taskId !== '') {
       const getTaskInterval = setInterval(() => {
-        getApi(`gec/corrections/${taskId}`)
+        tempGecApi
+          .getCorrectionResult()
           .then((res) => {
             const { status, result, originals } = res.data.payload;
 
             if (status === 'Completed') {
-              const newResult = result.map((duplicateData: string) => [...new Set(duplicateData)]);
+              const newResult = result.map((duplicateData) => [...new Set(duplicateData)]);
 
               setResults(newResult);
               setTaskId('');
@@ -117,7 +120,8 @@ const GEC = () => {
               placeholder='내용을 입력해주세요'
               maxLength={500}
               value={textValue}
-              onChange={handleValueChange}
+              // onChange={handleValueChange}
+              readOnly
             />
             <div className={styles.textLength}>
               <span>{textValue.length}</span>
