@@ -18,7 +18,7 @@ jobs:
             front:
               - 'front/**'
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.3.0
 
       - name: execute remote ssh & deploy backend server
         if: steps.changes.outputs.back == 'true'
