@@ -1,4 +1,5 @@
 import pkg from 'mongoose';
+
 const { Schema, model } = pkg;
 
 const PostVoteSchema = new Schema(
