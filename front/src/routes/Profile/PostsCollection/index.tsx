@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useMount } from 'react-use';
-import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 
 import { getApi } from 'services/axios';
@@ -9,6 +8,7 @@ import { IComment, IPost } from 'types/board';
 
 import DropDown from 'routes/_shared/DropDown';
 import PostItem from 'routes/_shared/PostItem';
+import SideMenu from '../SideMenu';
 import CommentBubble from 'routes/Post/SpeechBubble/CommentBubble';
 import styles from './postsCollection.module.scss';
 
@@ -65,16 +65,7 @@ const PostsCollection = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <aside>
-        <ul>
-          <li>
-            <Link to='/profile'>회원정보 수정</Link>
-          </li>
-          <li>
-            <Link to='/profile/posts'>글 모아보기</Link>
-          </li>
-        </ul>
-      </aside>
+      <SideMenu />
       <section>
         <DropDown selectList={DROPDOWN_ITEMS} setCurrentSelect={setDropdownSelect} size='medium'>
           {dropdownSelect}
