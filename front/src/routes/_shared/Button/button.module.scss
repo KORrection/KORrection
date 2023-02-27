@@ -26,7 +26,7 @@
     border-radius: 10px;
   }
 
-  &:hover {
+  &:hover:enabled {
     background-color: colors.$THIRD_BOX_SHADOW;
   }
 }

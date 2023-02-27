@@ -94,7 +94,7 @@
       border-radius: 10px;
       transition: all 300ms;
 
-      &:hover {
+      &:hover:enabled {
         background-color: colors.$THIRD_BOX_SHADOW;
       }
     }
