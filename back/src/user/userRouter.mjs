@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
 import Auth from '../passport/token.mjs';
-import { login_required } from '../middleware/login_required.mjs';
+import { loginRequired } from '../middleware/loginRequired.mjs';
 import { userService } from './userService.mjs';
 import upload from '../utils/upload.mjs';
 
@@ -49,7 +49,7 @@ userRouter.get('/logout', (req, res) => {
  *    summary: 로그아웃
  */
 
-userRouter.get('/users', login_required, async function (req, res, next) {
+userRouter.get('/users', loginRequired, async function (req, res, next) {
   try {
     // 전체 사용자 목록을 얻음
     const users = await userService.getUsers();
@@ -59,7 +59,7 @@ userRouter.get('/users', login_required, async function (req, res, next) {
   }
 });
 
-userRouter.get('/userInfo', login_required, async function (req, res, next) {
+userRouter.get('/userInfo', loginRequired, async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     const user = await userService.getUser({ userId });
@@ -76,7 +76,7 @@ userRouter.get('/userInfo', login_required, async function (req, res, next) {
  *    tags: [Users]
  *    summary: 전체 사용자 목록
  */
-userRouter.put('/users', login_required, async function (req, res, next) {
+userRouter.put('/users', loginRequired, async function (req, res, next) {
   try {
     const userId = req.currentUserId;
 
@@ -119,7 +119,7 @@ userRouter.put('/users', login_required, async function (req, res, next) {
  *            application/json:
  */
 
-userRouter.post('/profile', login_required, upload.single('profilePicture'), async (req, res, next) => {
+userRouter.post('/profile', loginRequired, upload.single('profilePicture'), async (req, res, next) => {
   try {
     const userId = req.currentUserId;
 

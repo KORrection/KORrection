@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { login_required } from '../middleware/login_required.mjs';
+import { loginRequired } from '../middleware/loginRequired.mjs';
 import { quizService } from './quizService.mjs';
 import { questions } from './quizData.mjs';
 
@@ -71,7 +71,7 @@ quizRouter.get('/quizzes', async function (req, res, next) {
  *                      payload:
  *                          $ref: '#/definitions/Quiz'
  */
-quizRouter.get('/quiz', login_required, async function (req, res, next) {
+quizRouter.get('/quiz', loginRequired, async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     const userQuiz = await quizService.getQuiz({ userId });
@@ -112,7 +112,7 @@ quizRouter.get('/quiz', login_required, async function (req, res, next) {
  *                      payload:
  *                          $ref: '#/definitions/Quiz'
  */
-quizRouter.put('/quiz', login_required, async function (req, res, next) {
+quizRouter.put('/quiz', loginRequired, async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     const { idx } = req.body;

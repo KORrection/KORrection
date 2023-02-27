@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { gecClientService } from './gecClientService.mjs';
-import { login_required } from '../middleware/login_required.mjs';
+import { loginRequired } from '../middleware/loginRequired.mjs';
 
 const gecClientRouter = Router();
 
 // * GET : 진행 중인 문법 분석 작업이 있는지
-gecClientRouter.get('/gec', login_required, async (req, res, next) => {
+gecClientRouter.get('/gec', loginRequired, async (req, res, next) => {
   try {
     const userObjId = req.currentUserId;
     const result = await gecClientService.checkTaskExist({ userObjId });
@@ -19,7 +19,7 @@ gecClientRouter.get('/gec', login_required, async (req, res, next) => {
 });
 
 // * POST : 분석 작업 요청. return taskId
-gecClientRouter.post('/gec/corrections', login_required, async (req, res, next) => {
+gecClientRouter.post('/gec/corrections', loginRequired, async (req, res, next) => {
   try {
     const userObjId = req.currentUserId;
     const { sentences } = req.body;
@@ -34,7 +34,7 @@ gecClientRouter.post('/gec/corrections', login_required, async (req, res, next) 
 });
 
 // * GET : 작업 status 확인 ( inprogress || completed )
-gecClientRouter.get('/gec/corrections/:taskId', login_required, async (req, res, next) => {
+gecClientRouter.get('/gec/corrections/:taskId', loginRequired, async (req, res, next) => {
   try {
     const userObjId = req.currentUserId;
 
