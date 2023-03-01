@@ -11,7 +11,7 @@ import { postRouter } from './post/postRouter.mjs';
 import { gecClientRouter } from './gecClient/gecClientRouter.mjs';
 import { commentRouter } from './comment/commentRouter.mjs';
 import { postVoteRouter } from './postVote/postVoteRouter.mjs';
-import { login_required } from './middleware/login_required.mjs';
+import { loginRequired } from './middleware/loginRequired.mjs';
 import { quizRouter } from './quiz/quizRouter.mjs';
 
 process.env.NODE_ENV =
@@ -61,9 +61,9 @@ const router = express.Router();
 router.use(userRouter);
 router.use(gecClientRouter);
 router.use(quizRouter);
-router.use(login_required, postRouter);
-router.use(login_required, commentRouter);
-router.use(login_required, postVoteRouter);
+router.use(loginRequired, postRouter);
+router.use(loginRequired, commentRouter);
+router.use(loginRequired, postVoteRouter);
 
 if (process.env.NODE_ENV === 'development') {
   app.use('/', router);

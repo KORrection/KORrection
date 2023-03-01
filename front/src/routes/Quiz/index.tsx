@@ -42,7 +42,7 @@ const Quiz = () => {
         {quizzes.length && (
           <QuizDetail quiz={quizzes[randomIdx]} idx={randomIdx} isSelected={isSelected} setIsSelected={setIsSelected} />
         )}
-        <button type='button' onClick={handleButtonClick}>
+        <button type='button' disabled={!isSelected} onClick={handleButtonClick}>
           Next
         </button>
       </section>
