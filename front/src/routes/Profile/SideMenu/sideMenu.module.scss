@@ -39,6 +39,10 @@
         padding: 20px;
         color: colors.$BLACK;
         text-decoration: none;
+
+        &.isActive {
+          font-weight: 600;
+        }
       }
     }
   }

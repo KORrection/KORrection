@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { cx } from 'styles';
 
 import styles from './sideMenu.module.scss';
 
@@ -7,10 +8,14 @@ const SideMenu = () => {
     <aside className={styles.sideMenu}>
       <ul>
         <li>
-          <Link to='/profile'>회원정보 수정</Link>
+          <NavLink end to='/profile' className={({ isActive }) => cx({ [styles.isActive]: isActive })}>
+            회원정보 수정
+          </NavLink>
         </li>
         <li>
-          <Link to='/profile/posts'>글 모아보기</Link>
+          <NavLink to='/profile/posts' className={({ isActive }) => cx({ [styles.isActive]: isActive })}>
+            글 모아보기
+          </NavLink>
         </li>
       </ul>
     </aside>
