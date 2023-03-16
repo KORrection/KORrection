@@ -1,7 +1,8 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { User } from '../user/userModel.mjs';
 import dotenv from 'dotenv';
+
+import { User } from '../user/userModel.mjs';
 
 dotenv.config();
 
@@ -16,21 +17,25 @@ export default () => {
       async (accessToken, refreshToken, profile, done) => {
         const email = profile.emails[0].value;
         const nickname = profile.displayName;
-        const currentUser = await User.findByEmail({ email });
 
-        if (currentUser) {
-          return done(null, currentUser);
-        } else {
-          const newUser = await User.create({
-            email,
-            nickname,
-            profilePicture: `https://team16-s3-bucket.s3.ap-northeast-2.amazonaws.com/profile/${
-              Math.floor(Math.random() * 4) + 1
-            }.png`,
-            description: '자신을 소개해줄 메세지를 작성해주세요!',
-            // socialId: profile.id, 나중에 소셜 로그인을 더 추가하면 비교값이 되는 변수
-          });
-          return done(null, newUser);
+        try {
+          const currentUser = await User.findByEmail({ email });
+
+          if (currentUser) {
+            return done(null, currentUser);
+          } else {
+            const newUser = await User.create({
+              email,
+              nickname,
+              profilePicture: `https://team16-s3-bucket.s3.ap-northeast-2.amazonaws.com/profile/${
+                Math.floor(Math.random() * 4) + 1
+              }.png`,
+              description: '자신을 소개해줄 메세지를 작성해주세요!',
+            });
+            return done(null, newUser);
+          }
+        } catch (error) {
+          return done(error);
         }
       }
     )
