@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import passport from 'passport';
+
 import Auth from '../passport/token.mjs';
 import { loginRequired } from '../middleware/loginRequired.mjs';
 import { userService } from './userService.mjs';
@@ -31,13 +32,13 @@ userRouter.get(
  *    summary: 로그인
  */
 userRouter.get('/google/callback/', passport.authenticate('google', { session: false }), (req, res) => {
-  Auth.signToken(req, res);
+  Auth.jwtToken.sign(req, res);
 });
 
 userRouter.get('/logout', (req, res) => {
   req.logout(function () {
     res.clearCookie('token');
-    res.redirect(process.env.MAIN_URL);
+    res.redirect(req.get('Referrer'));
   });
 });
 /**
