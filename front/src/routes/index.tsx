@@ -12,6 +12,7 @@ import Quiz from './Quiz';
 import NotFound from './NotFound';
 import Footer from './_shared/Footer';
 import styles from './routes.module.scss';
+import Login from './Login';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
       <main className={styles.app}>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
           <Route path='gec' element={<GEC />} />
           <Route path='board' element={<Board />} />
           <Route path='board/:postId' element={<Post />} />

@@ -77,9 +77,9 @@ const MobileGNB = ({ isMobileOpened, setIsMobileOpened }: IProps) => {
               </>
             ) : (
               <li className={styles.mobileNavItem}>
-                <a href={`${SERVER_URL}/google`}>
+                <Link to='/login' onClick={handleListClick}>
                   <p>로그인</p>
-                </a>
+                </Link>
               </li>
             )}
           </ul>

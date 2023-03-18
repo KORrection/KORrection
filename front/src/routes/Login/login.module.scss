@@ -1,0 +1,32 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+@use '/src/styles/mixins/responsive';
+
+.pageContainer {
+  @include flexbox.flexbox(center, center);
+  flex-direction: column;
+  height: 100vh;
+
+  .loginForm {
+    @include flexbox.flexbox(center, center);
+    flex-direction: column;
+
+    input {
+      height: 50px;
+      padding: 10px 20px;
+      margin: 10px 0;
+      border: 1px solid colors.$GRAYE;
+      border-radius: 10px;
+    }
+  }
+
+  .googleIconWrapper {
+    display: block;
+    width: 260px;
+    height: auto;
+
+    img {
+      width: 100%;
+    }
+  }
+}

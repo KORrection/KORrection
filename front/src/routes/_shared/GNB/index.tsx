@@ -71,9 +71,9 @@ const GNB = () => {
                 )}
               </div>
             ) : (
-              <a href={`${SERVER_URL}/google`}>
+              <NavLink to='/login' className={({ isActive }) => cx({ [styles.isActive]: isActive })}>
                 <p>로그인</p>
-              </a>
+              </NavLink>
             )}
           </li>
         </ul>
