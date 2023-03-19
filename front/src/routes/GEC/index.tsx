@@ -100,12 +100,6 @@ const GEC = () => {
     }
   }, [taskId]);
 
-  if (!isLoggedIn) {
-    window.location.href = `${SERVER_URL}/google`;
-
-    return <LoginRequired />;
-  }
-
   return (
     <div className={styles.pageContainer}>
       <section className={styles.container}>

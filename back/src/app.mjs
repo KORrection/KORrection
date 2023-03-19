@@ -3,8 +3,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 import passport from 'passport';
-import passportConfig from './passport/index.mjs';
 import cookieParser from 'cookie-parser';
+
+import passportConfig from './passport/index.mjs';
 import { swaggerUi, specs } from './swagger.js';
 import { userRouter } from './user/userRouter.mjs';
 import { postRouter } from './post/postRouter.mjs';
@@ -31,8 +32,6 @@ const corsConfig = {
 app.use(cors(corsConfig));
 app.options('*', cors(corsConfig));
 
-// app.use(cors({ origin: true, credentials: true }));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -41,7 +40,7 @@ app.use(passport.initialize());
 
 const DB_URL = process.env.MONGODB_URL;
 mongoose.connect(DB_URL, {
-  dbName: 'project3',
+  dbName: 'korrection',
 });
 const db = mongoose.connection;
 
@@ -60,7 +59,7 @@ const router = express.Router();
 
 router.use(userRouter);
 router.use(gecClientRouter);
-router.use(quizRouter);
+router.use(loginRequired, quizRouter);
 router.use(loginRequired, postRouter);
 router.use(loginRequired, commentRouter);
 router.use(loginRequired, postVoteRouter);
