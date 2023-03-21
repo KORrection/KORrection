@@ -1,17 +1,14 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useMount } from 'react-use';
-import { useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useNavigate, useParams } from 'react-router-dom';
 import { EditorState } from 'draft-js';
+import { AxiosError } from 'axios';
 
 import { getApi, postApi } from 'services/axios';
-import { userLoginState } from 'states/user';
 import { IPost } from 'types/board';
 import { convertHtmlToDraft } from 'utils/convertPost';
-import { SERVER_URL } from 'constants/index';
 
 import Button from 'routes/_shared/Button';
-import LoginRequired from 'routes/_shared/LoginRequired';
 import PostBubble from './SpeechBubble/PostBubble';
 import CommentBubble from './SpeechBubble/CommentBubble';
 import styles from './post.module.scss';
@@ -23,8 +20,8 @@ const COMMENT_INITIAL_STATE = [
 ];
 
 const Post = () => {
+  const navigate = useNavigate();
   const params = useParams();
-  const isLoggedIn = useRecoilValue(userLoginState);
 
   const [post, setPost] = useState<IPost | null>(POST_INITIAL_STATE);
   const [author, setAuthor] = useState(AUTHOR_INITIAL_STATE);
@@ -34,29 +31,29 @@ const Post = () => {
   const [isLiked, setIsLiked] = useState<boolean | null>(null);
 
   useMount(() => {
-    getApi(`board/posts/${params.postId}`).then((res) => {
-      const {
-        authorName,
-        authorPic,
-        post: newPost,
-        isAuthor,
-        comments: newComments,
-        isLike: newIsLiked,
-      } = res.data.payload;
+    getApi(`board/posts/${params.postId}`)
+      .then((res) => {
+        const {
+          authorName,
+          authorPic,
+          post: newPost,
+          isAuthor,
+          comments: newComments,
+          isLike: newIsLiked,
+        } = res.data.payload;
 
-      setAuthor({ authorName, authorPic, isAuthor });
-      setPost(newPost);
-      setEditorState(convertHtmlToDraft(newPost.content));
-      setComments(newComments);
-      setIsLiked(newIsLiked);
-    });
+        setAuthor({ authorName, authorPic, isAuthor });
+        setPost(newPost);
+        setEditorState(convertHtmlToDraft(newPost.content));
+        setComments(newComments);
+        setIsLiked(newIsLiked);
+      })
+      .catch((err: AxiosError) => {
+        if (err.response?.status === 401) {
+          navigate('/login');
+        }
+      });
   });
-
-  if (!isLoggedIn) {
-    window.location.href = `${SERVER_URL}/google`;
-
-    return <LoginRequired />;
-  }
 
   const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setCommentInput(e.currentTarget.value);

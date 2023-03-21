@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useMount } from 'react-use';
 import { useRecoilState } from 'recoil';
+import { AxiosError } from 'axios';
 
 import { getApi } from 'services/axios';
 import { currentUserState } from 'states/user';
@@ -15,6 +17,7 @@ import styles from './postsCollection.module.scss';
 const DROPDOWN_ITEMS = ['내가 쓴 글', '내가 쓴 댓글', '좋아요한 글'];
 
 const PostsCollection = () => {
+  const navigate = useNavigate();
   const [userInfo] = useRecoilState(currentUserState);
 
   const [dropdownSelect, setDropdownSelect] = useState('내가 쓴 글');
@@ -25,29 +28,37 @@ const PostsCollection = () => {
 
   useMount(() => {
     const loadData = async () => {
-      const { data: myPostsData } = await getApi(`board/posts`, {
-        params: {
-          user: userInfo.userObjId,
-        },
-      });
-      const { data: myCommentsData } = await getApi(`board/comments`, {
-        params: {
-          user: userInfo.userObjId,
-        },
-      });
-      const { data: myFavouritesData } = await getApi(`board/upvotes`, {
-        params: {
-          user: userInfo.userObjId,
-        },
-      });
+      try {
+        const { data: myPostsData } = await getApi(`board/posts`, {
+          params: {
+            user: userInfo.userObjId,
+          },
+        });
+        const { data: myCommentsData } = await getApi(`board/comments`, {
+          params: {
+            user: userInfo.userObjId,
+          },
+        });
+        const { data: myFavouritesData } = await getApi(`board/upvotes`, {
+          params: {
+            user: userInfo.userObjId,
+          },
+        });
 
-      const { posts: myPostsRes } = myPostsData.payload;
-      const { comments: myCommentsRes } = myCommentsData.payload;
-      const { Upvotes: myFavouritesRes } = myFavouritesData.payload;
+        const { posts: myPostsRes } = myPostsData.payload;
+        const { comments: myCommentsRes } = myCommentsData.payload;
+        const { Upvotes: myFavouritesRes } = myFavouritesData.payload;
 
-      setMyPosts(myPostsRes);
-      setComments(myCommentsRes);
-      setMyFavourites(myFavouritesRes);
+        setMyPosts(myPostsRes);
+        setComments(myCommentsRes);
+        setMyFavourites(myFavouritesRes);
+      } catch (err) {
+        const typedError = err as AxiosError;
+
+        if (typedError.response?.status === 401) {
+          navigate('/login');
+        }
+      }
     };
 
     loadData();

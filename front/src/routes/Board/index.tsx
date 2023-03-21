@@ -1,35 +1,38 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMount } from 'react-use';
-import { useRecoilValue } from 'recoil';
+import { AxiosError } from 'axios';
 
 import { getApi } from 'services/axios';
 import { IPost } from 'types/board';
-import { userLoginState } from 'states/user';
-import { SERVER_URL } from 'constants/index';
 
 import DropDown from 'routes/_shared/DropDown';
 import PostItem from 'routes/_shared/PostItem';
 import Button from 'routes/_shared/Button';
-import LoginRequired from 'routes/_shared/LoginRequired';
 import styles from './board.module.scss';
 
 const DROPDOWN_CATEGORIES = ['전체', '자유', '한국어 질문'];
 
 const Board = () => {
-  const isLoggedIn = useRecoilValue(userLoginState);
+  const navigate = useNavigate();
 
   const [posts, setPosts] = useState([]);
   const [filteredposts, setFilteredPosts] = useState([]);
   const [currentCategory, setCurrentCategory] = useState('전체');
 
   useMount(() => {
-    getApi('board').then((res) => {
-      const newPosts = res.data.payload.posts;
+    getApi('board')
+      .then((res) => {
+        const newPosts = res.data.payload.posts;
 
-      setPosts(newPosts);
-      setFilteredPosts(newPosts);
-    });
+        setPosts(newPosts);
+        setFilteredPosts(newPosts);
+      })
+      .catch((err: AxiosError) => {
+        if (err.response?.status === 401) {
+          navigate('/login');
+        }
+      });
   });
 
   useEffect(() => {
@@ -37,19 +40,12 @@ const Board = () => {
 
     if (currentCategory === '전체') {
       newFilteredPosts = posts;
-    } else if (currentCategory === '자유') {
-      newFilteredPosts = posts.filter((post: IPost) => post.category === '자유');
-    } else if (currentCategory === '한국어 질문') {
-      newFilteredPosts = posts.filter((post: IPost) => post.category === '한국어 질문');
+    } else {
+      newFilteredPosts = posts.filter((post: IPost) => post.category === currentCategory);
     }
+
     setFilteredPosts(newFilteredPosts);
   }, [currentCategory, posts]);
-
-  if (!isLoggedIn) {
-    window.location.href = `${SERVER_URL}/google`;
-
-    return <LoginRequired />;
-  }
 
   return (
     <div className={styles.pageContainer}>

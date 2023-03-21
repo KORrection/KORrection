@@ -1,34 +1,33 @@
 import { useEffect } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { AxiosError } from 'axios';
 
-import { currentUserState, userLoginState } from 'states/user';
-import { SERVER_URL } from 'constants/index';
+import { currentUserState } from 'states/user';
 import { getApi } from 'services/axios';
 
-import LoginRequired from 'routes/_shared/LoginRequired';
 import SideMenu from './SideMenu';
 import ProfileEditForm from './ProfileEditForm';
 import styles from './profile.module.scss';
 
 const Profile = () => {
-  const isLoggedIn = useRecoilValue(userLoginState);
+  const navigate = useNavigate();
+
   const [userInfo, setUserInfo] = useRecoilState(currentUserState);
 
   useEffect(() => {
-    if (isLoggedIn && userInfo.userEmail === '') {
-      getApi('userInfo').then((res) => {
+    getApi('userInfo')
+      .then((res) => {
         const { user } = res.data;
 
         setUserInfo(user);
+      })
+      .catch((err: AxiosError) => {
+        if (err.response?.status === 401) {
+          navigate('/login');
+        }
       });
-    }
-  }, [isLoggedIn, setUserInfo, userInfo.userEmail]);
-
-  if (!isLoggedIn) {
-    window.location.href = `${SERVER_URL}/google`;
-
-    return <LoginRequired />;
-  }
+  }, [navigate, setUserInfo]);
 
   return (
     <div className={styles.pageContainer}>

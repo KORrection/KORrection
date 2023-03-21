@@ -1,36 +1,34 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useMount } from 'react-use';
-import { useRecoilState } from 'recoil';
+import { AxiosError } from 'axios';
 
-import { userLoginState } from 'states/user';
 import { getApi } from 'services/axios';
-import { SERVER_URL } from 'constants/index';
 
 import QuizDetail from './QuizDetail';
-import LoginRequired from 'routes/_shared/LoginRequired';
 import styles from './quiz.module.scss';
 
 const Quiz = () => {
-  const [isLoggedIn] = useRecoilState(userLoginState);
+  const navigate = useNavigate();
 
   const [quizzes, setQuizzes] = useState([]);
   const [randomIdx, setRandomIdx] = useState(0);
   const [isSelected, setIsSelected] = useState(false);
 
   useMount(() => {
-    getApi('quizzes').then((res) => setQuizzes(res.data.payload));
+    getApi('quizzes')
+      .then((res) => setQuizzes(res.data.payload))
+      .catch((err: AxiosError) => {
+        if (err.response?.status === 401) {
+          navigate('/login');
+        }
+      });
   });
 
   const handleButtonClick = () => {
     setIsSelected(false);
     setRandomIdx(Math.floor(Math.random() * (9 - 0) + 1));
   };
-
-  if (!isLoggedIn) {
-    window.location.href = `${SERVER_URL}/google`;
-
-    return <LoginRequired />;
-  }
 
   return (
     <div className={styles.pageContainer}>
